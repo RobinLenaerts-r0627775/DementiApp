@@ -13,5 +13,18 @@ namespace DementiApp
         {
             InitializeComponent();
         }
+
+        async void ToMemory(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new MemoryPage());
+        }
+        async void ToStory(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new StoryPage());
+        }
+        async void ToMusicQuiz(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new MusicQuizPage());
+        }
     }
 }
