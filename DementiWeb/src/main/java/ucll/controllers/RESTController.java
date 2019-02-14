@@ -21,28 +21,30 @@ public class RESTController {
     @Autowired //Inject?
     private PatientRepository patientRepository;
 
-    @Autowired
+    /*@Autowired
     public RESTController(PatientRepository patientRepository){
         this.patientRepository = patientRepository;
         setTestData();
-    }
+    }*/
 
     public void setTestData(){
-        UUID knownUUID = UUID.fromString("6fb55fca-b947-4985-b0af-e96e832a2d66");
-        System.out.println(knownUUID);
-        Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", null, 1);
-        Patient germain = new Patient(knownUUID, "Germain", "Van Hier", null, 1);
-        Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", null, 2);
+        if (patientRepository.findAll() == null || patientRepository.count() <= 0) {
+            UUID knownUUID = UUID.fromString("6fb55fca-b947-4985-b0af-e96e832a2d66");
+            System.out.println(knownUUID);
+            Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", null, 1);
+            Patient germain = new Patient(knownUUID, "Germain", "Van Hier", null, 1);
+            Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", null, 2);
 
-        patientRepository.save(desire);
-        patientRepository.save(germain);
-        patientRepository.save(palmyr);
+            patientRepository.save(desire);
+            patientRepository.save(germain);
+            patientRepository.save(palmyr);
+        }
     }
 
     @GetMapping("/patients")
     public ResponseEntity<List<Patient>> getPatients(){
+        setTestData();
         return ResponseEntity.ok(StreamSupport.stream(patientRepository.findAll().spliterator(), false)
-                .peek(patient -> patient.setMediaFiles(null))
                 .collect(Collectors.toList()));
     }
 
