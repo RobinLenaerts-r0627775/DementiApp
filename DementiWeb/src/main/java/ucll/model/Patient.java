@@ -17,18 +17,16 @@ public class Patient implements Person{
     public String firstName,lastName;
     public Date birthDate;
     public int dementiaLevel;
-    public List<UUID> mediaFiles;
 
 
     public Patient(){}
 
-    public Patient(UUID patientID, String firstName, String lastName, Date birthDate, int dementiaLevel, List<UUID> mediaFiles) {
+    public Patient(UUID patientID, String firstName, String lastName, Date birthDate, int dementiaLevel) {
         setPatientID(patientID);
         setFirstName(firstName);
         setLastName(lastName);
         setBirthDate(birthDate);
         setDementiaLevel(dementiaLevel);
-        setMediaFiles(mediaFiles);
     }
 
     @Override
@@ -72,14 +70,5 @@ public class Patient implements Person{
 
     public void setDementiaLevel(int dementiaLevel) {
         this.dementiaLevel = dementiaLevel;
-    }
-
-    public List<UUID> getMediaFiles() {
-        return mediaFiles;
-    }
-
-    public void setMediaFiles(List<UUID> mediaFiles) {
-        if (mediaFiles == null) mediaFiles = new ArrayList<>();
-        this.mediaFiles = mediaFiles;
     }
 }
