@@ -16,5 +16,14 @@ namespace DementiApp
 		{
 			InitializeComponent ();
 		}
-	}
+
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            Button but = (Button)sender;
+            if (but.StyleId.Equals("first"))
+            {
+                but.BackgroundColor = Color.Red;
+            }
+        }
+    }
 }
