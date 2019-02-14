@@ -16,6 +16,7 @@ namespace DementiApp
 
         
         private Button clicked;
+        int score = 0;
         Dictionary<string, Color> layout = new Dictionary<string, Color>();
 		public MemoryPage ()
 		{
@@ -124,6 +125,12 @@ namespace DementiApp
                     but.BorderColor = Color.Transparent;
                     clicked.BorderColor = Color.Transparent;
                     clicked = null;
+                    score += 1;
+                    if (score == 12)
+                    {
+                        Navigation.PushAsync(new WinPage());
+                    }
+
                 }
                 else
                 {
