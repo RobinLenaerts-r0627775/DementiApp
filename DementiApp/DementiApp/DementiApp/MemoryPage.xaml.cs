@@ -121,17 +121,26 @@ namespace DementiApp
                 }
                 else
                 {
-                    Device.StartTimer(TimeSpan.FromSeconds(5), () =>
+                    for(int i = 0; i < 24; i++)
                     {
-                        // Do something
+                        (but.Parent.FindByName("f" + i) as Button).IsEnabled = false;
+                    }
+                    
+                    Device.StartTimer(TimeSpan.FromSeconds(2), () =>
+                    {
 
-                        return true; // True = Repeat again, False = Stop the timer
+                        but.IsEnabled = true;
+                        clicked.IsEnabled = true;
+                        clicked.BackgroundColor = Color.Black;
+                        but.BackgroundColor = Color.Black;
+                        clicked = null;
+                        for (int i = 0; i < 24; i++)
+                        {
+                            if((but.Parent.FindByName("f" + i) as Button).BackgroundColor == Color.Black) (but.Parent.FindByName("f" + i) as Button).IsEnabled = true;
+                        }
+                        return false;
                     });
-                    but.IsEnabled = true;
-                    clicked.IsEnabled = true;
-                    clicked.BackgroundColor = Color.Black;
-                    but.BackgroundColor = Color.Black;
-                    clicked = null;
+                    
                 }
             }               
         }
