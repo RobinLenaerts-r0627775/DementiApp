@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Patient implements Person{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public UUID patientID;
+    public UUID patientId;
     public String firstName,lastName;
     public Date birthDate;
     public int dementiaLevel;
@@ -21,8 +21,8 @@ public class Patient implements Person{
 
     public Patient(){}
 
-    public Patient(UUID patientID, String firstName, String lastName, Date birthDate, int dementiaLevel) {
-        setPatientID(patientID);
+    public Patient(UUID patientId, String firstName, String lastName, Date birthDate, int dementiaLevel) {
+        setPatientId(patientId);
         setFirstName(firstName);
         setLastName(lastName);
         setBirthDate(birthDate);
@@ -56,12 +56,12 @@ public class Patient implements Person{
         this.birthDate = birthDate;
     }
 
-    public UUID getPatientID() {
-        return patientID;
+    public UUID getPatientId() {
+        return patientId;
     }
 
-    public void setPatientID(UUID patientID) {
-        this.patientID = patientID;
+    public void setPatientId(UUID patientID) {
+        this.patientId = patientID;
     }
 
     public int getDementiaLevel() {

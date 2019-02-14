@@ -2,20 +2,27 @@ package ucll.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import ucll.db.PatientRepository;
 import ucll.model.Patient;
 import ucll.model.PatientsPayload;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Optional;
+import java.util.UUID;
+
 @CrossOrigin
 @Controller
 public class WebController {
+
+    private static String all = "overviewAllPatients", index="index", form ="form";
 
     @Value("${patients.apiaddres}")
     String apiAddres;
@@ -28,10 +35,7 @@ public class WebController {
             try {
                 RestTemplate restTemplate = new RestTemplate();
                 Patient[] response = restTemplate.getForObject(apiAddres,Patient[].class);
-                System.out.println("DEBUG\n*\n*\n");
-                System.out.println(response);
                 for (Patient p : response) {
-                    System.out.println(p.firstName);
                     patientRepository.save(p);
                 }
             } catch (Exception e) {
@@ -44,7 +48,7 @@ public class WebController {
 
     @RequestMapping("/")
     @GetMapping("/index")
-    public String index(){return "index";}
+    public String index(){return index;}
 
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
@@ -56,6 +60,57 @@ public class WebController {
     public String getAllPatientsPage(Model model){
         refreshPatientRepo();
         model.addAttribute("patients", patientRepository.findAll());
-        return "overviewAllPatients";
+        return all;
+    }
+
+    @GetMapping("/patients/{patientId}")
+    public String getPatient (@PathVariable UUID patientId, Model model){
+        refreshPatientRepo();
+        Optional<Patient> op = patientRepository.findById(patientId);
+        if (op.isPresent())
+        {
+            model.addAttribute("patient", op.get());
+            return form;
+        }
+
+        else return all;
+    }
+
+    @PostMapping(value = "/patients")
+    public String postPatient(@RequestBody Patient patient, Model model){
+        /*if (apiAddres!=null){
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                ResponseEntity<Patient> response = restTemplate.postForEntity(apiAddres, patient, Patient.class);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Something went wrong with sending data", e);
+            }
+        } else {
+            throw new IllegalArgumentException("No api addres configured");
+        }*/
+        System.out.println(patient);
+        refreshPatientRepo();
+        return all;
+    }
+
+    @PutMapping(value = "/patients/{patientId}",
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public @ResponseBody String postPatient(@PathVariable UUID patientId, @RequestBody Patient patient, Model model){
+        if (patientId == null || patient.patientId == null || !patient.patientId.equals(patientId)){
+            throw new IllegalArgumentException("Error in the data");
+        }
+        if (apiAddres!=null){
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.put(apiAddres, patient, Patient.class);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Something went wrong with sending data", e);
+            }
+        } else {
+            throw new IllegalArgumentException("No api addres configured");
+        }
+        refreshPatientRepo();
+        return all;
     }
 }

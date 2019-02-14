@@ -26,7 +26,7 @@
 	<td th:text="${patient.lastName}"></td>
 	<td th:text="${patient.birthDate}"></td>
 	<td th:text="${patient.dementiaLevel}"></td>
-	<td><a href="editAction"/></td>
+    <td><a th:href="@{'/patients/' + ${patient.patientId}}">Edit</a></td>
 </tr>
 </th:block>
 

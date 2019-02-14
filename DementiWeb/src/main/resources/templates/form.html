@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Form</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -8,17 +8,21 @@
 
 <h2>Form page</h2>
 
-<form>
-	<p><input type="hidden" name="id" id="id"></p>
+<form action="/patients" method="post">
+
+	<p><input type="hidden" name="id" id="id" th:value="${patient.patientId}"></p>
 	<p>First name:
-	<input type="text" name="firstname" id="firstname"></p>
+	<input type="text" name="firstname" id="firstname" th:value="${patient.firstName}"></p>
 	<p>Last name:
-	<input type="text" name="lastname" id="lastname"></p>
+	<input type="text" name="lastname" id="lastname" th:value="${patient.lastName}"></p>
 	<p>Birth date:
-	<input type="date" name="birthdate" id="birthdate"></p>
+	<input type="date" name="birthdate" id="birthdate" th:value="${patient.birthDate}"></p>
 	<p>Dementia stage:
-	<input type="number" name="dementialevel" id="dementialevel"></p>
-	<p><input type="button" name="save" id="save" value="Save"></p>
+	<input type="number" name="dementialevel" id="dementialevel" th:value="${patient.dementiaLevel}"></p>
+	<p>
+        <input th:if="${patient == null}" type="submit" name="save" id="save" value="Save">
+        <input th:unless="${patient == null}" type="submit" name="edit" id="edit" value="Edit">
+    </p>
 </form>
 
 </body>
