@@ -12,17 +12,144 @@ namespace DementiApp
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MemoryPage : ContentPage
 	{
+        private Button clicked;
+        Dictionary<string, Color> layout = new Dictionary<string, Color>();
 		public MemoryPage ()
 		{
+            var numbers = new List<int>(Enumerable.Range(0, 24));
+            numbers.Shuffle();
+            foreach(int i in numbers)
+            {
+                Console.Write(""+i);
+                switch (numbers.IndexOf(i))
+                    {
+                    case 0:
+                        layout.Add("" + i, Color.Magenta);
+                        break;
+                    case 1:
+                        layout.Add("" + i, Color.Magenta);
+                        break;
+                    case 2:
+                        layout.Add("" + i, Color.LimeGreen);
+                        break;
+                    case 3:
+                        layout.Add("" + i, Color.LimeGreen);
+                        break;
+                    case 4:
+                        layout.Add("" + i, Color.Yellow);
+                        break;
+                    case 5:
+                        layout.Add("" + i, Color.Yellow);
+                        break;
+                    case 6:
+                        layout.Add("" + i, Color.Green);
+                        break;
+                    case 7:
+                        layout.Add("" + i, Color.Green);
+                        break;
+                    case 8:
+                        layout.Add("" + i, Color.OrangeRed);
+                        break;
+                    case 9:
+                        layout.Add("" + i, Color.OrangeRed);
+                        break;
+                    case 10:
+                        layout.Add("" + i, Color.White);
+                        break;
+                    case 11:
+                        layout.Add("" + i, Color.White);
+                        break;
+                    case 12:
+                        layout.Add("" + i, Color.Gray);
+                        break;
+                    case 13:
+                        layout.Add("" + i, Color.Gray);
+                        break;
+                    case 14:
+                        layout.Add("" + i, Color.MidnightBlue);
+                        break;
+                    case 15:
+                        layout.Add("" + i, Color.MidnightBlue);
+                        break;
+                    case 16:
+                        layout.Add("" + i, Color.Moccasin);
+                        break;
+                    case 17:
+                        layout.Add("" + i, Color.Moccasin);
+                        break;
+                    case 18:
+                        layout.Add("" + i, Color.YellowGreen);
+                        break;
+                    case 19:
+                        layout.Add("" + i, Color.YellowGreen);
+                        break;
+                    case 20:
+                        layout.Add("" + i, Color.Olive);
+                        break;
+                    case 21:
+                        layout.Add("" + i, Color.Olive);
+                        break;
+                    case 22:
+                        layout.Add("" + i, Color.Orange);
+                        break;
+                    case 23:
+                        layout.Add("" + i, Color.Orange);
+                        break;
+                    default:
+                        layout.Add("" + i, Color.Black);
+                        break;
+                    }
+            }
 			InitializeComponent ();
 		}
 
         private void Button_Clicked(object sender, EventArgs e)
         {
             Button but = (Button)sender;
-            if (but.StyleId.Equals("first"))
+            but.IsEnabled = false;
+            Color col = Color.Black;
+            layout.TryGetValue(but.StyleId, out col);
+            but.BackgroundColor = col;
+            if (clicked == null) clicked = but;
+            else
             {
-                but.BackgroundColor = Color.Red;
+                if (col.Equals(clicked.BackgroundColor))
+                {
+                    but.IsEnabled = false;
+                    clicked.IsEnabled = false;
+                    clicked = null;
+                }
+                else
+                {
+                    Device.StartTimer(TimeSpan.FromSeconds(5), () =>
+                    {
+                        // Do something
+
+                        return true; // True = Repeat again, False = Stop the timer
+                    });
+                    but.IsEnabled = true;
+                    clicked.IsEnabled = true;
+                    clicked.BackgroundColor = Color.Black;
+                    but.BackgroundColor = Color.Black;
+                    clicked = null;
+                }
+            }               
+        }
+    }
+    static class MyExtensions
+    {
+        private static Random rng = new Random();
+
+        public static void Shuffle<T>(this IList<T> list)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
             }
         }
     }
