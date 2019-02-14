@@ -9,9 +9,12 @@ using Xamarin.Forms.Xaml;
 
 namespace DementiApp
 {
+    
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class MemoryPage : ContentPage
+    public partial class MemoryPage : ContentPage
 	{
+
+        
         private Button clicked;
         Dictionary<string, Color> layout = new Dictionary<string, Color>();
 		public MemoryPage ()
@@ -54,10 +57,10 @@ namespace DementiApp
                         layout.Add("" + i, Color.OrangeRed);
                         break;
                     case 10:
-                        layout.Add("" + i, Color.White);
+                        layout.Add("" + i, Color.Brown);
                         break;
                     case 11:
-                        layout.Add("" + i, Color.White);
+                        layout.Add("" + i, Color.Brown);
                         break;
                     case 12:
                         layout.Add("" + i, Color.Gray);
@@ -107,6 +110,7 @@ namespace DementiApp
         {
             Button but = (Button)sender;
             but.IsEnabled = false;
+            but.BorderColor = Color.LightYellow;
             Color col = Color.Black;
             layout.TryGetValue(but.StyleId, out col);
             but.BackgroundColor = col;
@@ -117,6 +121,8 @@ namespace DementiApp
                 {
                     but.IsEnabled = false;
                     clicked.IsEnabled = false;
+                    but.BorderColor = Color.Transparent;
+                    clicked.BorderColor = Color.Transparent;
                     clicked = null;
                 }
                 else
@@ -131,6 +137,8 @@ namespace DementiApp
 
                         but.IsEnabled = true;
                         clicked.IsEnabled = true;
+                        but.BorderColor = Color.Transparent;
+                        clicked.BorderColor = Color.Transparent;
                         clicked.BackgroundColor = Color.Black;
                         but.BackgroundColor = Color.Black;
                         clicked = null;
