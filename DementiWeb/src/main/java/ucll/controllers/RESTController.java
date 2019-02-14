@@ -29,10 +29,8 @@ public class RESTController {
 
     public void setTestData(){
         if (patientRepository.findAll() == null || patientRepository.count() <= 0) {
-            UUID knownUUID = UUID.fromString("6fb55fca-b947-4985-b0af-e96e832a2d66");
-            System.out.println(knownUUID);
             Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", null, 1);
-            Patient germain = new Patient(knownUUID, "Germain", "Van Hier", null, 1);
+            Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", null, 1);
             Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", null, 2);
 
             patientRepository.save(desire);
