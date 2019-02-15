@@ -1,6 +1,7 @@
 package ucll.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
@@ -29,10 +30,8 @@ public class RESTController {
 
     public void setTestData(){
         if (patientRepository.findAll() == null || patientRepository.count() <= 0) {
-            UUID knownUUID = UUID.fromString("6fb55fca-b947-4985-b0af-e96e832a2d66");
-            System.out.println(knownUUID);
             Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", null, 1);
-            Patient germain = new Patient(knownUUID, "Germain", "Van Hier", null, 1);
+            Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", null, 1);
             Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", null, 2);
 
             patientRepository.save(desire);
@@ -59,17 +58,17 @@ public class RESTController {
         else return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/patients")
     @Transactional
+    @PostMapping(value = "/patients")
     public ResponseEntity<Patient> postPatient(@RequestBody Patient patient) {
         Patient result = patientRepository.save(patient);
         return ResponseEntity.ok(result);
     }
 
-    @PutMapping("/patients/{patientId}")
+    @PutMapping(value = "/patients/{patientId}")
     public ResponseEntity<Patient> putPatient(@PathVariable UUID patientId, @RequestBody Patient patient) {
         if (patientRepository.existsById(patientId))
-            if (patientId.equals(patient.getPatientID())) {
+            if (patientId.equals(patient.getPatientId())) {
                 Patient result = patientRepository.save(patient);
                 return ResponseEntity.ok(result);
             }
