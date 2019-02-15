@@ -40,7 +40,4 @@ dependencies {
     compile("org.thymeleaf:thymeleaf-spring4:2.1.2.RELEASE")
     testCompile("junit:junit")
     testCompile('org.springframework.boot:spring-boot-starter-test')
-    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
-    providedRuntime("javax.servlet:jstl")
-    providedRuntime("org.apache.tomcat.embed:tomcat-embed-jasper")
 }

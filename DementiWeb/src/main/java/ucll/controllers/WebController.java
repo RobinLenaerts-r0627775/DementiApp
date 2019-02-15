@@ -47,8 +47,8 @@ public class WebController {
     }
 
     @RequestMapping("/")
-    @GetMapping("/index")
-    public String index(){return index;}
+    @GetMapping("/index") //TODO
+    public String index(Model model){return getAllPatientsPage(model);}
 
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
@@ -76,9 +76,14 @@ public class WebController {
         else return all;
     }
 
+    @GetMapping("/patients/new")
+    public String newPatient(){
+        return form;
+    }
+
     @PostMapping(value = "/patients")
     public String postPatient(@RequestBody Patient patient, Model model){
-        /*if (apiAddres!=null){
+        if (apiAddres!=null){
             try {
                 RestTemplate restTemplate = new RestTemplate();
                 ResponseEntity<Patient> response = restTemplate.postForEntity(apiAddres, patient, Patient.class);
@@ -87,16 +92,13 @@ public class WebController {
             }
         } else {
             throw new IllegalArgumentException("No api addres configured");
-        }*/
-        System.out.println(patient);
+        }
         refreshPatientRepo();
         return all;
     }
 
-    @PutMapping(value = "/patients/{patientId}",
-            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public @ResponseBody String postPatient(@PathVariable UUID patientId, @RequestBody Patient patient, Model model){
+    /*@PutMapping(value = "/patients/{patientId}")
+    public String putPatient(@PathVariable UUID patientId, @RequestBody Patient patient, Model model){
         if (patientId == null || patient.patientId == null || !patient.patientId.equals(patientId)){
             throw new IllegalArgumentException("Error in the data");
         }
@@ -112,5 +114,5 @@ public class WebController {
         }
         refreshPatientRepo();
         return all;
-    }
+    }//*/
 }

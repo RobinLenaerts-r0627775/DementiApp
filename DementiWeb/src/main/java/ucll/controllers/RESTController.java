@@ -59,18 +59,14 @@ public class RESTController {
     }
 
     @Transactional
-    @PostMapping(value = "/patients",
-            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public @ResponseBody ResponseEntity<Patient> postPatient(@RequestBody Patient patient) {
+    @PostMapping(value = "/patients")
+    public ResponseEntity<Patient> postPatient(@RequestBody Patient patient) {
         Patient result = patientRepository.save(patient);
         return ResponseEntity.ok(result);
     }
 
-    @PutMapping(value = "/patients/{patientId}",
-            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public @ResponseBody ResponseEntity<Patient> putPatient(@PathVariable UUID patientId, @RequestBody Patient patient) {
+    @PutMapping(value = "/patients/{patientId}")
+    public ResponseEntity<Patient> putPatient(@PathVariable UUID patientId, @RequestBody Patient patient) {
         if (patientRepository.existsById(patientId))
             if (patientId.equals(patient.getPatientId())) {
                 Patient result = patientRepository.save(patient);
