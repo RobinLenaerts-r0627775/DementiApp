@@ -12,6 +12,7 @@ namespace DementiApp
         public MainPage()
         {
             InitializeComponent();
+            
         }
 
         async void ToMemory(object sender, EventArgs e)
