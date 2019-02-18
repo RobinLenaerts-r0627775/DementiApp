@@ -18,6 +18,7 @@ namespace DementiApp
         private Button clicked;
         int score = 0;
         Dictionary<string, Color> layout = new Dictionary<string, Color>();
+        Dictionary<string, string> pics = new Dictionary<string, string>();
 		public MemoryPage ()
 		{
             var numbers = new List<int>(Enumerable.Range(0, 24));
@@ -29,80 +30,106 @@ namespace DementiApp
                     {
                     case 0:
                         layout.Add("" + i, Color.Magenta);
+                        pics.Add("" + i, "Luci.jpg");
                         break;
                     case 1:
                         layout.Add("" + i, Color.Magenta);
+                        pics.Add("" + i, "Luci.jpg");
                         break;
                     case 2:
                         layout.Add("" + i, Color.LimeGreen);
+                        pics.Add("" + i, "Decker.jpg");
                         break;
                     case 3:
                         layout.Add("" + i, Color.LimeGreen);
+                        pics.Add("" + i, "Decker.jpg");
                         break;
                     case 4:
                         layout.Add("" + i, Color.Yellow);
+                        pics.Add("" + i, "Maze.jpg");
                         break;
                     case 5:
                         layout.Add("" + i, Color.Yellow);
+                        pics.Add("" + i, "Maze.jpg");
                         break;
                     case 6:
                         layout.Add("" + i, Color.Green);
+                        pics.Add("" + i, "Linda.jpg");
                         break;
                     case 7:
                         layout.Add("" + i, Color.Green);
+                        pics.Add("" + i, "Linda.jpg");
                         break;
                     case 8:
                         layout.Add("" + i, Color.OrangeRed);
+                        pics.Add("" + i, "Dan.jpg");
                         break;
                     case 9:
                         layout.Add("" + i, Color.OrangeRed);
+                        pics.Add("" + i, "Dan.jpg");
                         break;
                     case 10:
                         layout.Add("" + i, Color.Brown);
+                        pics.Add("" + i, "Amenadiel.jpg");
                         break;
                     case 11:
                         layout.Add("" + i, Color.Brown);
+                        pics.Add("" + i, "Amenadiel.jpg");
                         break;
                     case 12:
                         layout.Add("" + i, Color.Gray);
+                        pics.Add("" + i, "Ella.jpg");
                         break;
                     case 13:
                         layout.Add("" + i, Color.Gray);
+                        pics.Add("" + i, "Ella.jpg");
                         break;
                     case 14:
                         layout.Add("" + i, Color.MidnightBlue);
+                        pics.Add("" + i, "Nolan.jpg");
                         break;
                     case 15:
                         layout.Add("" + i, Color.MidnightBlue);
+                        pics.Add("" + i, "Nolan.jpg");
                         break;
                     case 16:
                         layout.Add("" + i, Color.Moccasin);
+                        pics.Add("" + i, "Talia.jpg");
                         break;
                     case 17:
                         layout.Add("" + i, Color.Moccasin);
+                        pics.Add("" + i, "Talia.jpg");
                         break;
                     case 18:
                         layout.Add("" + i, Color.YellowGreen);
+                        pics.Add("" + i, "Trixie.jpg");
                         break;
                     case 19:
                         layout.Add("" + i, Color.YellowGreen);
+                        pics.Add("" + i, "Trixie.jpg");
                         break;
                     case 20:
                         layout.Add("" + i, Color.Olive);
+                        pics.Add("" + i, "Lucy.jpg");
                         break;
                     case 21:
                         layout.Add("" + i, Color.Olive);
+                        pics.Add("" + i, "Lucy.jpg");
                         break;
                     case 22:
                         layout.Add("" + i, Color.Orange);
+                        pics.Add("" + i, "Tim.jpg");
                         break;
                     case 23:
                         layout.Add("" + i, Color.Orange);
+                        pics.Add("" + i, "Tim.jpg");
                         break;
                     default:
                         layout.Add("" + i, Color.Black);
+                        pics.Add("" + i, "Luci.jpg");
                         break;
                     }
+
             }
 			InitializeComponent ();
 		}
@@ -115,6 +142,9 @@ namespace DementiApp
             Color col = Color.Black;
             layout.TryGetValue(but.StyleId, out col);
             but.BackgroundColor = col;
+            String pic = "";
+            pics.TryGetValue(but.StyleId, out pic);
+            but.Image = pic;
             if (clicked == null) clicked = but;
             else
             {
@@ -123,6 +153,8 @@ namespace DementiApp
                     but.IsEnabled = false;
                     clicked.IsEnabled = false;
                     but.BorderColor = Color.Transparent;
+                    but.BackgroundColor = Color.Transparent;
+                    clicked.BackgroundColor = Color.Transparent;
                     clicked.BorderColor = Color.Transparent;
                     clicked = null;
                     score += 1;
@@ -147,7 +179,9 @@ namespace DementiApp
                         but.BorderColor = Color.Transparent;
                         clicked.BorderColor = Color.Transparent;
                         clicked.BackgroundColor = Color.Black;
+                        clicked.Image = null;
                         but.BackgroundColor = Color.Black;
+                        but.Image = null;
                         clicked = null;
                         for (int i = 0; i < 24; i++)
                         {
