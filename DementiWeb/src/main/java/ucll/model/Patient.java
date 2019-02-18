@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,16 +18,24 @@ public class Patient implements Person{
     public String firstName,lastName;
     public Date birthDate;
     public int dementiaLevel;
+    public File profile;
+    public String password;
 
 
     public Patient(){}
 
-    public Patient(UUID patientId, String firstName, String lastName, Date birthDate, int dementiaLevel) {
+    public Patient(UUID patientId, String firstName, String lastName, Date birthDate, int dementiaLevel, File photo, String password) {
         setPatientId(patientId);
         setFirstName(firstName);
         setLastName(lastName);
         setBirthDate(birthDate);
         setDementiaLevel(dementiaLevel);
+        setProfile(photo);
+        setPassword(password);
+    }
+
+    public String getProfilePath(){
+        return profile.getPath();
     }
 
     @Override
@@ -70,5 +79,21 @@ public class Patient implements Person{
 
     public void setDementiaLevel(int dementiaLevel) {
         this.dementiaLevel = dementiaLevel;
+    }
+
+    public File getProfile() {
+        return profile;
+    }
+
+    public void setProfile(File profile) {
+        this.profile = profile;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

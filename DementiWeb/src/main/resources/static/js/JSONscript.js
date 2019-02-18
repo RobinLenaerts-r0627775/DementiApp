@@ -17,6 +17,7 @@ function savePatient() {
             result[this.name] = this.value || '';
         }
     });
+    console.log(result);
     $.ajax({
         url:"http://localhost:8080/patients",
         type:"POST",
@@ -24,10 +25,16 @@ function savePatient() {
         contentType: 'application/json',
         success: function (data) {
             if (data.redirect){
+                console.log("1");
                 window.location.href = data.redirect;
             } else {
-                window.location.replace("/")
+                console.log("2");
+                window.location.replace("/patients");
             }
+        },
+        error: function(data){
+            console.log(data);
+            alert("An error occured");
         }
     });
     //$("<a href='/patients'></a>").click();

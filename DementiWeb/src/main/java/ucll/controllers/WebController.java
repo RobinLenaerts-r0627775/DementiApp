@@ -12,6 +12,7 @@ import ucll.db.PatientRepository;
 import ucll.model.Patient;
 import ucll.model.PatientsPayload;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,7 +23,10 @@ import java.util.UUID;
 @Controller
 public class WebController {
 
-    private static String all = "overviewAllPatients", index="index", form ="form";
+    private static String all = "overviewAllPatients";
+    private static String form = "form";
+    private static String index = "index";
+    private static String greeting = "patientOverview";
 
     @Value("${patients.apiaddres}")
     String apiAddres;
@@ -46,14 +50,18 @@ public class WebController {
         }
     }
 
-    @RequestMapping("/")
-    @GetMapping("/index") //TODO
+    @RequestMapping("/") //TODO
     public String index(Model model){return getAllPatientsPage(model);}
 
-    @GetMapping("/greeting")
-    public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "greeting";
+    @GetMapping("/person/{patientId}")
+    public String greeting(@PathVariable UUID patientId, Model model) {
+        refreshPatientRepo();
+        Optional<Patient> op = patientRepository.findById(patientId);
+        if (op.isPresent()){
+            model.addAttribute("patient", op.get());
+            return greeting;
+        }
+        return index; //Fout
     }
 
     @GetMapping("/patients")
@@ -83,6 +91,8 @@ public class WebController {
 
     @PostMapping(value = "/patients")
     public String postPatient(@RequestBody Patient patient, Model model){
+        if (patient.profile == null) patient.setProfile(new File("static/images/Profile.png"));
+        System.out.println(patient.firstName);
         if (apiAddres!=null){
             try {
                 RestTemplate restTemplate = new RestTemplate();
