@@ -100,7 +100,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <None Include="Resources\drawable\Temp1.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -156,7 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\guitar.png" />
->>>>>>> 1dc50ce907156e06fc24119644d5b8e10ee3774a
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
