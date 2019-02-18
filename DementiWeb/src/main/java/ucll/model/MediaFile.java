@@ -12,6 +12,7 @@ public class MediaFile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public UUID mediaId;
+
     public UUID patientId;
     public File file;
     public boolean playableType; // Video True, Image False

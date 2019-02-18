@@ -10,7 +10,7 @@ using Xamarin.Forms;
 
 namespace DementiApp.Droid
 {
-    [Activity(Label = "DementiApp",  Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "DementiApp",  Icon = "@mipmap/icon", Theme = "@style/MainTheme", ScreenOrientation =ScreenOrientation.Landscape ,  MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
 
