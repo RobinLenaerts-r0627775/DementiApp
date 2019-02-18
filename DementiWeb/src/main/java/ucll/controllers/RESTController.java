@@ -1,8 +1,6 @@
 package ucll.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
@@ -11,11 +9,10 @@ import ucll.db.PatientRepository;
 import ucll.model.MediaFile;
 import ucll.model.Patient;
 
-import javax.naming.ServiceUnavailableException;
 import javax.transaction.Transactional;
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @CrossOrigin
@@ -38,9 +35,9 @@ public class RESTController {
     public void setTestData(){
         if (patientRepository.findAll() == null || patientRepository.count() <= 0) {
 
-            Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", null, 1);
-            Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", null, 1);
-            Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", null, 2);
+            Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", null, 1, new File("static/images/Profile.png"), "sinter");
+            Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", null, 1, new File("static/images/Profile.png"), "ucll");
+            Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", null, 2, new File("static/images/Profile.png"), "t");
 
             patientRepository.save(desire);
             patientRepository.save(germain);
@@ -60,7 +57,6 @@ public class RESTController {
         }
 
         if (mediaRepository.findAll() == null || mediaRepository.count() <= 0){
-            System.out.println(desId);
 
             MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, null, false);
             MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, null, false);
