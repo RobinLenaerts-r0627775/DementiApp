@@ -11,7 +11,10 @@ namespace DementiApp
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new NavigationPage(new MainPage()) {
+                BarBackgroundColor = Color.Aquamarine,
+                BarTextColor = Color.White
+            };
         }
 
         protected override void OnStart()
