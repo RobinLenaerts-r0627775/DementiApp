@@ -3,13 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DementiApp.MemoryPage">
     <ContentPage.Content>
-<<<<<<< HEAD
-        <ScrollView>
-            <StackLayout>
-                <BoxView BackgroundColor="Red" HeightRequest="600" WidthRequest="150" />
-            </StackLayout>
-        </ScrollView>
-=======
         <StackLayout>
             <Label Text="Memory Game" FontSize="30" TextColor="Black" HorizontalTextAlignment="Center"/>
             <Grid>
@@ -55,6 +48,5 @@
                 <Button x:Name="f23" StyleId="23" BackgroundColor="Black" BorderWidth="5"  BorderColor="Transparent" Grid.Column="6" Grid.Row="3" Clicked="Button_Clicked"/>
             </Grid>
         </StackLayout>
->>>>>>> c88134b6c206454feea272e057111a5842234a8b
     </ContentPage.Content>
 </ContentPage>
