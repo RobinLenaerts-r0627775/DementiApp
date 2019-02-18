@@ -12,7 +12,9 @@ namespace DementiApp
         public MainPage()
         {
             InitializeComponent();
-            
+            NavigationPage.SetHasBackButton(this, false);
+
+
         }
 
         async void ToMemory(object sender, EventArgs e)
