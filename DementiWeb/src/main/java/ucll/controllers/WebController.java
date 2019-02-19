@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import ucll.db.MediaRepository;
 import ucll.db.PatientRepository;
+import ucll.model.MediaFile;
 import ucll.model.Patient;
 
 import java.io.File;
@@ -25,10 +26,11 @@ public class WebController {
     private static String greeting = "patientOverview";
     private static String album = "photoAlbum";
 
-    @Value("${patients.apiaddres}")
-    String patientApiAddres;
+    @Value("${patients.apiaddress}")
+    String patientApiAddress;
 
-    @Value("${media.apiaddres}")
+    @Value("${media.apiaddress}")
+    String mediaApiAddress;
 
     @Autowired
     private PatientRepository patientRepository;
@@ -37,18 +39,31 @@ public class WebController {
     private MediaRepository mediaRepository;
 
     private void refreshPatientRepo() {
-        if (patientApiAddres!=null){
+        if (patientApiAddress!=null){
             try {
                 RestTemplate restTemplate = new RestTemplate();
-                Patient[] response = restTemplate.getForObject(patientApiAddres,Patient[].class);
+                Patient[] response = restTemplate.getForObject(patientApiAddress,Patient[].class);
                 for (Patient p : response) {
                     patientRepository.save(p);
                 }
             } catch (Exception e) {
-                throw new IllegalArgumentException("Something went wrong with gathering data", e);
+                throw new IllegalArgumentException("Something went wrong with gathering patient data", e);
             }
         } else {
-            throw new IllegalArgumentException("No api addres configured");
+            throw new IllegalArgumentException("No api address for patients configured");
+        }
+        if (mediaApiAddress!=null){
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                MediaFile[] response = restTemplate.getForObject(mediaApiAddress,MediaFile[].class);
+                for (MediaFile p : response) {
+                    mediaRepository.save(p);
+                }
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Something went wrong with gathering media data", e);
+            }
+        } else {
+            throw new IllegalArgumentException("No api address for media configured");
         }
     }
 
@@ -57,7 +72,17 @@ public class WebController {
 
     @GetMapping("/media/{patientId}")
     public String getPhotos(@PathVariable UUID patientId, Model model){
-
+        if (mediaApiAddress!=null){
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                MediaFile[] result = restTemplate.getForObject(mediaApiAddress + "/" + patientId ,MediaFile[].class);
+                model.addAttribute("photoAlbum", result);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Something went wrong with gathering media data", e);
+            }
+        } else {
+            throw new IllegalArgumentException("No api address for media configured");
+        }
         return album;
     }
 
@@ -101,10 +126,10 @@ public class WebController {
     public String postPatient(@RequestBody Patient patient, Model model){
         if (patient.profile == null) patient.setProfile(new File("static/images/Profile.png"));
         System.out.println(patient.firstName);
-        if (apiAddres!=null){
+        if (patientApiAddress!=null){
             try {
                 RestTemplate restTemplate = new RestTemplate();
-                ResponseEntity<Patient> response = restTemplate.postForEntity(apiAddres, patient, Patient.class);
+                ResponseEntity<Patient> response = restTemplate.postForEntity(patientApiAddress, patient, Patient.class);
             } catch (Exception e) {
                 throw new IllegalArgumentException("Something went wrong with sending data", e);
             }
