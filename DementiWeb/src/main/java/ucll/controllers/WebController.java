@@ -70,8 +70,30 @@ public class WebController {
     @RequestMapping("/") //TODO
     public String index(Model model){return getAllPatientsPage(model);}
 
+    @PostMapping("/addPhotos/{patientId}") //TODO
+    public String addPhotos(@PathVariable UUID patientId, @RequestBody MediaFile mediaFile, Model model){
+        if (mediaApiAddress!=null){
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                ResponseEntity<MediaFile> response = restTemplate.postForEntity(patientApiAddress, mediaFile, MediaFile.class);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Something went wrong with sending data", e);
+            }
+        } else {
+            throw new IllegalArgumentException("No api addres configured");
+        }
+        refreshPatientRepo();
+        return album;
+    }
+
+    @PostMapping("/setProfilePicture/{patientId}") //TODO
+    public String setProfilePicture(@PathVariable UUID patientId){
+        return  null;
+    }
+
     @GetMapping("/media/{patientId}")
     public String getPhotos(@PathVariable UUID patientId, Model model){
+        model.addAttribute("patientId", patientId);
         if (mediaApiAddress!=null){
             try {
                 RestTemplate restTemplate = new RestTemplate();
@@ -125,7 +147,6 @@ public class WebController {
     @PostMapping(value = "/patients")
     public String postPatient(@RequestBody Patient patient, Model model){
         if (patient.profile == null) patient.setProfile(new File("static/images/Profile.png"));
-        System.out.println(patient.firstName);
         if (patientApiAddress!=null){
             try {
                 RestTemplate restTemplate = new RestTemplate();
