@@ -13,6 +13,16 @@ namespace DementiApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StoryPage : ContentPage
     {
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            //your code here;
+            showMessage();
+        }
+
+        public async void showMessage() {
+            await DisplayAlert("Info", "Klik op een foto om een bijhorende foto te bekijken", "Ik heb het begrepen");
+        }
 
         public StoryPage()
         {

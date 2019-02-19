@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DementiApp.LoginPage"
+             BackgroundColor="LightGray">
+
+    <ContentPage.Resources>
+        <Style x:Key="labelStyle" TargetType="{x:Type Label}">
+            <Setter Property="BackgroundColor" Value="#372c73"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="FontSize" Value="35"/>
+            <Setter Property="HeightRequest" Value="200"/>
+            <Setter Property="WidthRequest" Value="500"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="frameStyle" TargetType="{x:Type Frame}">
+            <Setter Property="CornerRadius" Value="25" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="10,5,10,5" />
+            <Setter Property="HasShadow" Value="False" />
+        </Style>
+        <Style x:Key="stackStyle" TargetType="{x:Type StackLayout}">
+            <Setter Property="Margin" Value="50,20,50,50" />
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout Style="{StaticResource stackStyle}" BackgroundColor="LightGray">
+            <Frame IsVisible="True" Margin="10" Style="{StaticResource frameStyle}">
+                <Label Text="Login" FontSize="50" HorizontalTextAlignment="Center" Style="{StaticResource labelStyle}" />
+            </Frame>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Source="gear.png"/>
+                <Frame Grid.Row="0" Grid.Column="1" Style="{StaticResource frameStyle}">
+                    <Label Text="Gebruikersnaam" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource labelStyle}" />
+                </Frame>
+                <Entry Placeholder="Voornaam.Achternaam" Margin="20,0,20,0" FontSize="30" Grid.Row="1" Grid.Column="1"/>
+
+                <Frame Grid.Row="2" Grid.Column="1" Style="{StaticResource frameStyle}" >
+                    <Label Text="Wachtwoord" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource labelStyle}" />
+                </Frame>
+                <Entry Grid.Row="3" Grid.Column="1" IsPassword="True" Margin="20,0,20,0" FontSize="30"/>
+
+                <Button Clicked="Login_Clicked" Grid.Row="4" Grid.Column="1" Text="Login" BackgroundColor="LightGray" FontSize="25" TextColor="#372c73" BorderColor="#372c73" BorderWidth="10"/>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>

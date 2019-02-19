@@ -10,15 +10,19 @@ using Xamarin.Forms.Xaml;
 namespace DementiApp
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class Login : CarouselPage
+	public partial class LoginPage : ContentPage
 	{
-		public Login ()
+       
+        public LoginPage ()
 		{
-            ItemsSource = new String[] {
-                "Jeanine",
-                "Margriet",
-                "Josee"
-            };
+            InitializeComponent();
+
+        }
+
+        private async void Login_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new MainPage());
+
         }
     }
 }
