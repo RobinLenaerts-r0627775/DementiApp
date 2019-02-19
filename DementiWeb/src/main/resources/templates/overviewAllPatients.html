@@ -17,6 +17,7 @@
 	<td>Age</td>
 	<td>Dementia stage</td>
 	<td>Edit</td>
+	<td>See#TMP</td>
 </tr>
 
 <th:block th:each="patient : ${patients}">
@@ -27,6 +28,7 @@
 	<td th:text="${patient.birthDate}"></td>
 	<td th:text="${patient.dementiaLevel}"></td>
     <td><a th:href="@{'/patients/' + ${patient.patientId}}">Edit</a></td>
+	<td><a th:href="@{'/person/' + ${patient.patientId}}">See#TMP</a></td>
 </tr>
 </th:block>
 
