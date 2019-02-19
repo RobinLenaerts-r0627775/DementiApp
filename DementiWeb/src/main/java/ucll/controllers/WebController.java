@@ -2,20 +2,17 @@ package ucll.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import ucll.db.MediaRepository;
 import ucll.db.PatientRepository;
+import ucll.model.MediaFile;
 import ucll.model.Patient;
-import ucll.model.PatientsPayload;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,31 +24,67 @@ public class WebController {
     private static String form = "form";
     private static String index = "index";
     private static String greeting = "patientOverview";
+    private static String album = "photoAlbum";
 
-    @Value("${patients.apiaddres}")
-    String apiAddres;
+    @Value("${patients.apiaddress}")
+    String patientApiAddress;
+
+    @Value("${media.apiaddress}")
+    String mediaApiAddress;
 
     @Autowired
     private PatientRepository patientRepository;
 
+    @Autowired
+    private MediaRepository mediaRepository;
+
     private void refreshPatientRepo() {
-        if (apiAddres!=null){
+        if (patientApiAddress!=null){
             try {
                 RestTemplate restTemplate = new RestTemplate();
-                Patient[] response = restTemplate.getForObject(apiAddres,Patient[].class);
+                Patient[] response = restTemplate.getForObject(patientApiAddress,Patient[].class);
                 for (Patient p : response) {
                     patientRepository.save(p);
                 }
             } catch (Exception e) {
-                throw new IllegalArgumentException("Something went wrong with gathering data", e);
+                throw new IllegalArgumentException("Something went wrong with gathering patient data", e);
             }
         } else {
-            throw new IllegalArgumentException("No api addres configured");
+            throw new IllegalArgumentException("No api address for patients configured");
+        }
+        if (mediaApiAddress!=null){
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                MediaFile[] response = restTemplate.getForObject(mediaApiAddress,MediaFile[].class);
+                for (MediaFile p : response) {
+                    mediaRepository.save(p);
+                }
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Something went wrong with gathering media data", e);
+            }
+        } else {
+            throw new IllegalArgumentException("No api address for media configured");
         }
     }
 
     @RequestMapping("/") //TODO
     public String index(Model model){return getAllPatientsPage(model);}
+
+    @GetMapping("/media/{patientId}")
+    public String getPhotos(@PathVariable UUID patientId, Model model){
+        if (mediaApiAddress!=null){
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                MediaFile[] result = restTemplate.getForObject(mediaApiAddress + "/" + patientId ,MediaFile[].class);
+                model.addAttribute("photoAlbum", result);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Something went wrong with gathering media data", e);
+            }
+        } else {
+            throw new IllegalArgumentException("No api address for media configured");
+        }
+        return album;
+    }
 
     @GetMapping("/person/{patientId}")
     public String greeting(@PathVariable UUID patientId, Model model) {
@@ -93,10 +126,10 @@ public class WebController {
     public String postPatient(@RequestBody Patient patient, Model model){
         if (patient.profile == null) patient.setProfile(new File("static/images/Profile.png"));
         System.out.println(patient.firstName);
-        if (apiAddres!=null){
+        if (patientApiAddress!=null){
             try {
                 RestTemplate restTemplate = new RestTemplate();
-                ResponseEntity<Patient> response = restTemplate.postForEntity(apiAddres, patient, Patient.class);
+                ResponseEntity<Patient> response = restTemplate.postForEntity(patientApiAddress, patient, Patient.class);
             } catch (Exception e) {
                 throw new IllegalArgumentException("Something went wrong with sending data", e);
             }
