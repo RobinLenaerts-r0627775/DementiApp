@@ -17,12 +17,19 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 bootJar {
-    baseName = 'gs-rest-service'
+    baseName = 'DementiWebApp'
     version =  '0.1.0'
 }
 
 springBoot {
-    executable = true
+    
+}
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'ucll.Application'
+        )
+    }
 }
 
 repositories {
