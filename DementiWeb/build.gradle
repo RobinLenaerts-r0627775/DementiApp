@@ -22,7 +22,7 @@ bootJar {
 }
 
 springBoot {
-    executable = true
+    
 }
 
 repositories {
