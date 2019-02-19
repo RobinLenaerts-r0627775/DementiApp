@@ -2,20 +2,16 @@ package ucll.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import ucll.db.MediaRepository;
 import ucll.db.PatientRepository;
 import ucll.model.Patient;
-import ucll.model.PatientsPayload;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,18 +23,24 @@ public class WebController {
     private static String form = "form";
     private static String index = "index";
     private static String greeting = "patientOverview";
+    private static String album = "photoAlbum";
 
     @Value("${patients.apiaddres}")
-    String apiAddres;
+    String patientApiAddres;
+
+    @Value("${media.apiaddres}")
 
     @Autowired
     private PatientRepository patientRepository;
 
+    @Autowired
+    private MediaRepository mediaRepository;
+
     private void refreshPatientRepo() {
-        if (apiAddres!=null){
+        if (patientApiAddres!=null){
             try {
                 RestTemplate restTemplate = new RestTemplate();
-                Patient[] response = restTemplate.getForObject(apiAddres,Patient[].class);
+                Patient[] response = restTemplate.getForObject(patientApiAddres,Patient[].class);
                 for (Patient p : response) {
                     patientRepository.save(p);
                 }
@@ -52,6 +54,12 @@ public class WebController {
 
     @RequestMapping("/") //TODO
     public String index(Model model){return getAllPatientsPage(model);}
+
+    @GetMapping("/media/{patientId}")
+    public String getPhotos(@PathVariable UUID patientId, Model model){
+
+        return album;
+    }
 
     @GetMapping("/person/{patientId}")
     public String greeting(@PathVariable UUID patientId, Model model) {
