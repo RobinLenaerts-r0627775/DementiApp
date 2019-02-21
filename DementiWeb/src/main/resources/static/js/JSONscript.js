@@ -100,6 +100,51 @@ function editPatient() {
 	}
 };*/
 
+function saveProfilePhoto(){
+	var formDataSerAr = $("form").serializeArray();
+    var result = {};
+	
+    $.each(formDataSerAr, function () {
+        if (result[this.name]) {
+            if (!result[this.name].push) {
+                result[this.name] = [formDataSerAr[this.name]];
+            }
+            result[this.name].push(this.value || '');
+        } else {
+            result[this.name] = this.value || '';
+        }
+    });
+	
+	var file = document.querySelector('input[type=file]').files[0];
+	var fr = new FileReader();
+	fr.addEventListener("load", function () {
+		result['file'] = fr.result;
+		console.log("http://localhost:8080/setProfilePicture/" + result['patientId']);
+		
+		$.ajax({
+			url:"http://localhost:8080/setProfilePicture/",
+			type:"POST",
+			data: JSON.stringify(result),
+			contentType: 'application/json',
+			success: function (data) {
+				if (data.redirect){
+					window.location.href = data.redirect;
+				} else {
+					window.location.replace("/person/" + result['patientId']);
+				}
+			},
+			error: function(data){
+				alert("An error occured" + data);
+			}
+		});
+		
+	}, false);
+	
+	if (file) {
+		fr.readAsDataURL(file);
+	}
+}
+
 function sendPhoto(url, patientId, result) {
 	$.ajax({
         url:url,
@@ -124,7 +169,6 @@ function addPhoto(url, patientId, result){
 	var fr = new FileReader();
 	fr.addEventListener("load", function () {
 		result['file'] = fr.result;
-		console.log(JSON.stringify(result));
 		
 		sendPhoto(url, patientId, result);
 	}, false);
