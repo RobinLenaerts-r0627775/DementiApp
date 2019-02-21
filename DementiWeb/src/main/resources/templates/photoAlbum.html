@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <script src="http://localhost:8080/js/jquery-3.3.1.min.js"></script>
     <title>Photo album</title>
 </head>
 <body>
 
+<form th:action="@{'/addPhotos/' + ${patientId}}" method="post">
+    <p><input type="hidden" name="patientId" th:value="${patientId}"></p>
+    <p><input type="file" name="file" accept="image/*" id="file"></p>
+    <p><button type="button" id="send" th:onclick="'savePhoto(\'http://localhost:8080/addPhotos/' + ${patientId} + '\');'">Add</button></p>
+</form>
+<img src="" id="picture">
+<ul>
+    <th:block th:each="photo : ${photoAlbum}">
+        <li th:text="${photo.mediaId}"></li>
+        <li><img th:src="@{${photo.file}}"></li>
+    </th:block>
+</ul>
+<script type="text/javascript" src="http://localhost:8080/js/JSONscript.js"></script>
 </body>
 </html>

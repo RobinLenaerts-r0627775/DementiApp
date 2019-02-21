@@ -58,9 +58,9 @@ public class RESTController {
 
         if (mediaRepository.findAll() == null || mediaRepository.count() <= 0){
 
-            MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, null, false);
-            MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, null, false);
-            MediaFile germainFile1 = new MediaFile(UUID.randomUUID(), gerId, null, false);
+            MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, new File("static/images/Temp1.jpg"));
+            MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, new File("static/images/Temp2.jpg"));
+            MediaFile germainFile1 = new MediaFile(UUID.randomUUID(), gerId, new File("static/images/Temp3.jpg"));
 
             mediaRepository.save(desireFile1);
             mediaRepository.save(desireFile2);

@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>OverviewAll</title>
+    <title th:text="${patient.firstName} + ' ' + ${patient.lastName}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="http://localhost:8080/js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
 
 <h2>Overview Page</h2>
 
 <ul>
-    <li th:text="${patient.profile}"></li>
+    <li th:text="${patient.profilePicture}"></li>
+    <li><img th:src="@{${patient.profilePicture}}" id="picture"></li>
     <li>
         <form th:action="@{'/setProfilePicture/' + ${patient.patientId}}">
-            <input type="file" name="pic" accept="image/*">
-            <input type="submit">
+            <p><input type="hidden" name="patientId" th:value="${patient.patientId}"></p>
+            <p><input type="file" name="file" accept="image/*" id="file"></p>
+            <p><button type="button" id="send" onclick="saveProfilePhoto()">Change</button></p>
         </form></li>
     <li th:text="${patient.firstName}"></li>
     <li th:text="${patient.lastName}"></li>
@@ -23,5 +26,6 @@
     </li>
 </ul>
 
+<script type="text/javascript" src="http://localhost:8080/js/JSONscript.js"></script>
 </body>
 </html>

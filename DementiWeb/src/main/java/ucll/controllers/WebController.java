@@ -67,11 +67,63 @@ public class WebController {
         }
     }
 
+    private Patient postPatient(Patient patient) {
+        Patient result = null;
+        if (patientApiAddress != null){
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                ResponseEntity<Patient> response = restTemplate.postForEntity(patientApiAddress, patient, Patient.class);
+                refreshPatientRepo();
+                Optional<Patient> op = patientRepository.findById(response.getBody().getPatientId());
+                if (op.isPresent()){
+                    result = op.get();
+                }
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Something went wrong with sending data", e);
+            }
+        } else {
+            throw new IllegalArgumentException("No api addres configured");
+        }
+        return result;
+    }
+
     @RequestMapping("/") //TODO
     public String index(Model model){return getAllPatientsPage(model);}
 
+    @PostMapping("/addPhotos/{patientId}") //TODO
+    public String addPhotos(@PathVariable UUID patientId, @RequestBody MediaFile mediaFile, Model model){
+        /*if (mediaApiAddress!=null){
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                ResponseEntity<MediaFile> response = restTemplate.postForEntity(patientApiAddress, mediaFile, MediaFile.class);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Something went wrong with sending data", e);
+            }
+        } else {
+            throw new IllegalArgumentException("No api addres configured");
+        }
+        refreshPatientRepo();
+        return album;*/
+        return null;
+    }
+
+    @PostMapping("/setProfilePicture") //TODO
+    public String setProfilePicture(@RequestBody MediaFile mediaFile, Model model){
+        refreshPatientRepo();
+        Optional<Patient> op = patientRepository.findById(mediaFile.getPatientId());
+        if (op.isPresent()){
+            Patient patient = op.get();
+            patient.setProfile(mediaFile.file);
+            patient = postPatient(patient);
+            model.addAttribute("patient", patient);
+            return greeting;
+        }
+        return index;//Fout
+    }
+
     @GetMapping("/media/{patientId}")
     public String getPhotos(@PathVariable UUID patientId, Model model){
+        model.addAttribute("patientId", patientId);
         if (mediaApiAddress!=null){
             try {
                 RestTemplate restTemplate = new RestTemplate();
@@ -124,8 +176,9 @@ public class WebController {
 
     @PostMapping(value = "/patients")
     public String postPatient(@RequestBody Patient patient, Model model){
-        if (patient.profile == null) patient.setProfile(new File("static/images/Profile.png"));
-        System.out.println(patient.firstName);
+        if (patient.profile == null) {
+            patient.setProfile(new File("static/images/Profile.png"));
+        }
         if (patientApiAddress!=null){
             try {
                 RestTemplate restTemplate = new RestTemplate();
