@@ -139,7 +139,7 @@ namespace DementiApp
             Button but = (Button)sender;
             but.IsEnabled = false;
             but.BorderColor = Color.LightYellow;
-            Color col = Color.Black;
+            Color col = Color.FromHex("#372c73");
             layout.TryGetValue(but.StyleId, out col);
             but.BackgroundColor = col;
             String pic = "";
@@ -178,14 +178,14 @@ namespace DementiApp
                         clicked.IsEnabled = true;
                         but.BorderColor = Color.Transparent;
                         clicked.BorderColor = Color.Transparent;
-                        clicked.BackgroundColor = Color.Black;
+                        clicked.BackgroundColor = Color.FromHex("#372c73");
                         clicked.Image = null;
-                        but.BackgroundColor = Color.Black;
+                        but.BackgroundColor = Color.FromHex("#372c73");
                         but.Image = null;
                         clicked = null;
                         for (int i = 0; i < 24; i++)
                         {
-                            if((but.Parent.FindByName("f" + i) as Button).BackgroundColor == Color.Black) (but.Parent.FindByName("f" + i) as Button).IsEnabled = true;
+                            if((but.Parent.FindByName("f" + i) as Button).BackgroundColor == Color.FromHex("#372c73")) (but.Parent.FindByName("f" + i) as Button).IsEnabled = true;
                         }
                         return false;
                     });
