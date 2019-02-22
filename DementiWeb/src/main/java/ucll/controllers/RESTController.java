@@ -1,6 +1,10 @@
 package ucll.controllers;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
@@ -11,6 +15,9 @@ import ucll.model.Patient;
 
 import javax.transaction.Transactional;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -19,6 +26,7 @@ import java.util.stream.StreamSupport;
 @RestController
 @RequestMapping("/api")
 public class RESTController {
+    private static String fileDir = System.getProperty("user.dir") + "\\static\\images\\";
 
     @Autowired //Inject?
     private PatientRepository patientRepository;
@@ -35,9 +43,9 @@ public class RESTController {
     public void setTestData(){
         if (patientRepository.findAll() == null || patientRepository.count() <= 0) {
 
-            Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", null, 1, new File("static/images/Profile.png"), "sinter");
-            Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", null, 1, new File("static/images/Profile.png"), "ucll");
-            Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", null, 2, new File("static/images/Profile.png"), "t");
+            Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", null, 1, "sinter");
+            Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", null, 1, "ucll");
+            Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", null, 2, "t");
 
             patientRepository.save(desire);
             patientRepository.save(germain);
@@ -138,11 +146,17 @@ public class RESTController {
     }
 
     @GetMapping("/media/file/{mediaId}")
-    public ResponseEntity<MediaFile> getMediaFile(@PathVariable UUID mediaId){
+    public ResponseEntity<byte[]> getMediaFile(@PathVariable UUID mediaId) throws IOException {
         Optional<MediaFile> op = mediaRepository.findById(mediaId);
         if (op.isPresent())
         {
-            return ResponseEntity.ok(op.get());
+            HttpHeaders headers = new HttpHeaders();
+            InputStream in = new FileInputStream(op.get().file);
+            byte[] media = IOUtils.toByteArray(in);
+            headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+
+            ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(media, headers, HttpStatus.OK);
+            return responseEntity;
         }
 
         else return ResponseEntity.notFound().build();

@@ -1,9 +1,6 @@
 package ucll.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.File;
 import java.util.UUID;
 
@@ -14,6 +11,7 @@ public class MediaFile {
     public UUID mediaId;
 
     public UUID patientId;
+    @Column(length = 200000)
     public File file;
     //public boolean playableType; // Video True, Image False
 
@@ -24,6 +22,32 @@ public class MediaFile {
         this.patientId = patientId;
         this.file = file;
     }
+
+    /*private String getProfilePictureBase64(){
+        if (file.getPath().length() > 52){
+            String result =  file.getPath().substring(51);
+            result = result.replace("\n", "").replace("\r", "");
+            return result;
+        }
+
+        return file.getPath();
+    }
+
+    public String getProfilePicture(){
+        String result = file.getPath();
+        if (result.length() > 52){
+            switch (result.charAt(52)){
+                case 's':
+                    result = result.substring(58); //TODO
+                    break;
+
+                case 'd':
+                    result = getProfilePictureBase64();
+                    break;
+            }
+        }
+        return result;
+    }*/
 
     public UUID getMediaId() {
         return mediaId;

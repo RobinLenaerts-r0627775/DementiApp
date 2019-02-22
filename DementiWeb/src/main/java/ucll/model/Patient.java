@@ -15,48 +15,21 @@ public class Patient implements Person{
     public String firstName,lastName;
     public Date birthDate;
     public int dementiaLevel;
-    @Column (length = 200000)
-    public File profile;
+
+    //public UUID profilePicture;
     public String password;
 
 
     public Patient(){}
 
-    public Patient(UUID patientId, String firstName, String lastName, Date birthDate, int dementiaLevel, File photo, String password) {
+    public Patient(UUID patientId, String firstName, String lastName, Date birthDate, int dementiaLevel, /*UUID profilePicture, */String password) {
         setPatientId(patientId);
         setFirstName(firstName);
         setLastName(lastName);
         setBirthDate(birthDate);
         setDementiaLevel(dementiaLevel);
-        setProfile(photo);
+        //setProfile(profilePicture);
         setPassword(password);
-    }
-
-    private String getProfilePictureBase64(){
-        if (profile.getPath().length() > 52){
-            String result =  profile.getPath().substring(51);
-            result = result.replace("\n", "")/*.replace("\r", "")*/;
-            return result;
-        }
-
-        return profile.getPath();
-    }
-
-    public String getProfilePicture(){
-        String result = profile.getPath();
-        if (result.length() > 52){
-            switch (result.charAt(52)){
-                case 's':
-                    result = result.substring(58); //TODO
-                    break;
-
-                case 'd':
-                    result = getProfilePictureBase64();
-                    System.out.println(result);
-                    break;
-            }
-        }
-        return result;
     }
 
     @Override
@@ -102,13 +75,13 @@ public class Patient implements Person{
         this.dementiaLevel = dementiaLevel;
     }
 
-    public File getProfile() {
-        return profile;
+    /*public UUID getProfilePicture() {
+        return profilePicture;
     }
 
-    public void setProfile(File profile) {
-        this.profile = profile;
-    }
+    public void setProfile(UUID profile) {
+        this.profilePicture = profile;
+    }*/
 
     public String getPassword() {
         return password;
