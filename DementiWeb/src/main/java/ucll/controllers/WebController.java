@@ -5,14 +5,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import ucll.db.MediaRepository;
 import ucll.db.PatientRepository;
+import ucll.model.FileUploadObject;
 import ucll.model.MediaFile;
 import ucll.model.Patient;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -47,7 +52,7 @@ public class WebController {
                     patientRepository.save(p);
                 }
             } catch (Exception e) {
-                throw new IllegalArgumentException("Something went wrong with gathering patient data", e);
+                throw new IllegalArgumentException("Something went wrong with sending data: " + e.getMessage());
             }
         } else {
             throw new IllegalArgumentException("No api address for patients configured");
@@ -60,7 +65,7 @@ public class WebController {
                     mediaRepository.save(p);
                 }
             } catch (Exception e) {
-                throw new IllegalArgumentException("Something went wrong with gathering media data", e);
+                throw new IllegalArgumentException("Something went wrong with sending data: " + e.getMessage());
             }
         } else {
             throw new IllegalArgumentException("No api address for media configured");
@@ -79,7 +84,7 @@ public class WebController {
                     result = op.get();
                 }
             } catch (Exception e) {
-                throw new IllegalArgumentException("Something went wrong with sending data", e);
+                throw new IllegalArgumentException("Something went wrong with sending data: " + e.getMessage());
             }
         } else {
             throw new IllegalArgumentException("No api addres configured");
@@ -87,7 +92,7 @@ public class WebController {
         return result;
     }
 
-    private MediaFile postMediaFile(MediaFile mediaFile) {
+    /*private MediaFile postMediaFile(MediaFile mediaFile) {
         MediaFile result = null;
         if (mediaApiAddress != null){
             try {
@@ -99,7 +104,36 @@ public class WebController {
                     result = op.get();
                 }
             } catch (Exception e) {
-                throw new IllegalArgumentException("Something went wrong with sending data", e);
+                throw new IllegalArgumentException("Something went wrong with sending data: " + e.getMessage());
+            }
+        } else {
+            throw new IllegalArgumentException("No api addres configured");
+        }
+        return result;
+    }*/
+
+    private MediaFile postMediaFile(MultipartFile file, UUID patientId) {
+        MediaFile result = null;
+        String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+        FileUploadObject data = null;
+        try {
+            data = new FileUploadObject(file.getBytes(), patientId, extension);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (mediaApiAddress != null){
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                System.out.println("Here goes nothing"); //TODO
+                ResponseEntity<MediaFile> response = restTemplate.postForEntity(mediaApiAddress + "/file", data, MediaFile.class);
+                refreshPatientRepo();
+                Optional<MediaFile> op = mediaRepository.findById(response.getBody().getMediaId()); //Onnodig but Just to be sure
+                if (op.isPresent()) {
+                    result = op.get();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                throw new IllegalArgumentException("Something went wrong with sending data: " + e.getMessage());
             }
         } else {
             throw new IllegalArgumentException("No api addres configured");
@@ -111,20 +145,12 @@ public class WebController {
     public String index(Model model){return getAllPatientsPage(model);}
 
     @PostMapping("/addPhotos/{patientId}") //TODO
-    public String addPhotos(@PathVariable UUID patientId, @RequestBody MediaFile mediaFile, Model model){
-        /*if (mediaApiAddress!=null){
-            try {
-                RestTemplate restTemplate = new RestTemplate();
-                ResponseEntity<MediaFile> response = restTemplate.postForEntity(patientApiAddress, mediaFile, MediaFile.class);
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Something went wrong with sending data", e);
-            }
-        } else {
-            throw new IllegalArgumentException("No api addres configured");
+    public String addPhotos(@PathVariable UUID patientId, @RequestParam("files") MultipartFile[] files, Model model){
+        for (MultipartFile file : files){
+            MediaFile mf = postMediaFile(file, patientId);
+            System.out.println("Alrigth id = " + mf.mediaId); //TODO
         }
-        refreshPatientRepo();
-        return album;*/
-        return null;
+        return album;
     }
 
     /*@PostMapping("/setProfilePicture") //TODO

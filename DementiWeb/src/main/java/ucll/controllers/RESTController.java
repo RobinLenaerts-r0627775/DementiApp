@@ -1,5 +1,6 @@
 package ucll.controllers;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
@@ -8,16 +9,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.multipart.MultipartFile;
 import ucll.db.MediaRepository;
 import ucll.db.PatientRepository;
+import ucll.model.FileUploadObject;
 import ucll.model.MediaFile;
 import ucll.model.Patient;
 
 import javax.transaction.Transactional;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -160,6 +163,45 @@ public class RESTController {
         }
 
         else return ResponseEntity.notFound().build();
+    }
+
+    @Transactional
+    @PostMapping("/media/file")
+    public ResponseEntity<MediaFile> postMediaFile(@RequestBody FileUploadObject object){
+        System.out.println("Received post with params"); //TODO
+        //Create MediaFile
+        MediaFile result = new MediaFile(null, object.patientId, null);
+        //Save MediaFile to get an ID
+        result = mediaRepository.save(result);
+        //Create a path
+        Path path = Paths.get(fileDir, result.mediaId.toString() + object.extension);
+
+        //Create File with the name of the ID
+        /*File file = new File(fileDir + result.mediaId.toString() + object.extension);*/
+        //Write the data to the file
+        try {
+            Files.write(path, object.file);
+        } catch (IOException e) {
+            System.out.println("something went wrong i think");
+            e.printStackTrace();
+        }
+
+        //Set File in MediaFile
+        //result.setFile(file);
+        //Save it
+        result = mediaRepository.save(result);
+
+
+        /*try {
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(object.file);
+            fos.close();
+        } catch (IOException e) {
+            System.out.println("something went wrong i think");
+            e.printStackTrace();
+        }*/
+        return ResponseEntity.ok(result);
     }
 
     @Transactional
