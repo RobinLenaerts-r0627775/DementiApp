@@ -13,6 +13,16 @@ namespace DementiApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StoryPage : ContentPage
     {
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            //your code here;
+            showMessage();
+        }
+
+        public async void showMessage() {
+            await DisplayAlert("Info", "Klik op een foto om een bijhorende foto te bekijken", "Ik heb het begrepen");
+        }
 
         public StoryPage()
         {
@@ -33,8 +43,8 @@ namespace DementiApp
             var labelStyle = new Style(typeof(Label))
             {
                 Setters = {
-                    new Setter { Property = Label.BackgroundColorProperty, Value = Color.Aquamarine },
-                    new Setter { Property = Label.TextColorProperty, Value = Color.MediumPurple},
+                    new Setter { Property = Label.BackgroundColorProperty, Value = Color.FromHex("#372c73")},
+                    new Setter { Property = Label.TextColorProperty, Value = Color.White},
                     new Setter { Property = Label.FontSizeProperty, Value=35 },
                     new Setter { Property = Label.HorizontalTextAlignmentProperty, Value=TextAlignment.Center}
                 }
@@ -55,7 +65,15 @@ namespace DementiApp
             var stackLayout = new Style(typeof(StackClickable))
             {
                 Setters = {
-                    new Setter { Property = StackLayout.MarginProperty, Value = new Thickness(0,20,0,20)}
+                    new Setter { Property = StackLayout.MarginProperty, Value = new Thickness(0,20,0,20)},
+                    new Setter { Property = StackLayout.BackgroundColorProperty, Value = Color.LightGray}
+                }
+            };
+
+            var scrollLayout = new Style(typeof(ScrollView))
+            {
+                Setters = {
+                    new Setter { Property = ScrollView.BackgroundColorProperty, Value = Color.LightGray}
                 }
             };
 
@@ -64,6 +82,7 @@ namespace DementiApp
             Resources.Add(labelStyle);
             Resources.Add(frameStyle);
             Resources.Add(stackLayout);
+            Resources.Add(scrollLayout);
             var scroll = new ScrollView();
             var stacklayout = new StackLayout();
             var title = new Label { Text = "StoryBook", FontSize = 75, HorizontalTextAlignment = TextAlignment.Center };
