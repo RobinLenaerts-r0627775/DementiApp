@@ -112,12 +112,12 @@ public class WebController {
         return result;
     }*/
 
-    private MediaFile postMediaFile(MultipartFile file, UUID patientId) {
+    private MediaFile postMediaFile(MultipartFile file, UUID patientId, String description) {
         MediaFile result = null;
         String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
         FileUploadObject data = null;
         try {
-            data = new FileUploadObject(file.getBytes(), patientId, extension);
+            data = new FileUploadObject(file.getBytes(), patientId, extension, description);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -144,9 +144,9 @@ public class WebController {
     public String index(Model model){return getAllPatientsPage(model);}
 
     @PostMapping("/addPhotos/{patientId}") //TODO
-    public String addPhotos(@PathVariable UUID patientId, @RequestParam("files") MultipartFile[] files, Model model){
+    public String addPhotos(@PathVariable UUID patientId, @RequestParam("files") MultipartFile[] files, @RequestParam("description") String description, Model model){
         for (MultipartFile file : files){
-            MediaFile mf = postMediaFile(file, patientId);
+            MediaFile mf = postMediaFile(file, patientId, description);
         }
 
         model.addAttribute("patientId", patientId);

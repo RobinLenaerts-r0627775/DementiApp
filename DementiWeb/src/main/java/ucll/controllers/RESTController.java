@@ -69,9 +69,9 @@ public class RESTController {
 
         if (mediaRepository.findAll() == null || mediaRepository.count() <= 0){
 
-            MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp1.jpg"));
-            MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp2.jpg"));
-            MediaFile germainFile1 = new MediaFile(UUID.randomUUID(), gerId, new File(fileDir + "Temp3.jpg"));
+            MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp1.jpg"), "Dit is de beschrijving voor deze foto");
+            MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp2.jpg"), "Dit is een beschrijving voor deze foto");
+            MediaFile germainFile1 = new MediaFile(UUID.randomUUID(), gerId, new File(fileDir + "Temp3.jpg"), "Dit is de beschrijving voor de foto");
 
             mediaRepository.save(desireFile1);
             mediaRepository.save(desireFile2);
@@ -106,11 +106,12 @@ public class RESTController {
 
     @PutMapping(value = "/patients/{patientId}")
     public ResponseEntity<Patient> putPatient(@PathVariable UUID patientId, @RequestBody Patient patient) {
-        if (patientRepository.existsById(patientId))
+        if (patientRepository.existsById(patientId)) {
             if (patientId.equals(patient.getPatientId())) {
                 Patient result = patientRepository.save(patient);
                 return ResponseEntity.ok(result);
             }
+        }
 
         return ResponseEntity.notFound().build();
     }
@@ -141,15 +142,11 @@ public class RESTController {
                 result.add(all.get(i));
             }
         }
-
         return ResponseEntity.ok(result);
-        /*return ResponseEntity.ok(StreamSupport.stream(mediaRepository.findAll().spliterator(), false)
-                .filter(mediaFile -> mediaFile.getPatientId() == patientId)
-                .collect(Collectors.toList()));*/
     }
 
-    @GetMapping("/media/file/{mediaId}")
-    public ResponseEntity<byte[]> getMediaFile(@PathVariable UUID mediaId) throws IOException {
+    @GetMapping("/media/data/{mediaId}")
+    public ResponseEntity<byte[]> getFile(@PathVariable UUID mediaId) throws IOException {
         Optional<MediaFile> op = mediaRepository.findById(mediaId);
         if (op.isPresent())
         {
@@ -161,7 +158,16 @@ public class RESTController {
             ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(media, headers, HttpStatus.OK);
             return responseEntity;
         }
+        else return ResponseEntity.notFound().build();
+    }
 
+    @GetMapping("/media/file/{mediaId}")
+    public ResponseEntity<MediaFile> getMediaFile(@PathVariable UUID mediaId){
+        Optional<MediaFile> op = mediaRepository.findById(mediaId);
+        if (op.isPresent())
+        {
+            return  ResponseEntity.ok(op.get());
+        }
         else return ResponseEntity.notFound().build();
     }
 
@@ -169,12 +175,11 @@ public class RESTController {
     @PostMapping("/media/file")
     public ResponseEntity<MediaFile> postMediaFile(@RequestBody FileUploadObject object){
         //Create MediaFile
-        MediaFile result = new MediaFile(null, object.patientId, null);
+        MediaFile result = new MediaFile(null, object.patientId, null, object.description);
         //Save MediaFile to get an ID
         result = mediaRepository.save(result);
         //Create a path
         Path path = Paths.get(fileDir, result.mediaId.toString() + object.extension);
-
         //Create File with the name of the ID
         File file = new File(fileDir + result.mediaId.toString() + object.extension);
         //Write the data to the file
@@ -189,16 +194,6 @@ public class RESTController {
         //Save it
         result = mediaRepository.save(result);
 
-
-        /*try {
-            file.createNewFile();
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(object.file);
-            fos.close();
-        } catch (IOException e) {
-            System.out.println("something went wrong i think");
-            e.printStackTrace();
-        }*/
         return ResponseEntity.ok(result);
     }
 

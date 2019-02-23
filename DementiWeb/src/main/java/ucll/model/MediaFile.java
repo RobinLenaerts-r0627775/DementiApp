@@ -14,13 +14,15 @@ public class MediaFile {
     @Column(length = 200000)
     public File file;
     //public boolean playableType; // Video True, Image False
+    public String description;
 
     public MediaFile(){}
 
-    public MediaFile(UUID mediaId, UUID patientId, File file) {
+    public MediaFile(UUID mediaId, UUID patientId, File file, String description) {
         this.mediaId = mediaId;
         this.patientId = patientId;
         this.file = file;
+        this.description = description;
     }
 
     /*private String getProfilePictureBase64(){
@@ -71,5 +73,13 @@ public class MediaFile {
 
     public void setFile(File file) {
         this.file = file;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

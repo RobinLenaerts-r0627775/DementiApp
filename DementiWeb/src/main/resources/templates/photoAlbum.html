@@ -10,14 +10,14 @@
 <form th:action="@{'/addPhotos/' + ${patientId}}" method="post" enctype="multipart/form-data">
     <p><input type="hidden" name="patientId" th:value="${patientId}"></p>
     <p><input type="file" name="files" accept="image/*" id="file" multiple></p>
+    <p><textarea name="description" id="description" cols="30" rows="10" placeholder="Description"></textarea></p>
     <p><input type="submit" value="Upload"></p>
-    <!--<p><button type="button" id="send" th:onclick="'savePhoto(\'http://localhost:8080/addPhotos/' + ${patientId} + '\');'">Add</button></p>-->
 </form>
 <img src="" id="picture">
 <ul>
     <th:block th:each="photo : ${photoAlbum}">
-        <li th:text="${photo.mediaId}"></li>
-        <li><img th:src="@{'http://localhost:8080/api/media/file/' + ${photo.mediaId}}" width="225" height="auto"></li>
+        <li><img th:src="@{'http://localhost:8080/api/media/data/' + ${photo.mediaId}}" width="225" height="auto"></li>
+        <li th:text="${photo.description}"></li>
     </th:block>
 </ul>
 <script type="text/javascript" src="http://localhost:8080/js/JSONscript.js"></script>
