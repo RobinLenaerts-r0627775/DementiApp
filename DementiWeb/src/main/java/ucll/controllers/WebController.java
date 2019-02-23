@@ -124,7 +124,6 @@ public class WebController {
         if (mediaApiAddress != null){
             try {
                 RestTemplate restTemplate = new RestTemplate();
-                System.out.println("Here goes nothing"); //TODO
                 ResponseEntity<MediaFile> response = restTemplate.postForEntity(mediaApiAddress + "/file", data, MediaFile.class);
                 refreshPatientRepo();
                 Optional<MediaFile> op = mediaRepository.findById(response.getBody().getMediaId()); //Onnodig but Just to be sure
@@ -148,9 +147,21 @@ public class WebController {
     public String addPhotos(@PathVariable UUID patientId, @RequestParam("files") MultipartFile[] files, Model model){
         for (MultipartFile file : files){
             MediaFile mf = postMediaFile(file, patientId);
-            System.out.println("Alrigth id = " + mf.mediaId); //TODO
         }
-        return album;
+
+        model.addAttribute("patientId", patientId);
+        if (mediaApiAddress!=null){
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                MediaFile[] result = restTemplate.getForObject(mediaApiAddress + "/" + patientId ,MediaFile[].class);
+                model.addAttribute("photoAlbum", result);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Something went wrong with gathering media data", e);
+            }
+        } else {
+            throw new IllegalArgumentException("No api address for media configured");
+        }
+        return album; //TODO add albumphotos to model
     }
 
     /*@PostMapping("/setProfilePicture") //TODO

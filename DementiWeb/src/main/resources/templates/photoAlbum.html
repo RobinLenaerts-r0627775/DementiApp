@@ -17,7 +17,7 @@
 <ul>
     <th:block th:each="photo : ${photoAlbum}">
         <li th:text="${photo.mediaId}"></li>
-        <li><img th:src="@{${photo.file}}"></li>
+        <li><img th:src="@{'http://localhost:8080/api/media/file/' + ${photo.mediaId}}" width="225" height="auto"></li>
     </th:block>
 </ul>
 <script type="text/javascript" src="http://localhost:8080/js/JSONscript.js"></script>

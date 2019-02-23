@@ -29,7 +29,7 @@ import java.util.stream.StreamSupport;
 @RestController
 @RequestMapping("/api")
 public class RESTController {
-    private static String fileDir = System.getProperty("user.dir") + "\\static\\images\\";
+    private static String fileDir = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";
 
     @Autowired //Inject?
     private PatientRepository patientRepository;
@@ -69,9 +69,9 @@ public class RESTController {
 
         if (mediaRepository.findAll() == null || mediaRepository.count() <= 0){
 
-            MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, new File("static/images/Temp1.jpg"));
-            MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, new File("static/images/Temp2.jpg"));
-            MediaFile germainFile1 = new MediaFile(UUID.randomUUID(), gerId, new File("static/images/Temp3.jpg"));
+            MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp1.jpg"));
+            MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp2.jpg"));
+            MediaFile germainFile1 = new MediaFile(UUID.randomUUID(), gerId, new File(fileDir + "Temp3.jpg"));
 
             mediaRepository.save(desireFile1);
             mediaRepository.save(desireFile2);
@@ -132,7 +132,7 @@ public class RESTController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping("/media/{patientId}")
+    @GetMapping("/media/{patientId}") //TODO
     public ResponseEntity<List<MediaFile>> getMediaFileFor(@PathVariable UUID patientId){
         List<MediaFile> all = StreamSupport.stream(mediaRepository.findAll().spliterator(), false).collect(Collectors.toList());
         List<MediaFile> result = new ArrayList<>();
@@ -168,7 +168,6 @@ public class RESTController {
     @Transactional
     @PostMapping("/media/file")
     public ResponseEntity<MediaFile> postMediaFile(@RequestBody FileUploadObject object){
-        System.out.println("Received post with params"); //TODO
         //Create MediaFile
         MediaFile result = new MediaFile(null, object.patientId, null);
         //Save MediaFile to get an ID
@@ -177,17 +176,16 @@ public class RESTController {
         Path path = Paths.get(fileDir, result.mediaId.toString() + object.extension);
 
         //Create File with the name of the ID
-        /*File file = new File(fileDir + result.mediaId.toString() + object.extension);*/
+        File file = new File(fileDir + result.mediaId.toString() + object.extension);
         //Write the data to the file
         try {
             Files.write(path, object.file);
         } catch (IOException e) {
-            System.out.println("something went wrong i think");
             e.printStackTrace();
         }
 
         //Set File in MediaFile
-        //result.setFile(file);
+        result.setFile(file);
         //Save it
         result = mediaRepository.save(result);
 
