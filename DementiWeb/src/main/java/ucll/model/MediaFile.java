@@ -1,9 +1,6 @@
 package ucll.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.File;
 import java.util.UUID;
 
@@ -14,16 +11,45 @@ public class MediaFile {
     public UUID mediaId;
 
     public UUID patientId;
+    @Column(length = 200000)
     public File file;
     //public boolean playableType; // Video True, Image False
+    public String description;
 
     public MediaFile(){}
 
-    public MediaFile(UUID mediaId, UUID patientId, File file) {
+    public MediaFile(UUID mediaId, UUID patientId, File file, String description) {
         this.mediaId = mediaId;
         this.patientId = patientId;
         this.file = file;
+        this.description = description;
     }
+
+    /*private String getProfilePictureBase64(){
+        if (file.getPath().length() > 52){
+            String result =  file.getPath().substring(51);
+            result = result.replace("\n", "").replace("\r", "");
+            return result;
+        }
+
+        return file.getPath();
+    }
+
+    public String getProfilePicture(){
+        String result = file.getPath();
+        if (result.length() > 52){
+            switch (result.charAt(52)){
+                case 's':
+                    result = result.substring(58); //TODO
+                    break;
+
+                case 'd':
+                    result = getProfilePictureBase64();
+                    break;
+            }
+        }
+        return result;
+    }*/
 
     public UUID getMediaId() {
         return mediaId;
@@ -47,5 +73,13 @@ public class MediaFile {
 
     public void setFile(File file) {
         this.file = file;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -100,7 +100,7 @@ function editPatient() {
 	}
 };*/
 
-function saveProfilePhoto(){
+/*function saveProfilePhoto(){
 	var formDataSerAr = $("form").serializeArray();
     var result = {};
 	
@@ -143,9 +143,9 @@ function saveProfilePhoto(){
 	if (file) {
 		fr.readAsDataURL(file);
 	}
-}
+}*/
 
-function sendPhoto(url, patientId, result) {
+/*function sendPhoto(url, patientId, result) {
 	$.ajax({
         url:url,
         type:"POST",

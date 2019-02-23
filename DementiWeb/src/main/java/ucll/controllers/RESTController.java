@@ -1,16 +1,26 @@
 package ucll.controllers;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.multipart.MultipartFile;
 import ucll.db.MediaRepository;
 import ucll.db.PatientRepository;
+import ucll.model.FileUploadObject;
 import ucll.model.MediaFile;
 import ucll.model.Patient;
 
 import javax.transaction.Transactional;
-import java.io.File;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -19,6 +29,7 @@ import java.util.stream.StreamSupport;
 @RestController
 @RequestMapping("/api")
 public class RESTController {
+    private static String fileDir = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";
 
     @Autowired //Inject?
     private PatientRepository patientRepository;
@@ -35,9 +46,9 @@ public class RESTController {
     public void setTestData(){
         if (patientRepository.findAll() == null || patientRepository.count() <= 0) {
 
-            Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", null, 1, new File("static/images/Profile.png"), "sinter");
-            Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", null, 1, new File("static/images/Profile.png"), "ucll");
-            Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", null, 2, new File("static/images/Profile.png"), "t");
+            Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", null, 1, "sinter");
+            Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", null, 1, "ucll");
+            Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", null, 2, "t");
 
             patientRepository.save(desire);
             patientRepository.save(germain);
@@ -58,9 +69,9 @@ public class RESTController {
 
         if (mediaRepository.findAll() == null || mediaRepository.count() <= 0){
 
-            MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, new File("static/images/Temp1.jpg"));
-            MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, new File("static/images/Temp2.jpg"));
-            MediaFile germainFile1 = new MediaFile(UUID.randomUUID(), gerId, new File("static/images/Temp3.jpg"));
+            MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp1.jpg"), "Dit is de beschrijving voor deze foto");
+            MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp2.jpg"), "Dit is een beschrijving voor deze foto");
+            MediaFile germainFile1 = new MediaFile(UUID.randomUUID(), gerId, new File(fileDir + "Temp3.jpg"), "Dit is de beschrijving voor de foto");
 
             mediaRepository.save(desireFile1);
             mediaRepository.save(desireFile2);
@@ -95,11 +106,12 @@ public class RESTController {
 
     @PutMapping(value = "/patients/{patientId}")
     public ResponseEntity<Patient> putPatient(@PathVariable UUID patientId, @RequestBody Patient patient) {
-        if (patientRepository.existsById(patientId))
+        if (patientRepository.existsById(patientId)) {
             if (patientId.equals(patient.getPatientId())) {
                 Patient result = patientRepository.save(patient);
                 return ResponseEntity.ok(result);
             }
+        }
 
         return ResponseEntity.notFound().build();
     }
@@ -121,7 +133,7 @@ public class RESTController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping("/media/{patientId}")
+    @GetMapping("/media/{patientId}") //TODO
     public ResponseEntity<List<MediaFile>> getMediaFileFor(@PathVariable UUID patientId){
         List<MediaFile> all = StreamSupport.stream(mediaRepository.findAll().spliterator(), false).collect(Collectors.toList());
         List<MediaFile> result = new ArrayList<>();
@@ -130,11 +142,23 @@ public class RESTController {
                 result.add(all.get(i));
             }
         }
-
         return ResponseEntity.ok(result);
-        /*return ResponseEntity.ok(StreamSupport.stream(mediaRepository.findAll().spliterator(), false)
-                .filter(mediaFile -> mediaFile.getPatientId() == patientId)
-                .collect(Collectors.toList()));*/
+    }
+
+    @GetMapping("/media/data/{mediaId}")
+    public ResponseEntity<byte[]> getFile(@PathVariable UUID mediaId) throws IOException {
+        Optional<MediaFile> op = mediaRepository.findById(mediaId);
+        if (op.isPresent())
+        {
+            HttpHeaders headers = new HttpHeaders();
+            InputStream in = new FileInputStream(op.get().file);
+            byte[] media = IOUtils.toByteArray(in);
+            headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+
+            ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(media, headers, HttpStatus.OK);
+            return responseEntity;
+        }
+        else return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/media/file/{mediaId}")
@@ -142,10 +166,35 @@ public class RESTController {
         Optional<MediaFile> op = mediaRepository.findById(mediaId);
         if (op.isPresent())
         {
-            return ResponseEntity.ok(op.get());
+            return  ResponseEntity.ok(op.get());
+        }
+        else return ResponseEntity.notFound().build();
+    }
+
+    @Transactional
+    @PostMapping("/media/file")
+    public ResponseEntity<MediaFile> postMediaFile(@RequestBody FileUploadObject object){
+        //Create MediaFile
+        MediaFile result = new MediaFile(null, object.patientId, null, object.description);
+        //Save MediaFile to get an ID
+        result = mediaRepository.save(result);
+        //Create a path
+        Path path = Paths.get(fileDir, result.mediaId.toString() + object.extension);
+        //Create File with the name of the ID
+        File file = new File(fileDir + result.mediaId.toString() + object.extension);
+        //Write the data to the file
+        try {
+            Files.write(path, object.file);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        else return ResponseEntity.notFound().build();
+        //Set File in MediaFile
+        result.setFile(file);
+        //Save it
+        result = mediaRepository.save(result);
+
+        return ResponseEntity.ok(result);
     }
 
     @Transactional
