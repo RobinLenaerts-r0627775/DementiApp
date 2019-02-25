@@ -1,6 +1,5 @@
 package ucll.controllers;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
@@ -9,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.multipart.MultipartFile;
 import ucll.db.MediaRepository;
 import ucll.db.PatientRepository;
 import ucll.model.FileUploadObject;
@@ -17,11 +15,17 @@ import ucll.model.MediaFile;
 import ucll.model.Patient;
 
 import javax.transaction.Transactional;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -69,9 +73,9 @@ public class RESTController {
 
         if (mediaRepository.findAll() == null || mediaRepository.count() <= 0){
 
-            MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp1.jpg"), "Dit is de beschrijving voor deze foto");
-            MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp2.jpg"), "Dit is een beschrijving voor deze foto");
-            MediaFile germainFile1 = new MediaFile(UUID.randomUUID(), gerId, new File(fileDir + "Temp3.jpg"), "Dit is de beschrijving voor de foto");
+            MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp1.jpg"), "Dit is de beschrijving voor deze foto", "test");
+            MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp2.jpg"), "Dit is een beschrijving voor deze foto", "test2");
+            MediaFile germainFile1 = new MediaFile(UUID.randomUUID(), gerId, new File(fileDir + "Temp3.jpg"), "Dit is de beschrijving voor de foto", "test");
 
             mediaRepository.save(desireFile1);
             mediaRepository.save(desireFile2);
@@ -175,7 +179,7 @@ public class RESTController {
     @PostMapping("/media/file")
     public ResponseEntity<MediaFile> postMediaFile(@RequestBody FileUploadObject object){
         //Create MediaFile
-        MediaFile result = new MediaFile(null, object.patientId, null, object.description);
+        MediaFile result = new MediaFile(null, object.patientId, null, object.description, object.category);
         //Save MediaFile to get an ID
         result = mediaRepository.save(result);
         //Create a path

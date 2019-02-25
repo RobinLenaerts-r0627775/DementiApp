@@ -2,6 +2,8 @@ package ucll.model;
 
 import javax.persistence.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -15,15 +17,20 @@ public class MediaFile {
     public File file;
     //public boolean playableType; // Video True, Image False
     public String description;
+    public String category;
 
-    public MediaFile(){}
+    public MediaFile(){
+    }
 
-    public MediaFile(UUID mediaId, UUID patientId, File file, String description) {
+
+    public MediaFile(UUID mediaId, UUID patientId, File file, String description, String category) {
         this.mediaId = mediaId;
         this.patientId = patientId;
         this.file = file;
         this.description = description;
+        setCategory(category);
     }
+
 
     /*private String getProfilePictureBase64(){
         if (file.getPath().length() > 52){
@@ -81,5 +88,13 @@ public class MediaFile {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
