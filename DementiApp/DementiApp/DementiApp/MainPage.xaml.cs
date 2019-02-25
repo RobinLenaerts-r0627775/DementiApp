@@ -19,7 +19,7 @@ namespace DementiApp
 
         async void ToMemory(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new MemoryPage());
+            await Navigation.PushAsync(new MemoryDiffPage());
         }
         async void ToStory(object sender, EventArgs e)
         {

@@ -12,6 +12,9 @@
 
 <h2>Form page</h2>
 <div class="container">
+	<div th:unless="${confirm==null}">
+		<p th:text="${confirm}"></p>
+	</div>
 <form id="form" action="/patients">
 
 	<p><input type="hidden" name="patientId" id="patientId" th:value="${patient?.patientId}"></p>
@@ -39,8 +42,7 @@
 		<input type="text" name="password" class="form-control" id="password" th:value="${patient?.password}">
 	</div>
 	<div class="form-group">
-			<button th:if="${patient == null}" type="button" name="save" id="save" onclick="savePatient()" class="btn btn-primary">Save</button>
-			<button th:unless="${patient == null}" type="submit" name="edit" id="edit" onclick="savePatient()" class="btn btn-primary">Edit</button>
+		<button type="submit" name="save" id="save">Save</button>
 	</div>
 </form>
 </div>

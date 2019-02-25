@@ -4,6 +4,7 @@ var form = document.getElementById("form");
 
 var xhrObj = new XMLHttpRequest();
 
+<<<<<<< HEAD
 document.getElementById('file').onchange = function (evt) {
 	var tgt = evt.target || window.event.srcElement,
         files = tgt.files;
@@ -17,20 +18,30 @@ document.getElementById('file').onchange = function (evt) {
 	}
 };
 
+=======
+>>>>>>> security
 function savePatient() {
     var formDataSerAr = $("form").serializeArray();
     var result = {};
     $.each(formDataSerAr, function () {
         if (result[this.name]) {
             if (!result[this.name].push) {
+<<<<<<< HEAD
                 result[this.name] = [formDataSerAr[this.name]];
+=======
+                result[this.name] = [o[this.name]];
+>>>>>>> security
             }
             result[this.name].push(this.value || '');
         } else {
             result[this.name] = this.value || '';
         }
     });
+<<<<<<< HEAD
     //console.log(result);
+=======
+    console.log(result);
+>>>>>>> security
     $.ajax({
         url:"http://localhost:8080/patients",
         type:"POST",
@@ -38,17 +49,32 @@ function savePatient() {
         contentType: 'application/json',
         success: function (data) {
             if (data.redirect){
+<<<<<<< HEAD
                 window.location.href = data.redirect;
             } else {
+=======
+                console.log("1");
+                window.location.href = data.redirect;
+            } else {
+                console.log("2");
+>>>>>>> security
                 window.location.replace("/patients");
             }
         },
         error: function(data){
+<<<<<<< HEAD
+=======
+            console.log(data);
+>>>>>>> security
             alert("An error occured");
         }
     });
     //$("<a href='/patients'></a>").click();
+<<<<<<< HEAD
 };
+=======
+}
+>>>>>>> security
 
 function editPatient() {
     var formDataSerAr = $("form").serializeArray();
@@ -71,6 +97,7 @@ function editPatient() {
         success: function (result) {
         }
     });
+<<<<<<< HEAD
 };
 /*document.getElementById('file').onchange = function (evt) {
 	var tgt = evt.target || window.event.srcElement,
@@ -194,6 +221,10 @@ function savePhoto(url, patientId) {
     });
 	addPhoto(url, patientId, result);
 };
+=======
+}
+
+>>>>>>> security
 
 
 /*function getData(){

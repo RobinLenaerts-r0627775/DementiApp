@@ -7,28 +7,27 @@
 <body>
 
 <h2>Overview Page</h2>
-
+<p>welcome!</p>
+<p th:text="${#ctx.#request.getCookies()[0].value} "></p>
 <table>
 
 <tr>
-	<!--<td>Picture</td>-->
+	<td>Picture</td>
 	<td>Firstname</td>
 	<td>Lastname</td>
 	<td>Age</td>
 	<td>Dementia stage</td>
 	<td>Edit</td>
-	<td>See#TMP</td>
 </tr>
 
 <th:block th:each="patient : ${patients}">
 <tr>
-	<!--<td th:text="${patient.profilePicture}"></td>-->
+	<td th:text="${patient.profile}"></td>
 	<td th:text="${patient.firstName}"></td>
 	<td th:text="${patient.lastName}"></td>
 	<td th:text="${patient.birthDate}"></td>
 	<td th:text="${patient.dementiaLevel}"></td>
     <td><a th:href="@{'/patients/' + ${patient.patientId}}">Edit</a></td>
-	<td><a th:href="@{'/person/' + ${patient.patientId}}">See#TMP</a></td>
 </tr>
 </th:block>
 

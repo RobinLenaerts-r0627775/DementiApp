@@ -12,9 +12,9 @@
 <form id="form" action="/patients">
 
 	<p><input type="hidden" name="patientId" id="patientId" th:value="${patient?.patientId}"></p>
-	<!--<p>
-		<input type="hidden" name="profile" id="profile" th:value="${patient?.profilePicture}">
-	</p>-->
+	<p>
+		<input type="hidden" name="profile" id="profile" th:value="${patient?.profile}">
+	</p>
 
 	<p>First name:
 	<input type="text" name="firstName" id="firstName" th:value="${patient?.firstName}"></p>
