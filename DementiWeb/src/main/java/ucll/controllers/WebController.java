@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +14,6 @@ import ucll.model.FileUploadObject;
 import ucll.model.MediaFile;
 import ucll.model.Patient;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
@@ -112,12 +109,12 @@ public class WebController {
         return result;
     }*/
 
-    private MediaFile postMediaFile(MultipartFile file, UUID patientId, String description) {
+    private MediaFile postMediaFile(MultipartFile file, UUID patientId, String description, String category) {
         MediaFile result = null;
         String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
         FileUploadObject data = null;
         try {
-            data = new FileUploadObject(file.getBytes(), patientId, extension, description);
+            data = new FileUploadObject(file.getBytes(), patientId, extension, description, category);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -144,9 +141,9 @@ public class WebController {
     public String index(Model model){return getAllPatientsPage(model);}
 
     @PostMapping("/addPhotos/{patientId}") //TODO
-    public String addPhotos(@PathVariable UUID patientId, @RequestParam("files") MultipartFile[] files, @RequestParam("description") String description, Model model){
+    public String addPhotos(@PathVariable UUID patientId, @RequestParam("files") MultipartFile[] files, @RequestParam("description") String description, @RequestParam("category") String category, Model model){
         for (MultipartFile file : files){
-            MediaFile mf = postMediaFile(file, patientId, description);
+            MediaFile mf = postMediaFile(file, patientId, description, category);
         }
 
         model.addAttribute("patientId", patientId);

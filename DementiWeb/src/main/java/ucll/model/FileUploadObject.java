@@ -8,16 +8,17 @@ public class FileUploadObject {
     public byte[] file;
     public UUID patientId;
     public String extension;
-    public String description;
+    public String description, category;
 
     public FileUploadObject() {
     }
 
-    public FileUploadObject(byte[] file, UUID patientId, String extension, String description) {
+    public FileUploadObject(byte[] file, UUID patientId, String extension, String description, String category) {
         this.file = file;
         this.patientId = patientId;
         this.extension = extension;
         this.description = description;
+        this.category = category;
     }
 
     public String getExtension() {
@@ -50,5 +51,13 @@ public class FileUploadObject {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
