@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import ucll.model.Patient;
 
 import java.util.UUID;
-@Repository("patientRepository")
+@Repository
 public interface PatientRepository extends CrudRepository <Patient, UUID>{
 }
