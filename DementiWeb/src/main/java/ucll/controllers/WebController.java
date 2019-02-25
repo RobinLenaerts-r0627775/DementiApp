@@ -60,6 +60,7 @@ public class WebController {
 
     /**
      * function that handles the default request call. it sends you to the patient overview page.
+     *
      * @return
      */
     @RequestMapping(value = "/")
@@ -71,9 +72,10 @@ public class WebController {
 
     /**
      * constructor for the controller. sets up the repository and adds example data to it.
+     *
      * @param patientRepository
      */
-    public WebController(PatientRepository patientRepository){
+    public WebController(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
         addExampleData();
     }
@@ -81,10 +83,10 @@ public class WebController {
     /**
      * function that sets example data in the repository for testing purposes.
      */
-    public void addExampleData(){
-        Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", "01/06/1955", 1, new File("static/images/Profile.png"), "sinter");
-        Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", "01/06/1960", 1, new File("static/images/Profile.png"), "ucll");
-        Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", "01/12/1950", 2, new File("static/images/Profile.png"), "t");
+    public void addExampleData() {
+        Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", "01/06/1955", 1, null, "sinter");
+        Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", "01/06/1960", 1, null, "ucll");
+        Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", "01/12/1950", 2, null, "t");
 
         patientRepository.save(desire);
         patientRepository.save(germain);
@@ -96,17 +98,17 @@ public class WebController {
 
     /**
      * function that handles the /login GET request. returns the login form if the user isnt already logged in. if it is, you get redirected to the index.
+     *
      * @param request
      * @param response
      * @return
      */
     @RequestMapping(value = "/login")
     public ModelAndView toLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if(request.getSession(false) != null){
+        if (request.getSession(false) != null) {
             response.sendRedirect("/");
             return null;
-        }
-        else {
+        } else {
             return new ModelAndView("login", new HashMap<String, Object>());
         }
     }
@@ -114,6 +116,7 @@ public class WebController {
     /**
      * function that handles the /login POST request. checks the credentials and adds session and relevant cookies to the response if the credentials are validated.
      * if not: an error message gets added and you get directed to the login page again.
+     *
      * @param request
      * @param response
      * @param info
@@ -122,17 +125,17 @@ public class WebController {
      * @throws ServletException
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response, @Valid @ModelAttribute("LoginInfo")LoginInfo info) throws IOException, ServletException {
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response, @Valid @ModelAttribute("LoginInfo") LoginInfo info) throws IOException, ServletException {
         Map params = new HashMap<String, Object>();
-        for(LoginInfo li : loginRepository){
+        for (LoginInfo li : loginRepository) {
             if (li.equals(info)) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", li.getUsername());
-                session.setMaxInactiveInterval(60*60);
+                session.setMaxInactiveInterval(60 * 60);
                 Cookie id = new Cookie("patientid", patientRepository.findById(li.getPatientID()).get().getPatientId().toString());
                 Cookie name = new Cookie("name", patientRepository.findById(li.getPatientID()).get().getFirstName());
-                name.setMaxAge(60*60);
-                id.setMaxAge(60*60);
+                name.setMaxAge(60 * 60);
+                id.setMaxAge(60 * 60);
                 response.addCookie(id);
                 response.addCookie(name);
                 response.sendRedirect("/profile");
@@ -144,22 +147,22 @@ public class WebController {
 
     /**
      * function that handles the /profile request. gets the userID from the right cookie and returns an overview of that users profile.
+     *
      * @param request
      * @param response
      * @return
      */
-    @RequestMapping(value="/profile")
-    public ModelAndView profile(HttpServletRequest request, HttpServletResponse response ) throws IOException {
+    @RequestMapping(value = "/profile")
+    public ModelAndView profile(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map params = new HashMap<String, Object>();
-        if(request.getSession(false) != null){
-            for(Cookie c: request.getCookies()){
-                if(c.getName().equals("patientid")) {
+        if (request.getSession(false) != null) {
+            for (Cookie c : request.getCookies()) {
+                if (c.getName().equals("patientid")) {
                     params.put("patient", patientRepository.findById(UUID.fromString(c.getValue())).get());
                 }
             }
-            return new ModelAndView("patientOverview", params );
-        }
-        else{
+            return new ModelAndView("patientOverview", params);
+        } else {
             response.sendRedirect("/");
             return null;
         }
@@ -167,19 +170,20 @@ public class WebController {
 
     /**
      * handles the users logout action. if an active session was found, the session gets invalidated and the relevant cookies get deleted by putting their age at 1.
+     *
      * @param request
      * @param response
      * @throws ServletException
      * @throws IOException
      */
     @RequestMapping(value = "/logout")
-    public void logout( HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getSession().invalidate();
-        for(Cookie c : request.getCookies()){
-            if( c.getName().equals("patientid") || c.getName().equals("name")){
+        for (Cookie c : request.getCookies()) {
+            if (c.getName().equals("patientid") || c.getName().equals("name")) {
                 response.setContentType("text/html");
                 c.setMaxAge(1);
-                System.out.println("cookie deleted: " + c.getName() +" " + c.getMaxAge() + " " + c.getValue());
+                System.out.println("cookie deleted: " + c.getName() + " " + c.getMaxAge() + " " + c.getValue());
             }
         }
         response.sendRedirect("/");
@@ -188,25 +192,27 @@ public class WebController {
 
     /**
      * Handles the /patients/new GET request. sends you to the new patient form.
+     *
      * @param request
      * @param response
      * @return
      */
     @GetMapping("/patients/new")
-    public String newPatient( HttpServletRequest request, HttpServletResponse response){
+    public String newPatient(HttpServletRequest request, HttpServletResponse response) {
         return "form";
     }
 
     /**
      * handles the get request for /patients/{patientId}
      * gets the right patient and sends you to the form.
+     *
      * @param patientId
      * @param request
      * @param response
      * @return
      */
     @RequestMapping("patients/{patientId}")
-    public ModelAndView editPatient(@PathVariable UUID patientId, HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView editPatient(@PathVariable UUID patientId, HttpServletRequest request, HttpServletResponse response) {
         Map params = new HashMap<String, Object>();
         params.put("patient", patientRepository.findById(patientId).get());
         return new ModelAndView("form", params);
@@ -214,32 +220,31 @@ public class WebController {
 
     /**
      * Handles the /patients POST request.
+     *
      * @param patient
      * @param request
      * @param response
      * @return
      */
     @RequestMapping(value = "/patients", method = RequestMethod.POST)
-    public ModelAndView putPatient(@Valid @ModelAttribute("Patient")Patient patient,HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ModelAndView putPatient(@Valid @ModelAttribute("Patient") Patient patient, HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map params = new HashMap<String, Object>();
-        if(patient.patientId != null){
-            if(patientRepository.existsById(patient.patientId)){
+        if (patient.patientId != null) {
+            if (patientRepository.existsById(patient.patientId)) {
                 Patient pat = patientRepository.findById(patient.patientId).get();
                 pat.password = patient.password;
                 pat.birthDate = patient.birthDate;
                 pat.firstName = patient.firstName;
                 pat.lastName = patient.lastName;
                 pat.dementiaLevel = patient.dementiaLevel;
-                pat.profile = patient.profile;
+                pat.profilePicture = patient.profilePicture;
                 patientRepository.save(pat);
-            }
-            else{
+            } else {
                 params.put("error", "Something went wrong, please try again.");
                 response.sendRedirect("/patients/new");
             }
-        }
-        else{
-            Patient pat = new Patient(null, patient.firstName, patient.lastName, patient.birthDate, patient.dementiaLevel, new File("static/images/Profile.png"), patient.password);
+        } else {
+            Patient pat = new Patient(null, patient.firstName, patient.lastName, patient.birthDate, patient.dementiaLevel, null, patient.password);
             patientRepository.save(pat);
             loginRepository.add(LoginInfo.LoginInfomaker(patient.firstName + "." + patient.lastName, patient.password, pat.patientId));
         }
@@ -262,6 +267,7 @@ public class WebController {
         }
         return all;*/
     }
+}
 
     /* Old controller before rework.
 
@@ -480,7 +486,7 @@ public class WebController {
     public String postPatient(@RequestBody Patient patient, Model model){
         /*if (patient.profilePicture == null) {
             patient.setProfile(null); //TODO
-        }*/
+        }
         if (patientApiAddress!=null){
             try {
                 RestTemplate restTemplate = new RestTemplate();
@@ -493,6 +499,6 @@ public class WebController {
         }
         refreshPatientRepo();
         return all;
-    }*/
+    }
 
-}
+}*/
