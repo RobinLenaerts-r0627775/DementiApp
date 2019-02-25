@@ -1,9 +1,6 @@
 package ucll.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,24 +15,21 @@ public class Patient implements Person{
     public String firstName,lastName;
     public Date birthDate;
     public int dementiaLevel;
-    public File profile;
+
+    //public UUID profilePicture;
     public String password;
 
 
     public Patient(){}
 
-    public Patient(UUID patientId, String firstName, String lastName, Date birthDate, int dementiaLevel, File photo, String password) {
+    public Patient(UUID patientId, String firstName, String lastName, Date birthDate, int dementiaLevel, /*UUID profilePicture, */String password) {
         setPatientId(patientId);
         setFirstName(firstName);
         setLastName(lastName);
         setBirthDate(birthDate);
         setDementiaLevel(dementiaLevel);
-        setProfile(photo);
+        //setProfile(profilePicture);
         setPassword(password);
-    }
-
-    public String getProfilePath(){
-        return profile.getPath();
     }
 
     @Override
@@ -81,13 +75,13 @@ public class Patient implements Person{
         this.dementiaLevel = dementiaLevel;
     }
 
-    public File getProfile() {
-        return profile;
+    /*public UUID getProfilePicture() {
+        return profilePicture;
     }
 
-    public void setProfile(File profile) {
-        this.profile = profile;
-    }
+    public void setProfile(UUID profile) {
+        this.profilePicture = profile;
+    }*/
 
     public String getPassword() {
         return password;

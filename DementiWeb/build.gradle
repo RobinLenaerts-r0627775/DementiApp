@@ -50,6 +50,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-devtools")
     compile("org.thymeleaf:thymeleaf-spring4:2.1.2.RELEASE")
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
     testCompile("junit:junit")
     testCompile('org.springframework.boot:spring-boot-starter-test')
     //testCompile("org.springframework.security:spring-security-test")
