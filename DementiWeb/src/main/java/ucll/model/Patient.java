@@ -16,7 +16,7 @@ public class Patient implements Person{
     @GeneratedValue(strategy = GenerationType.AUTO)
     public UUID patientId;
     public String firstName,lastName;
-    public Date birthDate;
+    public String birthDate;
     public int dementiaLevel;
     public File profile;
     public String password;
@@ -24,7 +24,7 @@ public class Patient implements Person{
 
     public Patient(){}
 
-    public Patient(UUID patientId, String firstName, String lastName, Date birthDate, int dementiaLevel, File photo, String password) {
+    public Patient(UUID patientId, String firstName, String lastName, String birthDate, int dementiaLevel, File photo, String password) {
         setPatientId(patientId);
         setFirstName(firstName);
         setLastName(lastName);
@@ -49,7 +49,7 @@ public class Patient implements Person{
     }
 
     @Override
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
@@ -61,7 +61,7 @@ public class Patient implements Person{
         this.lastName = lastName;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 

@@ -24,6 +24,9 @@ bootJar {
 springBoot {
     
 }
+plugins {
+    id 'java'
+}
 jar {
     manifest {
         attributes(

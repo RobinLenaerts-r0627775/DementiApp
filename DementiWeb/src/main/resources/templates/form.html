@@ -8,8 +8,10 @@
 <body>
 
 <h2>Form page</h2>
-
-<form id="form" action="/patients">
+<div th:unless="${confirm==null}">
+	<p th:text="${confirm}"></p>
+</div>
+<form id="form" action="/patients" method="post">
 
 	<p><input type="hidden" name="patientId" id="patientId" th:value="${patient?.patientId}"></p>
 	<p>
@@ -28,8 +30,7 @@
 		<input type="text" name="password" id="password" th:value="${patient?.password}">
 	</p>
 	<p>
-        <button th:if="${patient == null}" type="button" name="save" id="save" onclick="savePatient()">Save</button>
-        <button th:unless="${patient == null}" type="button" name="edit" id="edit" onclick="savePatient()">Edit</button>
+        <button type="submit" name="save" id="save">Save</button>
     </p>
 </form>
 <script type="text/javascript" src="http://localhost:8080/js/JSONscript.js"></script>
