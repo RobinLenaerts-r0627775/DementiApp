@@ -30,6 +30,7 @@ jar {
                 'Main-Class': 'ucll.Application'
         )
     }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 repositories {

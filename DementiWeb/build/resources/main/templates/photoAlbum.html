@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<meta>
+    <meta charset="UTF-8">
+    <script src="http://localhost:8080/js/jquery-3.3.1.min.js"></script>
+    <title>Photo album</title>
+</head>
+<body>
+
+<form th:action="@{'/addPhotos/' + ${patientId}}" method="post" enctype="multipart/form-data">
+    <p><input type="hidden" name="patientId" th:value="${patientId}"></p>
+    <p><input type="file" name="files" accept="image/*" id="file" multiple></p>
+    <p><textarea name="description" id="description" cols="30" rows="10" placeholder="Description"></textarea></p>
+    <p><input type="submit" value="Upload"></p>
+</form>
+<img src="" id="picture">
+<ul>
+    <th:block th:each="photo : ${photoAlbum}">
+        <li><img th:src="@{'http://localhost:8080/api/media/data/' + ${photo.mediaId}}" width="225" height="auto"></li>
+        <li th:text="${photo.description}"></li>
+    </th:block>
+</ul>
+<script type="text/javascript" src="http://localhost:8080/js/JSONscript.js"></script>
+</body>
+</html>

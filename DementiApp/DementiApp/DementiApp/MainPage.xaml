@@ -43,7 +43,7 @@
                 </StackLayout>
                 <StackLayout Grid.Row="1" Orientation="Vertical" Grid.ColumnSpan="3">
                     <Button Clicked="ToMemory" Style="{StaticResource buttonstyle}" Image="memory.png" />
-                    <Button Clicked="ToPhotoMap" Style="{StaticResource buttonstyle}"  Image="album.png"/>
+                    <Button Clicked="ToStory" Style="{StaticResource buttonstyle}"  Image="album.png"/>
                     <Button Clicked="ToMusicQuiz" Style="{StaticResource buttonstyle}" Image="guitar.png"/>
                 </StackLayout>
             </Grid>

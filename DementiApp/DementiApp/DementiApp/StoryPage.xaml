@@ -5,12 +5,47 @@
              BackgroundColor="LightGray">
     <ContentPage.Resources>
         <ResourceDictionary>
-
+            <Style x:Key="imageStyle" TargetType="{x:Type Image}">
+                <Setter Property="Margin" Value="0,50,0,50" />
+            </Style>
+            <Style x:Key="labelStyle" TargetType="{x:Type Label}">
+                <Setter Property="BackgroundColor" Value="#372c73"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="35"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+            </Style>
+            <Style x:Key="frameStyle" TargetType="{x:Type Frame}">
+                <Setter Property="CornerRadius" Value="25" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Margin" Value="50,10,50,50" />
+                <Setter Property="IsVisible" Value="True" />
+                <Setter Property="HasShadow" Value="False" />
+            </Style>
+            <Style x:Key="stackStyle" TargetType="{x:Type StackLayout}">
+                <Setter Property="Margin" Value="0,20,0,20" />
+                <Setter Property="BackgroundColor" Value="LightGray" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ContentPage.Content>
-       
-    </ContentPage.Content>
+    <ScrollView>
+        <StackLayout>
+            <Frame Margin="10">
+                <Label Text="StoryBook" FontSize="75" HorizontalTextAlignment="Center"/>
+            </Frame>
+            <StackLayout>
+                <ListView x:Name="MyListView">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame>
+                                <Label Text="{Binding description}"/>
+                            </Frame>
+                        </DataTemplate>
+                     </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
     
 </ContentPage>

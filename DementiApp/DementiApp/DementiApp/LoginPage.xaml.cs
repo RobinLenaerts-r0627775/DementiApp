@@ -17,9 +17,7 @@ namespace DementiApp
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class LoginPage : ContentPage
 	{
-        private const string Url = "localhost:8080/api/login";
-        private readonly HttpClient _client = new HttpClient();
-        private ObservableCollection<Post> _posts;
+        
 
         public LoginPage ()
 		{
@@ -35,28 +33,5 @@ namespace DementiApp
         }
     }
 
-    internal class Post : INotifyPropertyChanged
-    {
-        public int Id { get; set; }
-
-        private string _title;
-
-        [JsonProperty("title")]
-        public string Title
-        {
-            get { return _title; }
-            set {
-                _title = value;
-                OnPropertyChanged();
-            }
-
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-    }
+    
 }
