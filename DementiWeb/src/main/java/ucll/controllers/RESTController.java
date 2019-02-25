@@ -50,9 +50,9 @@ public class RESTController {
     public void setTestData(){
         if (patientRepository.findAll() == null || patientRepository.count() <= 0) {
 
-            Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", null, 1, "sinter");
-            Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", null, 1, "ucll");
-            Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", null, 2, "t");
+            Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", null, 1, null, "sinter");
+            Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", null, 1, null, "ucll");
+            Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", null, 2, null, "t");
 
             patientRepository.save(desire);
             patientRepository.save(germain);
@@ -162,7 +162,9 @@ public class RESTController {
             ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(media, headers, HttpStatus.OK);
             return responseEntity;
         }
-        else return ResponseEntity.notFound().build();
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/media/file/{mediaId}")

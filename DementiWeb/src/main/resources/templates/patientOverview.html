@@ -4,20 +4,22 @@
     <title th:text="${patient.firstName} + ' ' + ${patient.lastName}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script src="http://localhost:8080/js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
 
 <h2>Overview Page</h2>
-
+<div class="container">
 <ul>
-    <!--<li th:text="${patient.profilePicture}"></li>
-    <li><img th:src="@{'http://localhost:8080/api/media/file/' + ${patient.profilePicture}}" id="picture"></li>
+    <li><img th:src="@{'http://localhost:8080/api/media/data/' + ${patient.profilePicture}}" id="picture"></li>
     <li>
-        <form th:action="@{'/setProfilePicture/' + ${patient.patientId}}">
-            <p><input type="hidden" name="patientId" th:value="${patient.patientId}"></p>
-            <p><input type="file" name="file" accept="image/*" id="file"></p>
-            <p><button type="button" id="send" onclick="saveProfilePhoto()">Change</button></p>
-        </form></li>-->
+        <form th:action="@{'/setProfilePicture/' + ${patientId}}" method="post" enctype="multipart/form-data">
+            <p><input type="hidden" name="patientId" th:value="${patientId}"></p>
+            <p><input type="file" name="files" accept="image/*" id="file"></p>
+            <p><input type="text" name="category"></p>
+            <p><textarea name="description" id="description" cols="30" rows="10" placeholder="Description"></textarea></p>
+            <p><input type="submit" value="Change Profile"></p>
+        </form></li>
     <li th:text="${patient.firstName}"></li>
     <li th:text="${patient.lastName}"></li>
     <li th:text="${patient.birthDate}"></li>
@@ -25,7 +27,12 @@
         <a th:href="@{'/media/' + ${patient.patientId}}">See photo album</a>
     </li>
 </ul>
+</div>
 
 <script type="text/javascript" src="http://localhost:8080/js/JSONscript.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
