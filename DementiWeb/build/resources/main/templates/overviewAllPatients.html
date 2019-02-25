@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>OverviewAll</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h2>Overview Page</h2>
+<p>welcome!</p>
+<p th:text="${#ctx.#request.getCookies()[0].value} "></p>
+<table>
+
+<tr>
+	<td>Picture</td>
+	<td>Firstname</td>
+	<td>Lastname</td>
+	<td>Age</td>
+	<td>Dementia stage</td>
+	<td>Edit</td>
+</tr>
+
+<th:block th:each="patient : ${patients}">
+<tr>
+	<td th:text="${patient.profile}"></td>
+	<td th:text="${patient.firstName}"></td>
+	<td th:text="${patient.lastName}"></td>
+	<td th:text="${patient.birthDate}"></td>
+	<td th:text="${patient.dementiaLevel}"></td>
+    <td><a th:href="@{'/patients/' + ${patient.patientId}}">Edit</a></td>
+</tr>
+</th:block>
+
+</table>
+<a href="/patients/new">New</a>
+
+</body>
+</html>
