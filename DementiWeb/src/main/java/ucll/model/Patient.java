@@ -16,19 +16,19 @@ public class Patient implements Person{
     public Date birthDate;
     public int dementiaLevel;
 
-    //public UUID profilePicture;
+    public UUID profilePicture;
     public String password;
 
 
     public Patient(){}
 
-    public Patient(UUID patientId, String firstName, String lastName, Date birthDate, int dementiaLevel, /*UUID profilePicture, */String password) {
+    public Patient(UUID patientId, String firstName, String lastName, Date birthDate, int dementiaLevel, UUID profilePicture, String password) {
         setPatientId(patientId);
         setFirstName(firstName);
         setLastName(lastName);
         setBirthDate(birthDate);
         setDementiaLevel(dementiaLevel);
-        //setProfile(profilePicture);
+        setProfile(profilePicture);
         setPassword(password);
     }
 
@@ -75,13 +75,13 @@ public class Patient implements Person{
         this.dementiaLevel = dementiaLevel;
     }
 
-    /*public UUID getProfilePicture() {
+    public UUID getProfilePicture() {
         return profilePicture;
     }
 
     public void setProfile(UUID profile) {
         this.profilePicture = profile;
-    }*/
+    }
 
     public String getPassword() {
         return password;

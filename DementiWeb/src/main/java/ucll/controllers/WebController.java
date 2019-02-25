@@ -89,26 +89,6 @@ public class WebController {
         return result;
     }
 
-    /*private MediaFile postMediaFile(MediaFile mediaFile) {
-        MediaFile result = null;
-        if (mediaApiAddress != null){
-            try {
-                RestTemplate restTemplate = new RestTemplate();
-                ResponseEntity<MediaFile> response = restTemplate.postForEntity(mediaApiAddress, mediaFile, MediaFile.class);
-                refreshPatientRepo();
-                Optional<MediaFile> op = mediaRepository.findById(response.getBody().getMediaId()); //Onnodig but Just to be sure
-                if (op.isPresent()){
-                    result = op.get();
-                }
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Something went wrong with sending data: " + e.getMessage());
-            }
-        } else {
-            throw new IllegalArgumentException("No api addres configured");
-        }
-        return result;
-    }*/
-
     private MediaFile postMediaFile(MultipartFile file, UUID patientId, String description, String category) {
         MediaFile result = null;
         String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
@@ -161,12 +141,12 @@ public class WebController {
         return album; //TODO add albumphotos to model
     }
 
-    /*@PostMapping("/setProfilePicture") //TODO
-    public String setProfilePicture(@RequestBody MediaFile mediaFile, Model model){
-        mediaFile = postMediaFile(mediaFile);
+    @PostMapping("/setProfilePicture/{patientId}") //TODO
+    public String setProfilePicture(@PathVariable UUID patientId, @RequestParam("files") MultipartFile file, @RequestParam("description") String description, @RequestParam("category") String category, Model model){
         refreshPatientRepo();
-        Optional<Patient> op = patientRepository.findById(mediaFile.getPatientId());
+        Optional<Patient> op = patientRepository.findById(patientId);
         if (op.isPresent()){
+            MediaFile mediaFile = postMediaFile(file, patientId, description, category);
             Patient patient = op.get();
             patient.setProfile(mediaFile.mediaId);
             patient = postPatient(patient);
@@ -174,7 +154,7 @@ public class WebController {
             return greeting;
         }
         return index;//Fout
-    }*/
+    }
 
     @GetMapping("/media/{patientId}")
     public String getPhotos(@PathVariable UUID patientId, Model model){

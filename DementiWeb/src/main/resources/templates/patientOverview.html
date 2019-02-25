@@ -10,14 +10,15 @@
 <h2>Overview Page</h2>
 
 <ul>
-    <!--<li th:text="${patient.profilePicture}"></li>
-    <li><img th:src="@{'http://localhost:8080/api/media/file/' + ${patient.profilePicture}}" id="picture"></li>
+    <li><img th:src="@{'http://localhost:8080/api/media/data/' + ${patient.profilePicture}}" id="picture"></li>
     <li>
-        <form th:action="@{'/setProfilePicture/' + ${patient.patientId}}">
-            <p><input type="hidden" name="patientId" th:value="${patient.patientId}"></p>
-            <p><input type="file" name="file" accept="image/*" id="file"></p>
-            <p><button type="button" id="send" onclick="saveProfilePhoto()">Change</button></p>
-        </form></li>-->
+        <form th:action="@{'/setProfilePicture/' + ${patientId}}" method="post" enctype="multipart/form-data">
+            <p><input type="hidden" name="patientId" th:value="${patientId}"></p>
+            <p><input type="file" name="files" accept="image/*" id="file"></p>
+            <p><input type="text" name="category"></p>
+            <p><textarea name="description" id="description" cols="30" rows="10" placeholder="Description"></textarea></p>
+            <p><input type="submit" value="Change Profile"></p>
+        </form></li>
     <li th:text="${patient.firstName}"></li>
     <li th:text="${patient.lastName}"></li>
     <li th:text="${patient.birthDate}"></li>
