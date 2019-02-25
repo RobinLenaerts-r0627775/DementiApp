@@ -29,5 +29,10 @@ namespace DementiApp
         {
             await Navigation.PushAsync(new MusicQuizPage());
         }
+
+        async void ToPhotoMap(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new PhotoMap());
+        }
     }
 }

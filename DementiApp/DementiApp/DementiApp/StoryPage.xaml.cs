@@ -21,7 +21,7 @@ namespace DementiApp
         }
 
         public async void showMessage() {
-            await DisplayAlert("Info", "Klik op een foto om een bijhorende foto te bekijken", "Ik heb het begrepen");
+            await DisplayAlert("Info", "Klik op een foto om een bijhorende tekst te bekijken", "Ik heb het begrepen");
         }
 
         public StoryPage()
