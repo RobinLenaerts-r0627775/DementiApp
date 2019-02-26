@@ -1,10 +1,10 @@
 package ucll.model;
 
-import javax.persistence.*;
-import java.io.File;
-import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -13,23 +13,25 @@ public class Patient implements Person{
     @GeneratedValue(strategy = GenerationType.AUTO)
     public UUID patientId;
     public String firstName,lastName;
-    public Date birthDate;
+    public String birthDate;
     public int dementiaLevel;
 
-    //public UUID profilePicture;
+    public UUID profilePicture;
     public String password;
 
+    public ROLE role;
 
     public Patient(){}
 
-    public Patient(UUID patientId, String firstName, String lastName, Date birthDate, int dementiaLevel, /*UUID profilePicture, */String password) {
+    public Patient(UUID patientId, String firstName, String lastName, String birthDate, int dementiaLevel, UUID profilePicture, String password) {
         setPatientId(patientId);
         setFirstName(firstName);
         setLastName(lastName);
         setBirthDate(birthDate);
         setDementiaLevel(dementiaLevel);
-        //setProfile(profilePicture);
+        setProfile(profilePicture);
         setPassword(password);
+        this.role = ROLE.PATIENT;
     }
 
     @Override
@@ -42,8 +44,7 @@ public class Patient implements Person{
         return lastName;
     }
 
-    @Override
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
@@ -55,7 +56,7 @@ public class Patient implements Person{
         this.lastName = lastName;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -75,13 +76,13 @@ public class Patient implements Person{
         this.dementiaLevel = dementiaLevel;
     }
 
-    /*public UUID getProfilePicture() {
+    public UUID getProfilePicture() {
         return profilePicture;
     }
 
     public void setProfile(UUID profile) {
         this.profilePicture = profile;
-    }*/
+    }
 
     public String getPassword() {
         return password;
