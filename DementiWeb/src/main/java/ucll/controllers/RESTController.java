@@ -47,7 +47,7 @@ public class RESTController {
         setTestData();
     }*/
 
-    public void setTestData(){
+   /* public void setTestData(){
         if (patientRepository.findAll() == null || patientRepository.count() <= 0) {
 
             Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", null, 1, null, "sinter");
@@ -81,11 +81,11 @@ public class RESTController {
             mediaRepository.save(desireFile2);
             mediaRepository.save(germainFile1);
         }
-    }
+    }*/
 
     @GetMapping("/patients")
     public ResponseEntity<List<Patient>> getPatients(){
-        setTestData();
+        //setTestData();
         return ResponseEntity.ok(StreamSupport.stream(patientRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList()));
     }
@@ -132,7 +132,7 @@ public class RESTController {
 
     @GetMapping("/media")
     public ResponseEntity<List<MediaFile>> getMediaFiles(){
-        setTestData();
+        //setTestData();
         return ResponseEntity.ok(StreamSupport.stream(mediaRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList()));
     }

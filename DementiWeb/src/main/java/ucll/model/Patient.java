@@ -19,6 +19,7 @@ public class Patient implements Person{
     public UUID profilePicture;
     public String password;
 
+    public ROLE role;
 
     public Patient(){}
 
@@ -30,6 +31,7 @@ public class Patient implements Person{
         setDementiaLevel(dementiaLevel);
         setProfile(profilePicture);
         setPassword(password);
+        this.role = ROLE.PATIENT;
     }
 
     @Override
@@ -42,7 +44,6 @@ public class Patient implements Person{
         return lastName;
     }
 
-    @Override
     public String getBirthDate() {
         return birthDate;
     }
