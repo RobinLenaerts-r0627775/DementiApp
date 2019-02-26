@@ -1,7 +1,9 @@
 package ucll.model;
 
+import org.apache.commons.io.IOUtils;
+
 import javax.persistence.*;
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -15,6 +17,7 @@ public class MediaFile {
     public UUID patientId;
     @Column(length = 200000)
     public File file;
+    //public byte[] data;
     //public boolean playableType; // Video True, Image False
     public String description;
     public String category;
@@ -29,7 +32,20 @@ public class MediaFile {
         this.file = file;
         this.description = description;
         setCategory(category);
+        /*
+        if (file != null){
+            try {
+                setData(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }*/
     }
+
+    /*private void setData(File file) throws IOException {
+        InputStream in = new FileInputStream(file);
+        this.data = IOUtils.toByteArray(in);
+    }*/
 
 
     /*private String getProfilePictureBase64(){
@@ -97,4 +113,12 @@ public class MediaFile {
     public void setCategory(String category) {
         this.category = category;
     }
+/*
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }*/
 }

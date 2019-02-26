@@ -50,7 +50,7 @@ public class RESTController {
     public void setTestData(){
         if (patientRepository.findAll() == null || patientRepository.count() <= 0) {
 
-            Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", null, 1, null, "sinter");
+            Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaes", null, 1, null, "sinter");
             Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", null, 1, null, "ucll");
             Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", null, 2, null, "t");
 
@@ -74,13 +74,26 @@ public class RESTController {
         if (mediaRepository.findAll() == null || mediaRepository.count() <= 0){
 
             MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp1.jpg"), "Dit is de beschrijving voor deze foto", "test");
+            MediaFile desireFile3 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "jeanine.jpg"), "Dit is de beschrijving voor deze foto2", "test");
             MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp2.jpg"), "Dit is een beschrijving voor deze foto", "test2");
             MediaFile germainFile1 = new MediaFile(UUID.randomUUID(), gerId, new File(fileDir + "Temp3.jpg"), "Dit is de beschrijving voor de foto", "test");
 
             mediaRepository.save(desireFile1);
             mediaRepository.save(desireFile2);
+            mediaRepository.save(desireFile3);
             mediaRepository.save(germainFile1);
         }
+    }
+
+    private List<MediaFile> getForId(UUID id){
+        List<MediaFile> all = StreamSupport.stream(mediaRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        List<MediaFile> result = new ArrayList<>();
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).getPatientId().equals(id)){
+                result.add(all.get(i));
+            }
+        }
+        return result;
     }
 
     @GetMapping("/patients")
@@ -139,14 +152,7 @@ public class RESTController {
 
     @GetMapping("/media/{patientId}") //TODO
     public ResponseEntity<List<MediaFile>> getMediaFileFor(@PathVariable UUID patientId){
-        List<MediaFile> all = StreamSupport.stream(mediaRepository.findAll().spliterator(), false).collect(Collectors.toList());
-        List<MediaFile> result = new ArrayList<>();
-        for (int i = 0; i < all.size(); i++) {
-            if (all.get(i).getPatientId().equals(patientId)){
-                result.add(all.get(i));
-            }
-        }
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(getForId(patientId));
     }
 
     @GetMapping("/media/data/{mediaId}")
@@ -175,6 +181,18 @@ public class RESTController {
             return  ResponseEntity.ok(op.get());
         }
         else return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("media/{patientId}/{category}")
+    public ResponseEntity<List<MediaFile>> getMediaFileByCat(@PathVariable UUID patientId, @PathVariable String category){
+        List<MediaFile> all = getForId(patientId);
+        List<MediaFile> result = new ArrayList<>();
+        for (MediaFile file : all){
+            if (file.category.equals(category)){
+                result.add(file);
+            }
+        }
+        return ResponseEntity.ok(result);
     }
 
     @Transactional
