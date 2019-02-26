@@ -34,7 +34,7 @@ import java.util.stream.StreamSupport;
 @RequestMapping("/api")
 public class RESTController {
     //private static String fileDir = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";  //local
-    private static String fileDir = System.getProperty("user.dir") + "\\build\\resources\\main\\static\\images\\";    //server
+    private static String fileDir = System.getProperty("user.dir") + "build/resources/main/static/images/";    //server
 
 
     @Autowired //Inject?
