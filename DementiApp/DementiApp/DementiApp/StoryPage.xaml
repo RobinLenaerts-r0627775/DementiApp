@@ -21,6 +21,7 @@
                 <Setter Property="Margin" Value="50,10,50,50" />
                 <Setter Property="IsVisible" Value="True" />
                 <Setter Property="HasShadow" Value="False" />
+                <Setter Property="BackgroundColor" Value="#372c73"/>
             </Style>
             <Style x:Key="stackStyle" TargetType="{x:Type StackLayout}">
                 <Setter Property="Margin" Value="0,20,0,20" />
@@ -29,23 +30,39 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ScrollView>
-        <StackLayout>
-            <Frame Margin="10">
-                <Label Text="StoryBook" FontSize="75" HorizontalTextAlignment="Center"/>
+    <StackLayout>
+        <StackLayout VerticalOptions="FillAndExpand">
+
+            <Frame Margin="10" Style="{StaticResource frameStyle}">
+                <Label Text="StoryBook" FontSize="75" HorizontalTextAlignment="Center"  Style="{StaticResource labelStyle}"/>
             </Frame>
-            <StackLayout>
-                <ListView x:Name="MyListView">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame>
-                                <Label Text="{Binding description}"/>
-                            </Frame>
-                        </DataTemplate>
-                     </ListView.ItemTemplate>
-                </ListView>
-            </StackLayout>
+
+
+            <ListView x:Name="MyListView" VerticalOptions="FillAndExpand" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Margin="20">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                                </StackLayout.GestureRecognizers>
+
+                                <Frame Margin="0" Padding="0">
+                                    <StackLayout>
+                                        <Image Source="{Binding Data}" Aspect="AspectFill"/>
+                                    </StackLayout>
+                                </Frame>
+
+
+                                <Frame CornerRadius="25" Margin="0" Padding="0" IsVisible="False">
+                                    <Label Text="{Binding Description}" TextColor="Pink" BackgroundColor="Aquamarine" FontSize="35" HorizontalTextAlignment="Center" HeightRequest="300" Margin="0"/>
+                                </Frame>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
-    </ScrollView>
-    
+    </StackLayout>
+
 </ContentPage>
