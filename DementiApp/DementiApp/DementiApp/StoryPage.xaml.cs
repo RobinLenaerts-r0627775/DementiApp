@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
@@ -18,13 +19,28 @@ namespace DementiApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StoryPage : ContentPage
     {
-        private const string Url = "localhost:8080/api/media";
+        private const string Url = "http://193.191.177.178:8080/api/media";
         private readonly HttpClient _client = new HttpClient();
         private ObservableCollection<Post> _posts;
         
 
         internal class Post : INotifyPropertyChanged
         {
+
+
+            private ImageSource _data;
+
+            public ImageSource Data
+            {
+                get { return _data; }
+                set
+                {
+                    _data = value;
+                    OnPropertyChanged();
+
+                }
+
+            }
 
             private string _mediaId;
 
@@ -93,21 +109,30 @@ namespace DementiApp
 
         protected override async void OnAppearing()
         {
-            
-            //your code here;
+            base.OnAppearing();
+            showMessage();
             try
             {
                 string content = await _client.GetStringAsync(Url);
                 List<Post> posts = JsonConvert.DeserializeObject<List<Post>>(content);
+                foreach(Post p in posts){
+                    Byte[] byteArray = await _client.GetByteArrayAsync("http://193.191.177.178:8080/api/media/data/"+p.MediaId);
+                    
+                    p.Data  = ImageSource.FromStream(() => new MemoryStream(byteArray));
+                    
+                }
+
                 _posts = new ObservableCollection<Post>(posts);
+                
                 MyListView.ItemsSource = _posts;
+
             }
             catch (Exception e) {
-                Console.WriteLine(e.Message);
+                await DisplayAlert("Error", e.Message, "Ik heb het begrepen");
             }
 
-            showMessage();
-            base.OnAppearing();
+            
+            
         }
 
         public async void showMessage() {
@@ -116,9 +141,16 @@ namespace DementiApp
 
         public StoryPage()
         {
+            InitializeComponent();
 
 
+           
+            
             NavigationPage.SetHasBackButton(this, false);
+
+            /*Binding bindingObject = new Binding("_posts");
+            bindingObject.Source = _posts;
+            MyListView.SetBinding(ListView.ItemsSourceProperty, bindingObject);*/
 
             /*
             //var stack = new StackClickable();
@@ -144,11 +176,25 @@ namespace DementiApp
             }
             Content = new ScrollView { Content = stacklayout };
            */
-            
+
 
         }
 
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            var stack = (StackLayout)sender;
 
+            if (stack.Children.Last().IsVisible)
+            {
+                stack.Children.Last().IsVisible = false;
+            }
+            else
+            {
+                stack.Children.Last().IsVisible = true;
+            }
+
+            sender = stack;
+        }
     }
 
 
