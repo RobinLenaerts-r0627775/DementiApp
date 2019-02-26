@@ -10,11 +10,16 @@
 </head>
 <body>
 <ul class="nav navbar-nav">
-    <li><a href="/">Home</a></li>
-    <li><a href="/patients">Overview</a></li>
-    <li><a href="/patients/new">Add a patient</a></li>
-    <li><a href="/login">Login</a></li>
-    <li><a href="/logout">Logout</a></li>
+    <div th:if="${#request.getSession(false) != null}">
+        <div th:if="${session.user.getRole().toString() == 'NURSE'}">
+            <li><a href="/patients">Overview</a></li>
+            <li><a href="/patients/new">Add a patient</a></li>
+        </div>
+        <div th:if="${session.user.getRole().toString() == 'PATIENT'}">
+            <li><a href="/profile">My profile</a></li>
+        </div>
+        <li><a href="/logout">Logout</a></li>
+    </div>
 </ul>
 <form th:action="@{'/addPhotos/' + ${patientId}}" method="post" enctype="multipart/form-data">
     <p><input type="hidden" name="patientId" th:value="${patientId}"></p>
