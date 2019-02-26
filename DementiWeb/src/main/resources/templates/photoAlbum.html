@@ -21,9 +21,9 @@
         <li><a href="/logout">Logout</a></li>
     </div>
 </ul>
-<form th:action="@{'/addPhotos/' + ${patientId}}" method="post" enctype="multipart/form-data">
+<form action="/webmedia" method="post" enctype="multipart/form-data">
     <p><input type="hidden" name="patientId" th:value="${patientId}"></p>
-    <p><input type="file" name="files" accept="image/*" id="file" multiple></p>
+    <p><input type="file" name="files" accept="image/*" id="file" ></p>
     <p><input type="text" name="category"></p>
     <p><textarea name="description" id="description" cols="30" rows="10" placeholder="Description"></textarea></p>
     <p><input type="submit" value="Upload"></p>

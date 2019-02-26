@@ -313,6 +313,35 @@ public class WebController {
 
         return overview(request, response);
     }
+
+    /**
+     * Handles the /media/patientId request.
+     * checks the permissions of the user and sends you to the photoalbum page of the selected profile.
+     * @param request
+     * @param response
+     * @param patientId
+     * @return
+     */
+    @RequestMapping(value = "/webmedia/{patientId}")
+    public ModelAndView patientMedia(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID patientId){
+        Map params = new HashMap();
+        if(request.getSession(false) == null || ((LoginInfo) request.getSession().getAttribute("user")).getRole() != ROLE.NURSE){
+            return new ModelAndView("AccessException", params );
+        }
+        else{
+            params.put("photoAlbum", mediaRepository.getAllByPatientId(patientId));
+            params.put("patientId", patientId.toString());
+            return new ModelAndView("photoAlbum", params);
+        }
+    }
+
+    @RequestMapping(value = "/webmedia", method = RequestMethod.POST)
+    public void postMedia(HttpServletRequest request, HttpServletResponse response, @Valid @ModelAttribute("MediaFile") MediaFile mediaFile) throws IOException {
+        System.out.println("=====================\n" + mediaFile.patientId + " " + mediaFile.category + " " + mediaFile.description + " " + mediaFile.mediaId);
+        mediaRepository.save(mediaFile);
+        response.sendRedirect("WebMedia/" + mediaFile.patientId.toString());
+    }
+
 }
 
 
