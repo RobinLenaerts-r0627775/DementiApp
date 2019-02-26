@@ -262,4 +262,10 @@ public class RESTController {
         }
         else return ResponseEntity.ok(new Boolean(Boolean.FALSE));
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<UUID> login(@RequestBody LoginObject loginObject){
+        LoginInfo result = loginRepository.getFirstByUsernameAndPassword(loginObject.user, loginObject.password);
+        return result!=null ? ResponseEntity.ok(result.getPersonID()) : null;
+    }
 }
