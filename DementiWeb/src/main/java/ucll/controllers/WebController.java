@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ucll.db.LoginRepository;
 import ucll.db.MediaRepository;
 import ucll.db.NurseRepository;
 import ucll.db.PatientRepository;
@@ -43,7 +44,9 @@ public class WebController {
 
     @Autowired
     private MediaRepository mediaRepository;
-    private List<LoginInfo> loginRepository = new ArrayList<>();
+
+    @Autowired
+    private LoginRepository loginRepository;
 
 
     /**
@@ -51,16 +54,18 @@ public class WebController {
      *
      * @param patientRepository
      */
-    public WebController(PatientRepository patientRepository, NurseRepository nurseRepository) {
+    public WebController(PatientRepository patientRepository, NurseRepository nurseRepository, MediaRepository mediaRepository, LoginRepository loginRepository) {
         this.patientRepository = patientRepository;
         this.nurseRepository = nurseRepository;
-        addExampleData();
+        this.mediaRepository = mediaRepository;
+        this.loginRepository = loginRepository;
+        //addExampleData();
     }
 
     /**
      * function that sets example data in the repository for testing purposes.
      */
-    public void addExampleData() {
+    /*public void addExampleData() {
         Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaas", "01/06/1955", 1, null, "sinter");
         Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", "01/06/1960", 1, null, "ucll");
         Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", "01/12/1950", 2, null, "t");
@@ -72,12 +77,13 @@ public class WebController {
         nurseRepository.save(Tine);
 
         for (Patient p : patientRepository.findAll()) {
-            loginRepository.add(LoginInfo.LoginInfomaker(p.firstName + "." + p.lastName, p.password,p.role, p.patientId));
+            LoginInfo tmp = LoginInfo.LoginInfomaker(p.firstName + "." + p.lastName, p.password,p.role, p.patientId);
+            loginRepository.save(tmp);
         }
         for (Nurse n : nurseRepository.findAll()) {
-            loginRepository.add(LoginInfo.LoginInfomaker(n.firstName + "." + n.lastName, n.password,n.role, n.nurseID));
+            loginRepository.save(LoginInfo.LoginInfomaker(n.firstName + "." + n.lastName, n.password,n.role, n.nurseID));
         }
-    }
+    }*/
 
     /**
      * function that handles the default request call. it sends you to the Login page.
@@ -125,7 +131,7 @@ public class WebController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response, @Valid @ModelAttribute("LoginInfo") LoginInfo info) throws IOException, ServletException {
         Map params = new HashMap<String, Object>();
-        for (LoginInfo li : loginRepository) {
+        for (LoginInfo li : loginRepository.findAll()) {
             if (li.equals(info)) {
                 HttpSession session = request.getSession();
                 session.setMaxInactiveInterval(60 * 60);
@@ -271,7 +277,7 @@ public class WebController {
         } else {
             Patient pat = new Patient(null, patient.firstName, patient.lastName, patient.birthDate, patient.dementiaLevel, null, patient.password);
             patientRepository.save(pat);
-            loginRepository.add(LoginInfo.LoginInfomaker(patient.firstName + "." + patient.lastName, patient.password,patient.role, pat.patientId));
+            loginRepository.save(LoginInfo.LoginInfomaker(patient.firstName + "." + patient.lastName, patient.password,patient.role, pat.patientId));
         }
 
         return overview(request, response);

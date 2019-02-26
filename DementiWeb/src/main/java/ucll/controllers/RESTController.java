@@ -8,11 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
+import ucll.db.LoginRepository;
 import ucll.db.MediaRepository;
+import ucll.db.NurseRepository;
 import ucll.db.PatientRepository;
-import ucll.model.FileUploadObject;
-import ucll.model.MediaFile;
-import ucll.model.Patient;
+import ucll.model.*;
 
 import javax.transaction.Transactional;
 import java.io.File;
@@ -33,35 +33,55 @@ import java.util.stream.StreamSupport;
 @RestController
 @RequestMapping("/api")
 public class RESTController {
-    private static String fileDir = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";
+    //private static String fileDir = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";  //local
+    private static String fileDir = System.getProperty("user.dir") + "\\build\\resources\\main\\static\\images\\";    //server
+
 
     @Autowired //Inject?
     private PatientRepository patientRepository;
 
     @Autowired
+    private NurseRepository nurseRepository;
+
+    @Autowired
     private MediaRepository mediaRepository;
 
-    /*@Autowired
-    public RESTController(PatientRepository patientRepository){
+    @Autowired
+    private LoginRepository loginRepository;
+
+    public RESTController(PatientRepository patientRepository, NurseRepository nurseRepository, MediaRepository mediaRepository, LoginRepository loginRepository) {
         this.patientRepository = patientRepository;
+        this.nurseRepository = nurseRepository;
+        this.mediaRepository = mediaRepository;
+        this.loginRepository = loginRepository;
         setTestData();
-    }*/
+    }
 
-   /* public void setTestData(){
-        if (patientRepository.findAll() == null || patientRepository.count() <= 0) {
+    public void setTestData(){
 
-            Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaes", null, 1, null, "sinter");
-            Patient germain = new Patient(UUID.randomUUID(), "Germain", "Van Hier", null, 1, null, "ucll");
-            Patient palmyr = new Patient(UUID.randomUUID(), "Palmyr", "Leysens", null, 2, null, "t");
+        Patient desire = new Patient(null, "Désire", "Klaes", null, 1, null, "sinter");
+        Patient germain = new Patient(null, "Germain", "Van Hier", null, 1, null, "ucll");
+        Patient palmyr = new Patient(null, "Palmyr", "Leysens", null, 2, null, "t");
 
-            patientRepository.save(desire);
-            patientRepository.save(germain);
-            patientRepository.save(palmyr);
+        patientRepository.save(desire);
+        patientRepository.save(germain);
+        patientRepository.save(palmyr);
+
+
+        UUID desId = desire.patientId;
+        UUID gerId = germain.patientId;
+
+        Nurse Tine = new Nurse("Tine", "Vandevelde", "nurse");
+        nurseRepository.save(Tine);
+
+        for (Patient p : patientRepository.findAll()) {
+            LoginInfo tmp = LoginInfo.LoginInfomaker(p.firstName + "." + p.lastName, p.password,p.role, p.patientId);
+            loginRepository.save(tmp);
         }
-
-        UUID desId = null;
-        UUID gerId = null;
-        List<Patient> all = StreamSupport.stream(patientRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        for (Nurse n : nurseRepository.findAll()) {
+            loginRepository.save(LoginInfo.LoginInfomaker(n.firstName + "." + n.lastName, n.password,n.role, n.nurseID));
+        }
+        /*List<Patient> all = StreamSupport.stream(patientRepository.findAll().spliterator(), false).collect(Collectors.toList());
         for (int i = 0; i < all.size(); i++) {
             if (all.get(i).getFirstName().equals("Germain")){
                 gerId = all.get(i).patientId;
@@ -69,21 +89,18 @@ public class RESTController {
             if (all.get(i).getLastName().equals("Klaas")){
                 desId = all.get(i).patientId;
             }
-        }
+        }*/
 
-        if (mediaRepository.findAll() == null || mediaRepository.count() <= 0){
+        MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp1.jpg"), "Dit is de beschrijving voor deze foto", "test");
+        MediaFile desireFile3 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "jeanine.jpg"), "Dit is de beschrijving voor deze foto2", "test");
+        MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp2.jpg"), "Dit is een beschrijving voor deze foto", "test2");
+        MediaFile germainFile1 = new MediaFile(UUID.randomUUID(), gerId, new File(fileDir + "Temp3.jpg"), "Dit is de beschrijving voor de foto", "test");
 
-            MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp1.jpg"), "Dit is de beschrijving voor deze foto", "test");
-            MediaFile desireFile3 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "jeanine.jpg"), "Dit is de beschrijving voor deze foto2", "test");
-            MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp2.jpg"), "Dit is een beschrijving voor deze foto", "test2");
-            MediaFile germainFile1 = new MediaFile(UUID.randomUUID(), gerId, new File(fileDir + "Temp3.jpg"), "Dit is de beschrijving voor de foto", "test");
-
-            mediaRepository.save(desireFile1);
-            mediaRepository.save(desireFile2);
-            mediaRepository.save(desireFile3);
-            mediaRepository.save(germainFile1);
-        }
-    }*/
+        mediaRepository.save(desireFile1);
+        mediaRepository.save(desireFile2);
+        mediaRepository.save(desireFile3);
+        mediaRepository.save(germainFile1);
+    }
 
     private List<MediaFile> getForId(UUID id){
         List<MediaFile> all = StreamSupport.stream(mediaRepository.findAll().spliterator(), false).collect(Collectors.toList());
@@ -98,7 +115,6 @@ public class RESTController {
 
     @GetMapping("/patients")
     public ResponseEntity<List<Patient>> getPatients(){
-        //setTestData();
         return ResponseEntity.ok(StreamSupport.stream(patientRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList()));
     }
@@ -145,7 +161,6 @@ public class RESTController {
 
     @GetMapping("/media")
     public ResponseEntity<List<MediaFile>> getMediaFiles(){
-        //setTestData();
         return ResponseEntity.ok(StreamSupport.stream(mediaRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList()));
     }

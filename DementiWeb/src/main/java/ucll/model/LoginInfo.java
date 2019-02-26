@@ -1,8 +1,16 @@
 package ucll.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.UUID;
 
+@Entity
 public class LoginInfo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public UUID id;
 
     private String username;
     private String Password;
@@ -12,6 +20,7 @@ public class LoginInfo {
     private ROLE role;
 
     public LoginInfo(String username, String password, ROLE role){
+        setId(null);
         setPassword(password);
         setUsername(username);
         this.role = role;
@@ -56,5 +65,13 @@ public class LoginInfo {
     public boolean equals(LoginInfo info){
         if(info.getUsername().equals(getUsername()) && info.getPassword().equals(getPassword())) return true;
         else return false;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }
