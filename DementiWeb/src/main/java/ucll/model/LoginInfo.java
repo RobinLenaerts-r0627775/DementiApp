@@ -19,6 +19,9 @@ public class LoginInfo {
 
     private ROLE role;
 
+    public LoginInfo() {
+    }
+
     public LoginInfo(String username, String password, ROLE role){
         setId(null);
         setPassword(password);
