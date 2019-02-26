@@ -8,23 +8,32 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<div class="container">
 
+<div class="container">
 <ul class="nav navbar-nav">
-	<li><a href="/">Home</a></li>
-	<li class="active"><a href="/patients">Overview</a></li>
-	<li><a href="/patients/new">Add a patient</a></li>
-	<li><a href="/login">Login</a></li>
-	<li ><a href="/logout">Logout</a></li>
+	<div th:if="${#request.getSession(false) != null}">
+		<div th:if="${session.user.getRole().toString() == 'NURSE'}">
+			<li><a href="/patients">Overview</a></li>
+			<li><a href="/patients/new">Add a patient</a></li>
+		</div>
+		<div th:if="${session.user.getRole().toString() == 'PATIENT'}">
+			<li><a href="/profile">My profile</a></li>
+		</div>
+		<li><a href="/logout">Logout</a></li>
+	</div>
 </ul>
+
 	
 <div class="page-header">
 	<h2>Overview Page</h2>
 </div>
 <table class="table table-striped table-bordered table-hover">
+
 <thead class="thead-dark">
 <p>Logged in as:</p>
 <p th:text="${session.user.getUsername()}"></p>
+<p th:text="${session.user.getRole().toString() == 'NURSE'}"></p>
+<p></p>
 
 <tr>
 	<!--<td>Picture</td>-->
@@ -45,15 +54,16 @@
 	<td th:text="${patient.birthDate}"></td>
 	<td th:text="${patient.dementiaLevel}"></td>
     <td><a th:href="@{'/patients/' + ${patient.patientId}}" class="btn btn-warning">Edit</a></td>
-	<td><a th:href="@{'/person/' + ${patient.patientId}}">See#TMP</a></td>
+	<td><a th:href="@{'/profile/' + ${patient.patientId}}">See#TMP</a></td>
+
 </tr>
 </th:block>
 </tbody>
 
 </table>
 <a href="/patients/new" class="btn btn-default btn-lg">New</a>
-</div>
 
+</div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
