@@ -86,7 +86,12 @@ public class WebController {
     @RequestMapping(value = "/")
     public void getIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getSession(false) != null) {
-            response.sendRedirect("/patients");
+            if(((LoginInfo) request.getSession().getAttribute("user")).getRole() == ROLE.PATIENT){
+                response.sendRedirect("/profile");
+            }
+            else if(((LoginInfo) request.getSession().getAttribute("user")).getRole() == ROLE.NURSE){
+                response.sendRedirect("/patients");
+            }
         }
         else {
             response.sendRedirect("/login");
@@ -145,7 +150,7 @@ public class WebController {
                 response.addCookie(name);
                 if(li.getRole() == ROLE.PATIENT) {
                     response.sendRedirect("/profile");
-                }else{
+                }else if(li.getRole() == ROLE.NURSE){
                     response.sendRedirect("/patients");
                 }
             }
@@ -164,13 +169,15 @@ public class WebController {
      */
     @RequestMapping(value = "/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getSession().invalidate();
-        if(request.getCookies().length > 0) {
-            for (Cookie c : request.getCookies()) {
-                if (c.getName().equals("patientid") || c.getName().equals("name")) {
-                    response.setContentType("text/html");
-                    c.setMaxAge(1);
-                    System.out.println("cookie deleted: " + c.getName() + " " + c.getMaxAge() + " " + c.getValue());
+        if (request.getSession(false) != null) {
+            request.getSession().invalidate();
+            if (request.getCookies().length > 0) {
+                for (Cookie c : request.getCookies()) {
+                    if (c.getName().equals("patientid") || c.getName().equals("name")) {
+                        response.setContentType("text/html");
+                        c.setMaxAge(1);
+                        System.out.println("cookie deleted: " + c.getName() + " " + c.getMaxAge() + " " + c.getValue());
+                    }
                 }
             }
         }
@@ -187,6 +194,7 @@ public class WebController {
     @RequestMapping(value = "/profile")
     public ModelAndView profile(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map params = new HashMap<String, Object>();
+
         if (request.getSession(false) != null) {
             for (Cookie c : request.getCookies()) {
                 if (c.getName().equals("patientid")) {
@@ -195,12 +203,32 @@ public class WebController {
             }
             return new ModelAndView("patientOverview", params);
         } else {
-            response.sendRedirect("/");
-            return null;
+            params.put("error", "please login.");
+            return new ModelAndView("login", params);
         }
     }
 
 
+    /**
+     *handles the /patient/{patientId} request. checks if the user has required permissions and sends you to the profile page of the patient with given ID.
+     *
+     * @param request
+     * @param response
+     * @param patientId
+     * @return
+     */
+    @RequestMapping(value= "/profile/{patientId}")
+    public ModelAndView seeProfile(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID patientId){
+        Map params = new HashMap<>();
+        if(request.getSession(false) == null || ((LoginInfo) request.getSession().getAttribute("user")).getRole() != ROLE.NURSE){
+            return new ModelAndView("AccessException", params) ;
+        }
+        else{
+            Patient pat = patientRepository.findById(patientId).get();
+            params.put("patient", pat);
+            return  new ModelAndView("patientOverview", params);
+        }
+    }
 
     /**
      * Handles the /patients/new GET request. sends you to the new patient form.
@@ -211,6 +239,9 @@ public class WebController {
      */
     @GetMapping("/patients/new")
     public String newPatient(HttpServletRequest request, HttpServletResponse response) {
+        if(request.getSession(false) == null || ((LoginInfo) request.getSession().getAttribute("user")).getRole() != ROLE.NURSE){
+            return "AccessException";
+        }
         return "form";
     }
 

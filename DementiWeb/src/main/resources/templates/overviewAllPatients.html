@@ -41,7 +41,7 @@
 	<td th:text="${patient.birthDate}"></td>
 	<td th:text="${patient.dementiaLevel}"></td>
     <td><a th:href="@{'/patients/' + ${patient.patientId}}">Edit</a></td>
-	<td><a th:href="@{'/person/' + ${patient.patientId}}">See#TMP</a></td>
+	<td><a th:href="@{'/profile/' + ${patient.patientId}}">See#TMP</a></td>
 </tr>
 </th:block>
 </tbody>
