@@ -9,7 +9,7 @@ namespace DementiApp
 {
     public partial class MainPage : ContentPage
     {
-        public MainPage()
+        public MainPage(String userId)
         {
             InitializeComponent();
             NavigationPage.SetHasBackButton(this, false);

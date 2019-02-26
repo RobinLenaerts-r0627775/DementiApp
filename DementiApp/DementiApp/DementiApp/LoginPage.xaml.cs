@@ -84,7 +84,7 @@ namespace DementiApp
                 var result = await mess.Content.ReadAsStringAsync();
                 if (result == "True")
                 {
-                    await Navigation.PushAsync(new MainPage());
+                    await Navigation.PushAsync(new MainPage(result));
 
                 }
                 else
@@ -93,7 +93,7 @@ namespace DementiApp
                     Label l = (Label)Error.Content;
                     l.Text = "Login lukt niet, probeer opnieuw";
                     //Gewoon Voor Testen
-                    await Navigation.PushAsync(new MainPage());
+                    await Navigation.PushAsync(new MainPage(result));
                 }
             }
             catch (TimeoutException)
