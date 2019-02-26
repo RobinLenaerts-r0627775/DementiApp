@@ -21,7 +21,7 @@ namespace DementiApp
         Dictionary<string, string> pics = new Dictionary<string, string>();
         public MemoryMediumPage()
         {
-            var numbers = new List<int>(Enumerable.Range(0, 24));
+            var numbers = new List<int>(Enumerable.Range(0, 20));
             numbers.Shuffle();
             foreach (int i in numbers)
             {
@@ -108,22 +108,7 @@ namespace DementiApp
                         layout.Add("" + i, Color.YellowGreen);
                         pics.Add("" + i, "Trixie.jpg");
                         break;
-                    case 20:
-                        layout.Add("" + i, Color.Olive);
-                        pics.Add("" + i, "Lucy.jpg");
-                        break;
-                    case 21:
-                        layout.Add("" + i, Color.Olive);
-                        pics.Add("" + i, "Lucy.jpg");
-                        break;
-                    case 22:
-                        layout.Add("" + i, Color.Orange);
-                        pics.Add("" + i, "Tim.jpg");
-                        break;
-                    case 23:
-                        layout.Add("" + i, Color.Orange);
-                        pics.Add("" + i, "Tim.jpg");
-                        break;
+                   
                     default:
                         layout.Add("" + i, Color.Black);
                         pics.Add("" + i, "Luci.jpg");
@@ -139,7 +124,7 @@ namespace DementiApp
             Button but = (Button)sender;
             but.IsEnabled = false;
             but.BorderColor = Color.LightYellow;
-            Color col = Color.Black;
+            Color col = Color.FromHex("#372c73");
             layout.TryGetValue(but.StyleId, out col);
             but.BackgroundColor = col;
             String pic = "";
@@ -166,7 +151,7 @@ namespace DementiApp
                 }
                 else
                 {
-                    for (int i = 0; i < 24; i++)
+                    for (int i = 0; i < 20; i++)
                     {
                         (but.Parent.FindByName("f" + i) as Button).IsEnabled = false;
                     }
@@ -178,14 +163,14 @@ namespace DementiApp
                         clicked.IsEnabled = true;
                         but.BorderColor = Color.Transparent;
                         clicked.BorderColor = Color.Transparent;
-                        clicked.BackgroundColor = Color.Black;
+                        clicked.BackgroundColor = Color.FromHex("#372c73");
                         clicked.Image = null;
-                        but.BackgroundColor = Color.Black;
+                        but.BackgroundColor = Color.FromHex("#372c73");
                         but.Image = null;
                         clicked = null;
-                        for (int i = 0; i < 24; i++)
+                        for (int i = 0; i < 20; i++)
                         {
-                            if ((but.Parent.FindByName("f" + i) as Button).BackgroundColor == Color.Black) (but.Parent.FindByName("f" + i) as Button).IsEnabled = true;
+                            if ((but.Parent.FindByName("f" + i) as Button).BackgroundColor == Color.FromHex("#372c73")) (but.Parent.FindByName("f" + i) as Button).IsEnabled = true;
                         }
                         return false;
                     });

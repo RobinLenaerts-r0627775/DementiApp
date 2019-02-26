@@ -15,9 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
-    <EmbeddedResource Update="LoginPage.xaml">
-=======
     <EmbeddedResource Update="MemoryDiffPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -25,7 +22,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="MemoryMediumPage.xaml">
->>>>>>> security
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="MemoryPage.xaml">

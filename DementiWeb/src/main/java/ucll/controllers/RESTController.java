@@ -47,7 +47,7 @@ public class RESTController {
         setTestData();
     }*/
 
-    public void setTestData(){
+   /* public void setTestData(){
         if (patientRepository.findAll() == null || patientRepository.count() <= 0) {
 
             Patient desire = new Patient(UUID.randomUUID(), "Désire", "Klaes", null, 1, null, "sinter");
@@ -83,7 +83,7 @@ public class RESTController {
             mediaRepository.save(desireFile3);
             mediaRepository.save(germainFile1);
         }
-    }
+    }*/
 
     private List<MediaFile> getForId(UUID id){
         List<MediaFile> all = StreamSupport.stream(mediaRepository.findAll().spliterator(), false).collect(Collectors.toList());
@@ -98,7 +98,7 @@ public class RESTController {
 
     @GetMapping("/patients")
     public ResponseEntity<List<Patient>> getPatients(){
-        setTestData();
+        //setTestData();
         return ResponseEntity.ok(StreamSupport.stream(patientRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList()));
     }
@@ -145,7 +145,7 @@ public class RESTController {
 
     @GetMapping("/media")
     public ResponseEntity<List<MediaFile>> getMediaFiles(){
-        setTestData();
+        //setTestData();
         return ResponseEntity.ok(StreamSupport.stream(mediaRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList()));
     }

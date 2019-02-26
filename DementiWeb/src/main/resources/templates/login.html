@@ -5,6 +5,13 @@
     <title>Spring Security Example </title>
 </head>
 <body>
+<ul class="nav navbar-nav">
+    <li><a href="/">Home</a></li>
+    <li><a href="/patients">Overview</a></li>
+    <li><a href="/patients/new">Add a patient</a></li>
+    <li class="active"><a href="/login">Login</a></li>
+    <li><a href="/logout">Logout</a></li>
+</ul>
 <div th:unless="${error == null}">
     <p th:text="${error}"></p>
 </div>
