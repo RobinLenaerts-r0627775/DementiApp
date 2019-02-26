@@ -47,15 +47,15 @@
                                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
                                 </StackLayout.GestureRecognizers>
 
-                                <Frame Margin="0" Padding="0">
-                                    <StackLayout>
-                                        <Image Source="{Binding Data}" Aspect="AspectFill"/>
-                                    </StackLayout>
-                                </Frame>
+                                <StackLayout VerticalOptions="FillAndExpand" MinimumHeightRequest="500" BackgroundColor="LightGray" >
+                                    <Frame Margin="0" Padding="0" VerticalOptions="FillAndExpand" BackgroundColor="LightGray">
+                                        <Image Source="{Binding Data}" Aspect="AspectFit" HeightRequest="500"/>
+                                    </Frame>
+                                </StackLayout>
 
 
                                 <Frame CornerRadius="25" Margin="0" Padding="0" IsVisible="False">
-                                    <Label Text="{Binding Description}" TextColor="Pink" BackgroundColor="Aquamarine" FontSize="35" HorizontalTextAlignment="Center" HeightRequest="300" Margin="0"/>
+                                    <Label Text="{Binding Description} " TextColor="White" BackgroundColor="#372c73" FontSize="35" HorizontalTextAlignment="Center" Margin="0"/>
                                 </Frame>
                             </StackLayout>
                         </ViewCell>
