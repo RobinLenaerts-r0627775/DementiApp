@@ -25,6 +25,14 @@ public class MediaFile {
     public MediaFile(){
     }
 
+    public MediaFile(UUID patientId, File file, String description, String category) {
+        this.patientId = patientId;
+        this.file = file;
+        this.description = description;
+        setCategory(category);
+    }
+
+
 
     public MediaFile(UUID mediaId, UUID patientId, File file, String description, String category) {
         this.mediaId = mediaId;
