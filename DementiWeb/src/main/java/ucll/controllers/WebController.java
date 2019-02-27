@@ -4,12 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ucll.db.LoginRepository;
 import ucll.db.MediaRepository;
 import ucll.db.NurseRepository;
 import ucll.db.PatientRepository;
 import ucll.model.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 import org.springframework.web.servlet.ModelAndView;
@@ -336,12 +340,26 @@ public class WebController {
     }
 
     @RequestMapping(value = "/webmedia", method = RequestMethod.POST)
-    public void postMedia(HttpServletRequest request, HttpServletResponse response, @Valid @ModelAttribute("MediaFile") MediaFile mediaFile) throws IOException {
-        System.out.println("=====================\n" + mediaFile.patientId + " " + mediaFile.category + " " + mediaFile.description + " " + mediaFile.mediaId);
+    public void postMedia(HttpServletRequest request, HttpServletResponse response, @RequestParam("patientId") String patientId, @RequestParam("file") MultipartFile file, @RequestParam("category") String category, @RequestParam("description") String description) throws IOException {
+        MediaFile mediaFile = new MediaFile(UUID.fromString(patientId), convert(file), description, category);
         mediaRepository.save(mediaFile);
-        response.sendRedirect("WebMedia/" + mediaFile.patientId.toString());
+        response.sendRedirect("webmedia/" + mediaFile.patientId.toString());
     }
 
+    /**
+     * method to convert Multipart file to java IO file
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public File convert(MultipartFile file) throws IOException {
+        File convFile = new File(file.getOriginalFilename());
+        convFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        return convFile;
+    }
 }
 
 

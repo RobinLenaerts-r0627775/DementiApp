@@ -50,33 +50,6 @@
         return result;
     }
 
-    private MediaFile postMediaFile(MultipartFile file, UUID patientId, String description, String category) {
-        MediaFile result = null;
-        String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
-        FileUploadObject data = null;
-        try {
-            data = new FileUploadObject(file.getBytes(), patientId, extension, description, category);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (mediaApiAddress != null){
-            try {
-                RestTemplate restTemplate = new RestTemplate();
-                ResponseEntity<MediaFile> response = restTemplate.postForEntity(mediaApiAddress + "/file", data, MediaFile.class);
-                refreshPatientRepo();
-                Optional<MediaFile> op = mediaRepository.findById(response.getBody().getMediaId()); //Onnodig but Just to be sure
-                if (op.isPresent()) {
-                    result = op.get();
-                }
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                throw new IllegalArgumentException("Something went wrong with sending data: " + e.getMessage());
-            }
-        } else {
-            throw new IllegalArgumentException("No api addres configured");
-        }
-        return result;
-    }
 
     @RequestMapping("/login")
     public void loginpage(Model model, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -118,6 +91,34 @@
 
     @RequestMapping("/") //TODO
     public void index(Model model,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {getAllPatientsPage(model, request, response);}
+
+    private MediaFile postMediaFile(MultipartFile file, UUID patientId, String description, String category) {
+        MediaFile result = null;
+        String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+        FileUploadObject data = null;
+        try {
+            data = new FileUploadObject(file.getBytes(), patientId, extension, description, category);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (mediaApiAddress != null){
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                ResponseEntity<MediaFile> response = restTemplate.postForEntity(mediaApiAddress + "/file", data, MediaFile.class);
+                refreshPatientRepo();
+                Optional<MediaFile> op = mediaRepository.findById(response.getBody().getMediaId()); //Onnodig but Just to be sure
+                if (op.isPresent()) {
+                    result = op.get();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                throw new IllegalArgumentException("Something went wrong with sending data: " + e.getMessage());
+            }
+        } else {
+            throw new IllegalArgumentException("No api addres configured");
+        }
+        return result;
+    }
 
     @PostMapping("/addPhotos/{patientId}") //TODO
     public String addPhotos(@PathVariable UUID patientId, @RequestParam("files") MultipartFile[] files, @RequestParam("description") String description, @RequestParam("category") String category, Model model){
