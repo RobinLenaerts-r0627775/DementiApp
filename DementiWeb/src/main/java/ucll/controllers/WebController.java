@@ -339,6 +339,17 @@ public class WebController {
         }
     }
 
+    /**
+     * handles the webmedia post request. makes the new mediaFile. and redirects you to the photo overview page of
+     * the relevant patient.
+     * @param request
+     * @param response
+     * @param patientId
+     * @param file
+     * @param category
+     * @param description
+     * @throws IOException
+     */
     @RequestMapping(value = "/webmedia", method = RequestMethod.POST)
     public void postMedia(HttpServletRequest request, HttpServletResponse response, @RequestParam("patientId") String patientId, @RequestParam("file") MultipartFile file, @RequestParam("category") String category, @RequestParam("description") String description) throws IOException {
         MediaFile mediaFile = new MediaFile(UUID.fromString(patientId), convert(file), description, category);
