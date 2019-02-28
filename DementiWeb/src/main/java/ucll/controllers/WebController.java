@@ -228,7 +228,7 @@ public class WebController {
     @RequestMapping(value= "/profile/{patientId}")
     public ModelAndView seeProfile(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID patientId){
         Map params = new HashMap<>();
-        if(request.getSession(false) == null || ((LoginInfo) request.getSession().getAttribute("user")).getRole() != ROLE.NURSE){
+        if(request.getSession(false) == null || (((LoginInfo) request.getSession().getAttribute("user")).getRole() != ROLE.NURSE) && ((LoginInfo) request.getSession().getAttribute("user")).getPersonID() == patientId){
             return new ModelAndView("AccessException", params) ;
         }
         else{
@@ -282,7 +282,7 @@ public class WebController {
         Patient pat = patientRepository.findById(mediaRepository.findById(UUID.fromString(mediaid)).get().patientId).get();
         pat.setProfile(UUID.fromString(mediaid));
         patientRepository.save(pat);
-        response.sendRedirect("/profile/" + mediaRepository.findById(UUID.fromString(mediaid)).get().patientId);
+        response.sendRedirect("/profile/" + pat.patientId);
     }
 
     /**
