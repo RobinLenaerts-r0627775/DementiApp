@@ -37,9 +37,6 @@ namespace DementiApp
             InitializeComponent();
             NavigationPage.SetHasBackButton(this, false);
 
-
-
-
         }
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
