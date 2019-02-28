@@ -42,6 +42,7 @@
 	<th scope="col">Age</th>
 	<th scope="col">Dementia stage</th>
 	<th scope="col">Edit</th>
+	<th scope="col">Remove</th>
 	<th scope="col">See#TMP</th>
 </tr>
 </thead>
@@ -54,6 +55,7 @@
 	<td th:text="${patient.birthDate}"></td>
 	<td th:text="${patient.dementiaLevel}"></td>
     <td><a th:href="@{'/patients/' + ${patient.patientId}}" class="btn btn-warning">Edit</a></td>
+	<td><button type="button" class="btn btn-danger">Remove</button></td>
 	<td><a th:href="@{'/profile/' + ${patient.patientId}}">See#TMP</a></td>
 
 </tr>

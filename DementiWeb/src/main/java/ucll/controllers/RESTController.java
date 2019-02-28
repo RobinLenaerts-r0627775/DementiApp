@@ -84,6 +84,7 @@ public class RESTController {
 
         UUID desId = desire.patientId;
         UUID gerId = germain.patientId;
+        UUID palId = palmyr.patientId;
 
         Nurse Tine = new Nurse("Tine", "Vandevelde", "nurse");
         nurseRepository.save(Tine);
@@ -100,11 +101,21 @@ public class RESTController {
         MediaFile desireFile3 = new MediaFile(null, desId, new File(fileDir + "jeanine.jpg"), "Dit is de beschrijving voor deze foto2", "test");
         MediaFile desireFile2 = new MediaFile(null, desId, new File(fileDir + "Temp2.jpg"), "Dit is een beschrijving voor deze foto", "test2");
         MediaFile germainFile1 = new MediaFile(null, gerId, new File(fileDir + "Temp3.jpg"), "Dit is de beschrijving voor de foto", "test");
+        MediaFile palmyrWed1 = new MediaFile(null, palId, new File(fileDir + "Wed1.jpg"), "Dit is de beschrijving voor de foto Wed 1", "Wedding");
+        MediaFile palmyrWed2 = new MediaFile(null, palId, new File(fileDir + "Wed2.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
+        MediaFile palmyrWed3 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
+        MediaFile palmyrSchool1 = new MediaFile(null, palId, new File(fileDir + "School1.jpg"), "Dit is de beschrijving voor de foto School 1", "School");
+        MediaFile palmyrSchool2 = new MediaFile(null, palId, new File(fileDir + "School2.jpg"), "Dit is de beschrijving voor de foto School 2", "School");
 
         mediaRepository.save(desireFile1);
         mediaRepository.save(desireFile2);
         mediaRepository.save(desireFile3);
         mediaRepository.save(germainFile1);
+        mediaRepository.save(palmyrWed1);
+        mediaRepository.save(palmyrWed2);
+        mediaRepository.save(palmyrWed3);
+        mediaRepository.save(palmyrSchool1);
+        mediaRepository.save(palmyrSchool2);
     }
 
     /**
