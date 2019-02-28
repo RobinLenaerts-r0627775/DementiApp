@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ucll.db.LoginRepository;
 import ucll.db.MediaRepository;
 import ucll.db.NurseRepository;
 import ucll.db.PatientRepository;
 import ucll.model.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 import org.springframework.web.servlet.ModelAndView;
@@ -182,7 +185,6 @@ public class WebController {
                     if (c.getName().equals("patientid") || c.getName().equals("name")) {
                         response.setContentType("text/html");
                         c.setMaxAge(1);
-                        System.out.println("cookie deleted: " + c.getName() + " " + c.getMaxAge() + " " + c.getValue());
                     }
                 }
             }
@@ -268,6 +270,22 @@ public class WebController {
     }
 
     /**
+     * method to handle the /profile/picture/{mediaid} request.
+     * changes the selected patients profile picture.
+     * @param request
+     * @param response
+     * @param mediaid
+     * @throws IOException
+     */
+    @RequestMapping("profile/picture/{mediaid}")
+    public void setProfilePic(HttpServletRequest request, HttpServletResponse response, @PathVariable String mediaid) throws IOException {
+        Patient pat = patientRepository.findById(mediaRepository.findById(UUID.fromString(mediaid)).get().patientId).get();
+        pat.setProfile(UUID.fromString(mediaid));
+        patientRepository.save(pat);
+        response.sendRedirect("/profile/" + mediaRepository.findById(UUID.fromString(mediaid)).get().patientId);
+    }
+
+    /**
      * handles the /patients requests. Sends you to an overview page of all the patients.
      * @param request
      * @param response
@@ -276,8 +294,13 @@ public class WebController {
     @RequestMapping("/patients")
     public ModelAndView overview(HttpServletRequest request, HttpServletResponse response){
         Map params = new HashMap<String, Object>();
-        params.put("patients", patientRepository.findAll());
-        return new ModelAndView("overviewAllPatients", params);
+        if(request.getSession(false) != null && ((LoginInfo) request.getSession().getAttribute("user")).getRole() == ROLE.NURSE) {
+            params.put("patients", patientRepository.findAll());
+            return new ModelAndView("overviewAllPatients", params);
+        }
+        else{
+            return new ModelAndView("AccessException", params);
+        }
     }
 
     /**
@@ -294,7 +317,7 @@ public class WebController {
         if (patient.patientId != null) {
             if (patientRepository.existsById(patient.patientId)) {
                 Patient pat = patientRepository.findById(patient.patientId).get();
-                pat.password = patient.password;
+                pat.setPassword(patient.getPassword());
                 pat.birthDate = patient.birthDate;
                 pat.firstName = patient.firstName;
                 pat.lastName = patient.lastName;
@@ -306,12 +329,66 @@ public class WebController {
                 response.sendRedirect("/patients/new");
             }
         } else {
-            Patient pat = new Patient(null, patient.firstName, patient.lastName, patient.birthDate, patient.dementiaLevel, null, patient.password);
+            Patient pat = new Patient(null, patient.firstName, patient.lastName, patient.birthDate, patient.dementiaLevel, null, patient.getPassword());
             patientRepository.save(pat);
-            loginRepository.save(LoginInfo.LoginInfomaker(patient.firstName + "." + patient.lastName, patient.password,patient.role, pat.patientId));
+            loginRepository.save(LoginInfo.LoginInfomaker(patient.firstName + "." + patient.lastName, patient.getPassword(), patient.role, pat.patientId));
         }
 
         return overview(request, response);
+    }
+
+    /**
+     * Handles the /webmedia/patientId request.
+     * checks the permissions of the user and sends you to the photoalbum page of the selected profile.
+     * @param request
+     * @param response
+     * @param patientId
+     * @return
+     */
+    @RequestMapping(value = "/webmedia/{patientId}")
+    public ModelAndView patientMedia(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID patientId){
+        Map params = new HashMap();
+        if(request.getSession(false) == null || (((LoginInfo) request.getSession().getAttribute("user")).getRole() != ROLE.NURSE && ((LoginInfo)request.getSession().getAttribute("user")).getPersonID() == patientId)){
+            return new ModelAndView("AccessException", params );
+        }
+        else{
+            params.put("photoAlbum", mediaRepository.getAllByPatientId(patientId));
+            params.put("patientId", patientId.toString());
+            return new ModelAndView("photoAlbum", params);
+        }
+    }
+
+    /**
+     * handles the /webmedia post request. makes the new mediaFile. and redirects you to the photo overview page of
+     * the relevant patient.
+     * @param request
+     * @param response
+     * @param patientId
+     * @param file
+     * @param category
+     * @param description
+     * @throws IOException
+     */
+    @RequestMapping(value = "/webmedia", method = RequestMethod.POST)
+    public void postMedia(HttpServletRequest request, HttpServletResponse response, @RequestParam("patientId") String patientId, @RequestParam("file") MultipartFile file, @RequestParam("category") String category, @RequestParam("description") String description) throws IOException {
+        MediaFile mediaFile = new MediaFile(UUID.fromString(patientId), convert(file), description, category);
+        mediaRepository.save(mediaFile);
+        response.sendRedirect("webmedia/" + mediaFile.patientId.toString());
+    }
+
+    /**
+     * method to convert Multipart file to java IO file
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public File convert(MultipartFile file) throws IOException {
+        File convFile = new File(file.getOriginalFilename());
+        convFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        return convFile;
     }
 }
 
