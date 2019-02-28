@@ -17,7 +17,7 @@ public class Patient implements Person{
     public int dementiaLevel;
 
     public UUID profilePicture;
-    public String password;
+    private String password;
 
     public ROLE role;
 
