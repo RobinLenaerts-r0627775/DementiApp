@@ -14,13 +14,14 @@ namespace DementiApp
     public partial class MemoryMediumPage : ContentPage
     {
 
-
+        private String userId;
         private Button clicked;
         int score = 0;
         Dictionary<string, Color> layout = new Dictionary<string, Color>();
         Dictionary<string, string> pics = new Dictionary<string, string>();
-        public MemoryMediumPage()
+        public MemoryMediumPage(string userid)
         {
+            userId = userid;
             var numbers = new List<int>(Enumerable.Range(0, 20));
             numbers.Shuffle();
             foreach (int i in numbers)
@@ -145,7 +146,7 @@ namespace DementiApp
                     score += 1;
                     if (score == 12)
                     {
-                        Navigation.PushAsync(new WinPage());
+                        Navigation.PushAsync(new WinPage(userId));
                     }
 
                 }

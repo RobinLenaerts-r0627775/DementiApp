@@ -1,6 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,17 +20,46 @@ namespace DementiApp
     public partial class MemoryPage : ContentPage
 	{
 
-        
+        private readonly HttpClient _client = new HttpClient();
+        private String userid;
         private Button clicked;
+        Byte[] byteArray = null;
+        private ObservableCollection<String> _photos;
         int score = 0;
         Dictionary<string, Color> layout = new Dictionary<string, Color>();
         Dictionary<string, string> pics = new Dictionary<string, string>();
-		public MemoryPage ()
+        List<Post> patientpics;
+
+        protected async override void OnAppearing()
+        {
+            try
+            {
+
+                string content = await _client.GetStringAsync("http://193.191.177.178:8080/api/media/" + userid);
+                List<Post> photos = JsonConvert.DeserializeObject<List<Post>>(content);
+                foreach (Post p in photos)
+                {
+                    Byte[] byteArray = await _client.GetByteArrayAsync("http://193.191.177.178:8080/api/media/data/" + p.MediaId);
+
+                    p.Data = ImageSource.FromStream(() => new MemoryStream(byteArray));
+                }
+                patientpics = photos;
+            }
+            catch(Exception e)
+            {
+                await DisplayAlert("Error", e.Message, "Ik heb het begrepen");
+            }
+        }
+
+        public MemoryPage (String userId)
 		{
+            userid = userId;
             var numbers = new List<int>(Enumerable.Range(0, 24));
             numbers.Shuffle();
             foreach(int i in numbers)
             {
+
+
                 Console.Write(""+i);
                 switch (numbers.IndexOf(i))
                     {
@@ -144,7 +179,16 @@ namespace DementiApp
             but.BackgroundColor = col;
             String pic = "";
             pics.TryGetValue(but.StyleId, out pic);
-            but.Image = pic;
+            //but.Image = pic;
+            var image = new Image();
+            image.Source = patientpics.ElementAt(0).Data;
+            // So it doesn't eat up clicks that should go to the button:
+            image.InputTransparent = true;
+            // Give it a margin so it doesn't extend to the edge of the grid
+            image.Margin = new Thickness(10);
+            ButtonGrid.Children.Add(image);
+            Grid.SetRow(image, 1);
+            Grid.SetColumn(image, 3);
             if (clicked == null) clicked = but;
             else
             {
@@ -160,7 +204,7 @@ namespace DementiApp
                     score += 1;
                     if (score == 12)
                     {
-                        Navigation.PushAsync(new WinPage());
+                        Navigation.PushAsync(new WinPage(userid));
                     }
 
                 }
@@ -210,5 +254,102 @@ namespace DementiApp
                 list[n] = value;
             }
         }
+    }
+    internal class Post : INotifyPropertyChanged
+    {
+
+
+        private ImageSource _data;
+
+        public ImageSource Data
+        {
+            get { return _data; }
+            set
+            {
+                _data = value;
+                OnPropertyChanged();
+
+            }
+
+        }
+
+        private string _mediaId;
+
+        [JsonProperty("mediaId")]
+        public string MediaId
+        {
+            get { return _mediaId; }
+            set
+            {
+                _mediaId = value;
+                OnPropertyChanged();
+            }
+
+        }
+
+        private string _patientId;
+
+        [JsonProperty("patientId")]
+        public string PatientId
+        {
+            get { return _patientId; }
+            set
+            {
+                _patientId = value;
+                OnPropertyChanged();
+            }
+
+        }
+
+        private string _category;
+
+        [JsonProperty("category")]
+        public string Category
+        {
+            get { return _category; }
+            set
+            {
+                _category = value;
+                OnPropertyChanged();
+            }
+
+        }
+
+        private string _file;
+
+        [JsonProperty("file")]
+        public string File
+        {
+            get { return _file; }
+            set
+            {
+                _file = value;
+                OnPropertyChanged();
+            }
+
+        }
+
+        private string _description;
+
+        [JsonProperty("description")]
+        public string Description
+        {
+            get { return _description; }
+            set
+            {
+                _description = value;
+                OnPropertyChanged();
+            }
+
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }

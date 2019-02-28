@@ -6,7 +6,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Memory Game" FontSize="30" TextColor="Black" HorizontalTextAlignment="Center"/>
-            <Grid>
+            <Grid x:Name="ButtonGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="150"/>
                     <RowDefinition Height="150"/>
