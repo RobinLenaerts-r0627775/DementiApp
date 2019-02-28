@@ -31,9 +31,10 @@
 <img src="" id="picture">
 <ul>
     <th:block th:each="photo : ${photoAlbum}">
-        <li><img th:src="@{'http://localhost:8080/api/media/data/' + ${photo.mediaId}}" width="225" height="auto"></li>
+        <li><img th:src="@{'/api/media/data/' + ${photo.mediaId}}" width="225" height="auto"></li>
         <li th:text="${photo.description}"></li>
         <li th:text="${photo.category}"></li>
+        <li><a th:href="@{'/profile/picture/' + ${photo.mediaId.toString()}}">Set as profile picture</a> </li>
     </th:block>
 </ul>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
