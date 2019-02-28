@@ -42,14 +42,14 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Margin="20">
+                            <StackLayout Margin="20" Style="{StaticResource stackStyle}">
                                 <StackLayout.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
                                 </StackLayout.GestureRecognizers>
 
                                 <StackLayout VerticalOptions="FillAndExpand" MinimumHeightRequest="500" BackgroundColor="LightGray" >
-                                    <Frame Margin="0" Padding="0" VerticalOptions="FillAndExpand" BackgroundColor="LightGray">
-                                        <Label Text="{Binding . }"/>
+                                    <Frame Style="{StaticResource frameStyle}" Margin="0" Padding="0" VerticalOptions="FillAndExpand" BackgroundColor="LightGray" >
+                                        <Label Style="{StaticResource labelStyle}" Text="{Binding . }" />
                                     </Frame>
                                 </StackLayout>
                             </StackLayout>
