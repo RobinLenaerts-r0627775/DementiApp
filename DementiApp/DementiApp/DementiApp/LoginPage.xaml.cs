@@ -82,7 +82,7 @@ namespace DementiApp
                 string content = JsonConvert.SerializeObject(log);
                 HttpResponseMessage mess = await _client.PostAsync(Url, new StringContent(content, Encoding.UTF8, "application/json"));
                 var result = await mess.Content.ReadAsStringAsync();
-                if (result == "True")
+                if (result != null)
                 {
                     await Navigation.PushAsync(new MainPage(result));
 
@@ -91,9 +91,9 @@ namespace DementiApp
                 {
                     Error.IsVisible = true;
                     Label l = (Label)Error.Content;
-                    l.Text = "Login lukt niet, probeer opnieuw";
+                    l.Text = "Deze inloggegevens kloppen niet, probeer opnieuw";
                     //Gewoon Voor Testen
-                    await Navigation.PushAsync(new MainPage(result));
+                    
                 }
             }
             catch (TimeoutException)

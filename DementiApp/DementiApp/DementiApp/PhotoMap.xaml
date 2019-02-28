@@ -3,9 +3,61 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DementiApp.PhotoMap">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="imageStyle" TargetType="{x:Type Image}">
+                <Setter Property="Margin" Value="0,50,0,50" />
+            </Style>
+            <Style x:Key="labelStyle" TargetType="{x:Type Label}">
+                <Setter Property="BackgroundColor" Value="#372c73"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="35"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+            </Style>
+            <Style x:Key="frameStyle" TargetType="{x:Type Frame}">
+                <Setter Property="CornerRadius" Value="25" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Margin" Value="50,10,50,50" />
+                <Setter Property="IsVisible" Value="True" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="BackgroundColor" Value="#372c73"/>
+            </Style>
+            <Style x:Key="stackStyle" TargetType="{x:Type StackLayout}">
+                <Setter Property="Margin" Value="0,20,0,20" />
+                <Setter Property="BackgroundColor" Value="LightGray" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-    <ContentPage.Content>
+    <StackLayout>
+        <StackLayout VerticalOptions="FillAndExpand">
 
-    </ContentPage.Content>
-    
+            <Frame Margin="10" Style="{StaticResource frameStyle}">
+                <Label Text="Categoriëen" FontSize="75" HorizontalTextAlignment="Center"  Style="{StaticResource labelStyle}"/>
+            </Frame>
+
+
+            <ListView x:Name="Categories" VerticalOptions="FillAndExpand" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Margin="20">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                                </StackLayout.GestureRecognizers>
+
+                                <StackLayout VerticalOptions="FillAndExpand" MinimumHeightRequest="500" BackgroundColor="LightGray" >
+                                    <Frame Margin="0" Padding="0" VerticalOptions="FillAndExpand" BackgroundColor="LightGray">
+                                        <Label Text="{Binding . }"/>
+                                    </Frame>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </StackLayout>
+
 </ContentPage>
