@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-
 <head>
 	<meta charset="UTF-8">
     <script src="http://localhost:8080/js/jquery-3.3.1.min.js"></script>
@@ -12,27 +11,31 @@
     <title>Spring Security Example </title>
 </head>
 <body>
-    <ul class="nav navbar-nav">
-        <div th:if="${#request.getSession(false) != null}">
-            <div th:if="true">
-                <li><a href="/patients">Overview</a></li>
-                <li><a href="/patients/new">Add a patient</a></li>
-            </div>
-            <div th:if="${session.user.getRole().toString() == 'PATIENT'}">
-                <li><a href="/profile">My profile</a></li>
-            </div>
-            <li><a href="/logout">Logout</a></li>
+<ul class="nav navbar-nav">
+    <div th:if="${#request.getSession(false) != null}">
+        <div th:if="true">
+            <li><a href="/patients">Overview</a></li>
+            <li><a href="/patients/new">Add a patient</a></li>
         </div>
-    </ul>
-    <div class="container">
-    <div th:unless="${error == null}">
-        <p th:text="${error}"></p>
+        <div th:if="${session.user.getRole().toString() == 'PATIENT'}">
+            <li><a href="/profile">My profile</a></li>
+        </div>
+        <li><a href="/logout">Logout</a></li>
     </div>
     <form th:action="@{/login}" method="post">
         <div class="input-group"><label class="input-group-addon"> User Name : <input type="text" name="username" class="form-control"/> </label></div>
         <div class="input-group"><label class="input-group-addon"> Password: <input type="password" name="password" class="form-control"/> </label></div>
         <div><input type="submit" value="Sign In" class="btn btn-success"/></div>
     </form>
+</ul>
+<div th:unless="${error == null}">
+    <p th:text="${error}"></p>
 </div>
+</div>
+<form th:action="@{/login}" method="post">
+    <div><label> User Name : <input type="text" name="username"/> </label></div>
+    <div><label> Password: <input type="password" name="password"/> </label></div>
+    <div><input type="submit" value="Sign In"/></div>
+</form>
 </body>
 </html>

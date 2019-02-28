@@ -22,6 +22,7 @@ namespace DementiApp
         private const string Url = "http://193.191.177.178:8080/api/media";
         private readonly HttpClient _client = new HttpClient();
         private ObservableCollection<Post> _posts;
+        private String userid;
         
 
         internal class Post : INotifyPropertyChanged
@@ -115,6 +116,7 @@ namespace DementiApp
             {
                 string content = await _client.GetStringAsync(Url);
                 List<Post> posts = JsonConvert.DeserializeObject<List<Post>>(content);
+                posts.FindAll(p => p.PatientId.Equals(userid));
                 foreach(Post p in posts){
                     Byte[] byteArray = await _client.GetByteArrayAsync("http://193.191.177.178:8080/api/media/data/"+p.MediaId);
                     
@@ -139,8 +141,9 @@ namespace DementiApp
             await DisplayAlert("Info", "Klik op een foto om een bijhorende tekst te bekijken", "Ik heb het begrepen");
         }
 
-        public StoryPage()
+        public StoryPage(String userId)
         {
+            userid = userId;
             InitializeComponent();
 
 

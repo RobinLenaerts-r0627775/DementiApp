@@ -7,5 +7,4 @@ import ucll.model.MediaFile;
 import java.util.UUID;
 
 public interface LoginRepository extends CrudRepository<LoginInfo, UUID> {
-    public LoginInfo getFirstByUsernameAndPassword(String username, String password);
 }

@@ -13,7 +13,7 @@ public class LoginInfo {
     public UUID id;
 
     private String username;
-    private String password;
+    private String Password;
     private UUID personID;
 
 
@@ -58,11 +58,11 @@ public class LoginInfo {
     }
 
     public String getPassword() {
-        return password;
+        return Password;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        Password = password;
     }
 
     public boolean equals(LoginInfo info){
