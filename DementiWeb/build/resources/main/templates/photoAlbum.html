@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="http://localhost:8080/js/jquery-3.3.1.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Photo album</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<ul class="nav navbar-nav">
+    <div th:if="${#request.getSession(false) != null}">
+        <div th:if="${session.user.getRole().toString() == 'NURSE'}">
+            <li><a href="/patients">Overview</a></li>
+            <li><a href="/patients/new">Add a patient</a></li>
+        </div>
+        <div th:if="${session.user.getRole().toString() == 'PATIENT'}">
+            <li><a href="/profile">My profile</a></li>
+        </div>
+        <li><a href="/logout">Logout</a></li>
+    </div>
+</ul>
+<form action="/webmedia" method="post" enctype="multipart/form-data">
+    <p><input type="hidden" name="patientId" th:value="${patientId}"></p>
+    <p><input type="file" name="file" accept="image/*" id="file" ></p>
+    <p><input type="text" name="category"></p>
+    <p><textarea name="description" id="description" cols="30" rows="10" placeholder="Description"></textarea></p>
+    <p><input type="submit" value="Upload"></p>
+</form>
+<img src="" id="picture">
+<ul>
+    <th:block th:each="photo : ${photoAlbum}">
+        <li><img th:src="@{'/api/media/data/' + ${photo.mediaId}}" width="225" height="auto"></li>
+        <li th:text="${photo.description}"></li>
+        <li th:text="${photo.category}"></li>
+        <li><a th:href="@{'/profile/picture/' + ${photo.mediaId.toString()}}">Set as profile picture</a> </li>
+    </th:block>
+</ul>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
