@@ -23,6 +23,7 @@ namespace DementiApp
         private readonly HttpClient _client = new HttpClient();
         private ObservableCollection<Post> _posts;
         private String userid;
+        private String category;
         
 
         internal class Post : INotifyPropertyChanged
@@ -66,6 +67,20 @@ namespace DementiApp
                 set
                 {
                     _patientId = value;
+                    OnPropertyChanged();
+                }
+
+            }
+
+            private string _category;
+
+            [JsonProperty("category")]
+            public string Category
+            {
+                get { return _category; }
+                set
+                {
+                    _category = value;
                     OnPropertyChanged();
                 }
 
@@ -117,7 +132,8 @@ namespace DementiApp
                 string content = await _client.GetStringAsync(Url);
                 List<Post> posts = JsonConvert.DeserializeObject<List<Post>>(content);
                 posts.FindAll(p => p.PatientId.Equals(userid));
-                foreach(Post p in posts){
+                posts.FindAll(p => p.Category.Equals(category));
+                foreach (Post p in posts){
                     Byte[] byteArray = await _client.GetByteArrayAsync("http://193.191.177.178:8080/api/media/data/"+p.MediaId);
                     
                     p.Data  = ImageSource.FromStream(() => new MemoryStream(byteArray));
@@ -141,9 +157,10 @@ namespace DementiApp
             await DisplayAlert("Info", "Klik op een foto om een bijhorende tekst te bekijken", "Ik heb het begrepen");
         }
 
-        public StoryPage(String userId)
+        public StoryPage(String userId, String cat)
         {
             userid = userId;
+            category = cat;
             InitializeComponent();
 
 
