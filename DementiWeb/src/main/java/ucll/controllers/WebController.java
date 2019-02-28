@@ -186,7 +186,6 @@ public class WebController {
                     if (c.getName().equals("patientid") || c.getName().equals("name")) {
                         response.setContentType("text/html");
                         c.setMaxAge(1);
-                        System.out.println("cookie deleted: " + c.getName() + " " + c.getMaxAge() + " " + c.getValue());
                     }
                 }
             }
@@ -272,6 +271,22 @@ public class WebController {
     }
 
     /**
+     * method to handle the /profile/picture/{mediaid} request.
+     * changes the selected patients profile picture.
+     * @param request
+     * @param response
+     * @param mediaid
+     * @throws IOException
+     */
+    @RequestMapping("profile/picture/{mediaid}")
+    public void setProfilePic(HttpServletRequest request, HttpServletResponse response, @PathVariable String mediaid) throws IOException {
+        Patient pat = patientRepository.findById(mediaRepository.findById(UUID.fromString(mediaid)).get().patientId).get();
+        pat.setProfile(UUID.fromString(mediaid));
+        patientRepository.save(pat);
+        response.sendRedirect("/profile/" + mediaRepository.findById(UUID.fromString(mediaid)).get().patientId);
+    }
+
+    /**
      * handles the /patients requests. Sends you to an overview page of all the patients.
      * @param request
      * @param response
@@ -280,8 +295,13 @@ public class WebController {
     @RequestMapping("/patients")
     public ModelAndView overview(HttpServletRequest request, HttpServletResponse response){
         Map params = new HashMap<String, Object>();
-        params.put("patients", patientRepository.findAll());
-        return new ModelAndView("overviewAllPatients", params);
+        if(request.getSession(false) != null && ((LoginInfo) request.getSession().getAttribute("user")).getRole() == ROLE.NURSE) {
+            params.put("patients", patientRepository.findAll());
+            return new ModelAndView("overviewAllPatients", params);
+        }
+        else{
+            return new ModelAndView("AccessException", params);
+        }
     }
 
     /**
@@ -290,6 +310,7 @@ public class WebController {
      * @param patient
      * @param request
      * @param response
+     * @throws IOException
      * @return
      */
     @RequestMapping(value = "/patients", method = RequestMethod.POST)
@@ -319,7 +340,7 @@ public class WebController {
     }
 
     /**
-     * Handles the /media/patientId request.
+     * Handles the /webmedia/patientId request.
      * checks the permissions of the user and sends you to the photoalbum page of the selected profile.
      * @param request
      * @param response
@@ -329,7 +350,7 @@ public class WebController {
     @RequestMapping(value = "/webmedia/{patientId}")
     public ModelAndView patientMedia(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID patientId){
         Map params = new HashMap();
-        if(request.getSession(false) == null || ((LoginInfo) request.getSession().getAttribute("user")).getRole() != ROLE.NURSE){
+        if(request.getSession(false) == null || (((LoginInfo) request.getSession().getAttribute("user")).getRole() != ROLE.NURSE && ((LoginInfo)request.getSession().getAttribute("user")).getPersonID() == patientId)){
             return new ModelAndView("AccessException", params );
         }
         else{
@@ -340,7 +361,7 @@ public class WebController {
     }
 
     /**
-     * handles the webmedia post request. makes the new mediaFile. and redirects you to the photo overview page of
+     * handles the /webmedia post request. makes the new mediaFile. and redirects you to the photo overview page of
      * the relevant patient.
      * @param request
      * @param response
