@@ -35,7 +35,7 @@ namespace DementiApp
         {
             userid = userId;
             InitializeComponent();
-
+            NavigationPage.SetHasBackButton(this, false);
 
 
 
@@ -49,8 +49,6 @@ namespace DementiApp
             Frame frame = (Frame)stack2.Children[0];
             Label l = (Label)frame.Content;
             
-
-            stack.get
             Navigation.PushAsync(new StoryPage(userid, l.Text));
         }
     }

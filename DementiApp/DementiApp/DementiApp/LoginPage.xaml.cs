@@ -66,8 +66,13 @@ namespace DementiApp
         public LoginPage ()
 		{
             InitializeComponent();
-            
+            NavigationPage.SetHasBackButton(this, false);
 
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
         }
 
         private async void Login_Clicked(object sender, EventArgs e)
@@ -84,7 +89,8 @@ namespace DementiApp
                 var result = await mess.Content.ReadAsStringAsync();
                 if (result != null)
                 {
-                    await Navigation.PushAsync(new MainPage(result));
+                    String userid = result.Substring(1, result.Length - 2);
+                    await Navigation.PushAsync(new MainPage(userid));
 
                 }
                 else

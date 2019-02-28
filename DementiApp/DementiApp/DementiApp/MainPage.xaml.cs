@@ -182,7 +182,6 @@ namespace DementiApp
         public MainPage(String userId)
         {
             this.userid = userId;
-            userid = userid.Substring(1, userid.Length - 2);
             InitializeComponent();
             NavigationPage.SetHasBackButton(this, false);
 
@@ -193,10 +192,10 @@ namespace DementiApp
         {
             await Navigation.PushAsync(new MemoryDiffPage(userid));
         }
-        async void ToStory(object sender, EventArgs e)
+        /*async void ToStory(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new StoryPage(userid));
-        }
+        }*/
         async void ToMusicQuiz(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new MusicQuizPage());
@@ -205,6 +204,22 @@ namespace DementiApp
         async void ToPhotoMap(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new PhotoMap(userid));
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Device.BeginInvokeOnMainThread(async () => {
+                var result = await this.DisplayAlert("Pas op!", "Wil je zeker uitloggen?", "Ja", "Nee");
+                if (result) await this.Navigation.PushAsync(new LoginPage()); // or anything else
+            });
+
+            return true;
+
+
+        }
+
+        async void showAlert() {
+            await DisplayAlert("Pas op!", "Ben je zeker dat je wilt uitloggen?", "Ja", "Nee");
         }
     }
 }

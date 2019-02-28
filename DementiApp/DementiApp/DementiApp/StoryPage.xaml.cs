@@ -19,7 +19,7 @@ namespace DementiApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StoryPage : ContentPage
     {
-        private const string Url = "http://193.191.177.178:8080/api/media";
+        private const string Url = "http://193.191.177.178:8080/api/media/";
         private readonly HttpClient _client = new HttpClient();
         private ObservableCollection<Post> _posts;
         private String userid;
@@ -129,10 +129,10 @@ namespace DementiApp
             showMessage();
             try
             {
-                string content = await _client.GetStringAsync(Url);
+                string url = Url + userid;
+                string content = await _client.GetStringAsync(Url+userid);
                 List<Post> posts = JsonConvert.DeserializeObject<List<Post>>(content);
-                posts.FindAll(p => p.PatientId.Equals(userid));
-                posts.FindAll(p => p.Category.Equals(category));
+                posts = posts.FindAll(p => p.Category.Equals(category));
                 foreach (Post p in posts){
                     Byte[] byteArray = await _client.GetByteArrayAsync("http://193.191.177.178:8080/api/media/data/"+p.MediaId);
                     
@@ -162,10 +162,10 @@ namespace DementiApp
             userid = userId;
             category = cat;
             InitializeComponent();
+            NavigationPage.SetHasBackButton(this, false);
 
 
-           
-            
+
             NavigationPage.SetHasBackButton(this, false);
 
             /*Binding bindingObject = new Binding("_posts");
