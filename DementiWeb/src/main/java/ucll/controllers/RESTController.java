@@ -48,6 +48,15 @@ public class RESTController {
     @Autowired
     private LoginRepository loginRepository;
 
+
+    /**
+     * Constructor
+     *
+     * @param patientRepository
+     * @param nurseRepository
+     * @param mediaRepository
+     * @param loginRepository
+     */
     public RESTController(PatientRepository patientRepository, NurseRepository nurseRepository, MediaRepository mediaRepository, LoginRepository loginRepository) {
         this.patientRepository = patientRepository;
         this.nurseRepository = nurseRepository;
@@ -56,11 +65,17 @@ public class RESTController {
         setTestData();
     }
 
+    /**
+     * TestData
+     */
     public void setTestData(){
 
-        Patient desire = new Patient(null, "Désire", "Klaes", null, 1, null, "sinter");
-        Patient germain = new Patient(null, "Germain", "Van Hier", null, 1, null, "ucll");
-        Patient palmyr = new Patient(null, "Palmyr", "Leysens", null, 2, null, "t");
+        MediaFile defaultProfilePicture = new MediaFile(null, null, new File(fileDir + "Profile.png"), "Default Profile picture", "default");
+        mediaRepository.save(defaultProfilePicture);
+
+        Patient desire = new Patient(null, "Désire", "Klaes", null, 1, defaultProfilePicture.mediaId, "sinter");
+        Patient germain = new Patient(null, "Germain", "Van Hier", null, 1, defaultProfilePicture.mediaId, "ucll");
+        Patient palmyr = new Patient(null, "Palmyr", "Leysens", null, 2, defaultProfilePicture.mediaId, "t");
 
         patientRepository.save(desire);
         patientRepository.save(germain);
@@ -80,20 +95,11 @@ public class RESTController {
         for (Nurse n : nurseRepository.findAll()) {
             loginRepository.save(LoginInfo.LoginInfomaker(n.firstName + "." + n.lastName, n.password,n.role, n.nurseID));
         }
-        /*List<Patient> all = StreamSupport.stream(patientRepository.findAll().spliterator(), false).collect(Collectors.toList());
-        for (int i = 0; i < all.size(); i++) {
-            if (all.get(i).getFirstName().equals("Germain")){
-                gerId = all.get(i).patientId;
-            }
-            if (all.get(i).getLastName().equals("Klaas")){
-                desId = all.get(i).patientId;
-            }
-        }*/
 
-        MediaFile desireFile1 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp1.jpg"), "Dit is de beschrijving voor deze foto", "test");
-        MediaFile desireFile3 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "jeanine.jpg"), "Dit is de beschrijving voor deze foto2", "test");
-        MediaFile desireFile2 = new MediaFile(UUID.randomUUID(), desId, new File(fileDir + "Temp2.jpg"), "Dit is een beschrijving voor deze foto", "test2");
-        MediaFile germainFile1 = new MediaFile(UUID.randomUUID(), gerId, new File(fileDir + "Temp3.jpg"), "Dit is de beschrijving voor de foto", "test");
+        MediaFile desireFile1 = new MediaFile(null, desId, new File(fileDir + "Temp1.jpg"), "Dit is de beschrijving voor deze foto", "test");
+        MediaFile desireFile3 = new MediaFile(null, desId, new File(fileDir + "jeanine.jpg"), "Dit is de beschrijving voor deze foto2", "test");
+        MediaFile desireFile2 = new MediaFile(null, desId, new File(fileDir + "Temp2.jpg"), "Dit is een beschrijving voor deze foto", "test2");
+        MediaFile germainFile1 = new MediaFile(null, gerId, new File(fileDir + "Temp3.jpg"), "Dit is de beschrijving voor de foto", "test");
 
         mediaRepository.save(desireFile1);
         mediaRepository.save(desireFile2);
@@ -101,6 +107,12 @@ public class RESTController {
         mediaRepository.save(germainFile1);
     }
 
+    /**
+     * function that returns the list of MediaFile of a person with patientId
+     *
+     * @param id
+     * @return
+     */
     private List<MediaFile> getForId(UUID id){
         List<MediaFile> all = StreamSupport.stream(mediaRepository.findAll().spliterator(), false).collect(Collectors.toList());
         List<MediaFile> result = new ArrayList<>();
