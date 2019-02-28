@@ -2,9 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org" >
 <head>
     <title th:text="${patient.firstName} + ' ' + ${patient.lastName}"></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script src="http://localhost:8080/js/jquery-3.3.1.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
 <ul class="nav navbar-nav">
@@ -22,7 +24,7 @@
 <h2>Overview Page</h2>
 <div class="container">
 <ul>
-    <li><img th:src="@{'http://localhost:8080/api/media/data/' + ${patient.profilePicture}}" id="picture"></li>
+    <li><img th:src="@{'/api/media/data/' + ${patient.profilePicture}}" id="picture" class="img-circle img-responsive"></li>
     <li>
         <form th:action="@{'/setProfilePicture/' + ${patientId}}" method="post" enctype="multipart/form-data">
             <p><input type="hidden" name="patientId" th:value="${patientId}"></p>
@@ -30,7 +32,7 @@
             <p><input type="text" name="category"></p>
             <p><textarea name="description" id="description" cols="30" rows="10" placeholder="Description"></textarea></p>
             <p><input type="submit" value="Change Profile"></p>
-        </form></li>
+        </form></li>-->
     <li th:text="${patient.firstName}"></li>
     <li th:text="${patient.lastName}"></li>
     <li th:text="${patient.birthDate}"></li>

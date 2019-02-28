@@ -2,6 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
+	<meta charset="UTF-8">
+    <script src="http://localhost:8080/js/jquery-3.3.1.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <title>Spring Security Example </title>
 </head>
 <body>
@@ -16,9 +22,15 @@
         </div>
         <li><a href="/logout">Logout</a></li>
     </div>
+    <form th:action="@{/login}" method="post">
+        <div class="input-group"><label class="input-group-addon"> User Name : <input type="text" name="username" class="form-control"/> </label></div>
+        <div class="input-group"><label class="input-group-addon"> Password: <input type="password" name="password" class="form-control"/> </label></div>
+        <div><input type="submit" value="Sign In" class="btn btn-success"/></div>
+    </form>
 </ul>
 <div th:unless="${error == null}">
     <p th:text="${error}"></p>
+</div>
 </div>
 <form th:action="@{/login}" method="post">
     <div><label> User Name : <input type="text" name="username"/> </label></div>
