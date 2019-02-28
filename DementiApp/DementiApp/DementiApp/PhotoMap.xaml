@@ -44,7 +44,6 @@
                         <ViewCell>
                             <StackLayout Margin="20">
                                 <StackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
                                 </StackLayout.GestureRecognizers>
 
                                 <StackLayout VerticalOptions="FillAndExpand" MinimumHeightRequest="500" BackgroundColor="LightGray" >

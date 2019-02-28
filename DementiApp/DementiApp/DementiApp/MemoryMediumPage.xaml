@@ -35,7 +35,7 @@
                 <Button x:Name="f10" StyleId="10" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="3" Grid.Row="2" Clicked="Button_Clicked"/>
                 <Button x:Name="f11" StyleId="11" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="3" Grid.Row="3" Clicked="Button_Clicked"/>
                 <Button x:Name="f12" StyleId="12" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="4" Grid.Row="0" Clicked="Button_Clicked"/>
-                <Button x:Name="f13" StyleId="13" BackgroundColor="Black" BorderWidth="5"  BorderColor="Transparent" Grid.Column="4" Grid.Row="1" Clicked="Button_Clicked"/>
+                <Button x:Name="f13" StyleId="13" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="4" Grid.Row="1" Clicked="Button_Clicked"/>
                 <Button x:Name="f14" StyleId="14" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="4" Grid.Row="2" Clicked="Button_Clicked"/>
                 <Button x:Name="f15" StyleId="15" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="4" Grid.Row="3" Clicked="Button_Clicked"/>
                 <Button x:Name="f16" StyleId="16" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="5" Grid.Row="0" Clicked="Button_Clicked"/>
