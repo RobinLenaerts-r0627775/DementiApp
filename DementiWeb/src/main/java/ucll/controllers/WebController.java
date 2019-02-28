@@ -298,7 +298,7 @@ public class WebController {
         if (patient.patientId != null) {
             if (patientRepository.existsById(patient.patientId)) {
                 Patient pat = patientRepository.findById(patient.patientId).get();
-                pat.password = patient.password;
+                pat.setPassword(patient.getPassword());
                 pat.birthDate = patient.birthDate;
                 pat.firstName = patient.firstName;
                 pat.lastName = patient.lastName;
@@ -310,9 +310,9 @@ public class WebController {
                 response.sendRedirect("/patients/new");
             }
         } else {
-            Patient pat = new Patient(null, patient.firstName, patient.lastName, patient.birthDate, patient.dementiaLevel, null, patient.password);
+            Patient pat = new Patient(null, patient.firstName, patient.lastName, patient.birthDate, patient.dementiaLevel, null, patient.getPassword());
             patientRepository.save(pat);
-            loginRepository.save(LoginInfo.LoginInfomaker(patient.firstName + "." + patient.lastName, patient.password,patient.role, pat.patientId));
+            loginRepository.save(LoginInfo.LoginInfomaker(patient.firstName + "." + patient.lastName, patient.getPassword(),patient.role, pat.patientId));
         }
 
         return overview(request, response);

@@ -32,8 +32,8 @@ import java.util.stream.StreamSupport;
 @RestController
 @RequestMapping("/api")
 public class RESTController {
-    //private static String fileDir = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";  //local
-    private static String fileDir = System.getProperty("user.dir") + "/resources/main/static/images/";    //server
+    private static String fileDir = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";  //local
+    //private static String fileDir = System.getProperty("user.dir") + "/resources/main/static/images/";    //server
 
 
     @Autowired //Inject?
@@ -90,7 +90,7 @@ public class RESTController {
         nurseRepository.save(Tine);
 
         for (Patient p : patientRepository.findAll()) {
-            LoginInfo tmp = LoginInfo.LoginInfomaker(p.firstName + "." + p.lastName, p.password,p.role, p.patientId);
+            LoginInfo tmp = LoginInfo.LoginInfomaker(p.firstName + "." + p.lastName, p.getPassword(),p.role, p.patientId);
             loginRepository.save(tmp);
         }
         for (Nurse n : nurseRepository.findAll()) {
@@ -128,7 +128,7 @@ public class RESTController {
         List<MediaFile> all = StreamSupport.stream(mediaRepository.findAll().spliterator(), false).collect(Collectors.toList());
         List<MediaFile> result = new ArrayList<>();
         for (int i = 0; i < all.size(); i++) {
-            if (all.get(i).getPatientId().equals(id)){
+            if (all.get(i).getPatientId() != null && all.get(i).getPatientId().equals(id)){
                 result.add(all.get(i));
             }
         }
@@ -150,6 +150,21 @@ public class RESTController {
         }
 
         else return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/patients/category/{patientId}")
+    public ResponseEntity<List<String>> getCategoriesFor(@PathVariable UUID patientId){
+        Optional<Patient> op = patientRepository.findById(patientId);
+        if (op.isPresent())
+        {
+            List<String> result = new ArrayList<>();
+            for (MediaFile file : getForId(patientId)){
+                if (!result.contains(file.category)){
+                    result.add(file.category);
+                }
+            }
+            return ResponseEntity.ok(result);
+        } else return ResponseEntity.notFound().build();
     }
 
     @Transactional
