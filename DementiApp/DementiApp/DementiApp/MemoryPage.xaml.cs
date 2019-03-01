@@ -171,6 +171,7 @@ namespace DementiApp
 
         private void Button_Clicked(object sender, EventArgs e)
         {
+            VisualState vs = new VisualState();
             Button but = (Button)sender;
             but.IsEnabled = false;
             but.BorderColor = Color.LightYellow;
@@ -180,15 +181,31 @@ namespace DementiApp
             String pic = "";
             pics.TryGetValue(but.StyleId, out pic);
             //but.Image = pic;
-            var image = new Image();
-            image.Source = patientpics.ElementAt(0).Data;
-            // So it doesn't eat up clicks that should go to the button:
-            image.InputTransparent = true;
-            // Give it a margin so it doesn't extend to the edge of the grid
-            image.Margin = new Thickness(10);
-            ButtonGrid.Children.Add(image);
-            Grid.SetRow(image, 1);
-            Grid.SetColumn(image, 3);
+            var image = (but.Parent.FindByName("f0" + but.StyleId) as Image);
+            if (image.Source == null)
+            {
+                //var image = new Image();
+                image.Source = patientpics.ElementAt(0).Data;
+                // So it doesn't eat up clicks that should go to the button:
+                image.InputTransparent = true;
+                // Give it a margin so it doesn't extend to the edge of the grid
+                image.Margin = new Thickness(10);
+                ButtonGrid.Children.Add(image);
+
+                int x = 0;
+                int y = 0;
+                int z;
+                int.TryParse(but.StyleId, out z);
+                z = z;
+                x = z / 4;
+                y = z % 4;
+                Grid.SetRow(image, y);
+                Grid.SetColumn(image, x + 1);
+            }
+            else
+            {
+                image.IsVisible = true;
+            }
             if (clicked == null) clicked = but;
             else
             {
@@ -217,7 +234,8 @@ namespace DementiApp
                     
                     Device.StartTimer(TimeSpan.FromSeconds(2), () =>
                     {
-
+                        (but.Parent.FindByName("f0" + but.StyleId) as Image).IsVisible = false;
+                        (but.Parent.FindByName("f0" + clicked.StyleId) as Image).IsVisible = false;
                         but.IsEnabled = true;
                         clicked.IsEnabled = true;
                         but.BorderColor = Color.Transparent;

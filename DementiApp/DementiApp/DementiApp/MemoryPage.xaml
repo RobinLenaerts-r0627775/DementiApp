@@ -24,29 +24,53 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
                 <Button x:Name="f0" StyleId="0" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="1" Grid.Row="0" Clicked="Button_Clicked"/>
+                <Image x:Name="f00" StyleId ="i0" InputTransparent="true" Margin="1"  Grid.Column="1" Grid.Row="0"/>
                 <Button x:Name="f1" StyleId="1" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="1" Grid.Row="1"  Clicked="Button_Clicked"/>
+                <Image x:Name="f01" StyleId ="i1" InputTransparent="true" Margin="1"  Grid.Column="1" Grid.Row="1"/>
                 <Button x:Name="f2" StyleId="2" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="1" Grid.Row="2" Clicked="Button_Clicked"/>
+                <Image x:Name="f02" StyleId ="i2" InputTransparent="true" Margin="1"  Grid.Column="1" Grid.Row="2"/>
                 <Button x:Name="f3" StyleId="3" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="1" Grid.Row="3" Clicked="Button_Clicked"/>
+                <Image x:Name="f03" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="1" Grid.Row="3"/>
                 <Button x:Name="f4" StyleId="4" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="2" Grid.Row="0" Clicked="Button_Clicked"/>
+                <Image x:Name="f04" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="2" Grid.Row="0"/>
                 <Button x:Name="f5" StyleId="5" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="2" Grid.Row="1" Clicked="Button_Clicked"/>
+                <Image x:Name="f05" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="2" Grid.Row="1"/>
                 <Button x:Name="f6" StyleId="6" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="2" Grid.Row="2" Clicked="Button_Clicked"/>
+                <Image x:Name="f06" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="2" Grid.Row="2"/>
                 <Button x:Name="f7" StyleId="7" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="2" Grid.Row="3" Clicked="Button_Clicked"/>
+                <Image x:Name="f07" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="2" Grid.Row="3"/>
                 <Button x:Name="f8" StyleId="8" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="3" Grid.Row="0" Clicked="Button_Clicked"/>
+                <Image x:Name="f08" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="3" Grid.Row="0"/>
                 <Button x:Name="f9" StyleId="9" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="3" Grid.Row="1" Clicked="Button_Clicked"/>
+                <Image x:Name="f09" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="3" Grid.Row="1"/>
                 <Button x:Name="f10" StyleId="10" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="3" Grid.Row="2" Clicked="Button_Clicked"/>
+                <Image x:Name="f010" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="3" Grid.Row="2"/>
                 <Button x:Name="f11" StyleId="11" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="3" Grid.Row="3" Clicked="Button_Clicked"/>
+                <Image x:Name="f011" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="3" Grid.Row="3"/>
                 <Button x:Name="f12" StyleId="12" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="4" Grid.Row="0" Clicked="Button_Clicked"/>
+                <Image x:Name="f012" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="4" Grid.Row="0"/>
                 <Button x:Name="f13" StyleId="13" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="4" Grid.Row="1" Clicked="Button_Clicked"/>
+                <Image x:Name="f013" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="4" Grid.Row="1"/>
                 <Button x:Name="f14" StyleId="14" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="4" Grid.Row="2" Clicked="Button_Clicked"/>
+                <Image x:Name="f014" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="4" Grid.Row="2"/>
                 <Button x:Name="f15" StyleId="15" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="4" Grid.Row="3" Clicked="Button_Clicked"/>
+                <Image x:Name="f015" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="4" Grid.Row="3"/>
                 <Button x:Name="f16" StyleId="16" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="5" Grid.Row="0" Clicked="Button_Clicked"/>
+                <Image x:Name="f016" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="5" Grid.Row="0"/>
                 <Button x:Name="f17" StyleId="17" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="5" Grid.Row="1" Clicked="Button_Clicked"/>
+                <Image x:Name="f017" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="5" Grid.Row="1"/>
                 <Button x:Name="f18" StyleId="18" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="5" Grid.Row="2" Clicked="Button_Clicked"/>
+                <Image x:Name="f018" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="5" Grid.Row="2"/>
                 <Button x:Name="f19" StyleId="19" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="5" Grid.Row="3" Clicked="Button_Clicked"/>
+                <Image x:Name="f019" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="5" Grid.Row="3"/>
                 <Button x:Name="f20" StyleId="20" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="6" Grid.Row="0" Clicked="Button_Clicked"/>
+                <Image x:Name="f020" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="6" Grid.Row="0"/>
                 <Button x:Name="f21" StyleId="21" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="6" Grid.Row="1" Clicked="Button_Clicked"/>
+                <Image x:Name="f021" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="6" Grid.Row="1"/>
                 <Button x:Name="f22" StyleId="22" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="6" Grid.Row="2" Clicked="Button_Clicked"/>
+                <Image x:Name="f022" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="6" Grid.Row="2"/>
                 <Button x:Name="f23" StyleId="23" BackgroundColor="#372c73" BorderWidth="5"  BorderColor="Transparent" Grid.Column="6" Grid.Row="3" Clicked="Button_Clicked"/>
+                <Image x:Name="f023" StyleId ="i3" InputTransparent="true" Margin="1"  Grid.Column="6" Grid.Row="3"/>
             </Grid>
         </StackLayout>
     </ContentPage.Content>
