@@ -395,6 +395,7 @@ public class WebController {
     public void deletePatient(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID patientId) throws IOException {
         Optional<Patient> op = patientRepository.findById(patientId);
         if (op.isPresent()){
+            loginRepository.delete(loginRepository.getFirstByPersonID(patientId));
             patientRepository.deleteById(patientId);
             response.sendRedirect("/patients");
         } else {
