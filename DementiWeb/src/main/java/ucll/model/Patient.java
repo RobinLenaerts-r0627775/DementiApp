@@ -13,8 +13,8 @@ public class Patient implements Person{
     @GeneratedValue(strategy = GenerationType.AUTO)
     public UUID patientId;
     public String firstName,lastName;
-    public String birthDate;
-    public int dementiaLevel;
+    //public String birthDate;
+    //public int dementiaLevel;
 
     public UUID profilePicture;
     private String password;
@@ -23,12 +23,12 @@ public class Patient implements Person{
 
     public Patient(){}
 
-    public Patient(UUID patientId, String firstName, String lastName, String birthDate, int dementiaLevel, UUID profilePicture, String password) {
+    public Patient(UUID patientId, String firstName, String lastName, /*String birthDate, int dementiaLevel,*/ UUID profilePicture, String password) {
         setPatientId(patientId);
         setFirstName(firstName);
         setLastName(lastName);
-        setBirthDate(birthDate);
-        setDementiaLevel(dementiaLevel);
+        //setBirthDate(birthDate);
+        //setDementiaLevel(dementiaLevel);
         setProfile(profilePicture);
         setPassword(password);
         this.role = ROLE.PATIENT;
@@ -44,9 +44,9 @@ public class Patient implements Person{
         return lastName;
     }
 
-    public String getBirthDate() {
+    /*public String getBirthDate() {
         return birthDate;
-    }
+    }*/
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -56,9 +56,9 @@ public class Patient implements Person{
         this.lastName = lastName;
     }
 
-    public void setBirthDate(String birthDate) {
+    /*public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
-    }
+    }*/
 
     public UUID getPatientId() {
         return patientId;
@@ -68,13 +68,13 @@ public class Patient implements Person{
         this.patientId = patientID;
     }
 
-    public int getDementiaLevel() {
+    /*public int getDementiaLevel() {
         return dementiaLevel;
     }
 
     public void setDementiaLevel(int dementiaLevel) {
         this.dementiaLevel = dementiaLevel;
-    }
+    }*/
 
     public UUID getProfilePicture() {
         return profilePicture;

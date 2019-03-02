@@ -318,10 +318,10 @@ public class WebController {
             if (patientRepository.existsById(patient.patientId)) {
                 Patient pat = patientRepository.findById(patient.patientId).get();
                 pat.setPassword(patient.getPassword());
-                pat.birthDate = patient.birthDate;
+                //pat.birthDate = patient.birthDate;
                 pat.firstName = patient.firstName;
                 pat.lastName = patient.lastName;
-                pat.dementiaLevel = patient.dementiaLevel;
+                //pat.dementiaLevel = patient.dementiaLevel;
                 pat.profilePicture = patient.profilePicture;
                 patientRepository.save(pat);
             } else {
@@ -329,7 +329,7 @@ public class WebController {
                 response.sendRedirect("/patients/new");
             }
         } else {
-            Patient pat = new Patient(null, patient.firstName, patient.lastName, patient.birthDate, patient.dementiaLevel, null, patient.getPassword());
+            Patient pat = new Patient(null, patient.firstName, patient.lastName, /*patient.birthDate, patient.dementiaLevel, */null, patient.getPassword());
             patientRepository.save(pat);
             loginRepository.save(LoginInfo.LoginInfomaker(patient.firstName + "." + patient.lastName, patient.getPassword(), patient.role, pat.patientId));
         }
@@ -389,6 +389,23 @@ public class WebController {
         fos.write(file.getBytes());
         fos.close();
         return convFile;
+    }
+
+    @RequestMapping(value = "/patients/delete/{patientId}")
+    public void deletePatient(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID patientId) throws IOException {
+        patientRepository.deleteById(patientId);
+        response.sendRedirect("/patients");
+    }
+
+    @RequestMapping(value = "/webmedia/delete{mediaId}")
+    public void deleteMedia(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID mediaId) throws IOException {
+        Optional<MediaFile> mf = mediaRepository.findById(mediaId);
+        if (mf.isPresent()){
+            mediaRepository.deleteById(mediaId);
+            response.sendRedirect("webmedia/" + mf.get().patientId.toString());
+        } else {
+            //TODO errorpage
+        }
     }
 }
 

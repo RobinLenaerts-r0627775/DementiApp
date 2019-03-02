@@ -71,9 +71,9 @@ public class RESTController {
         MediaFile defaultProfilePicture = new MediaFile(null, null, new File(fileDir + "Profile.png"), "Default Profile picture", "default");
         mediaRepository.save(defaultProfilePicture);
 
-        Patient desire = new Patient(null, "Désire", "Klaes", null, 1, defaultProfilePicture.mediaId, "sinter");
-        Patient germain = new Patient(null, "Germain", "Van Hier", null, 1, defaultProfilePicture.mediaId, "ucll");
-        Patient palmyr = new Patient(null, "Palmyr", "Leysens", null, 2, defaultProfilePicture.mediaId, "t");
+        Patient desire = new Patient(null, "Désire", "Klaes", defaultProfilePicture.mediaId, "sinter");
+        Patient germain = new Patient(null, "Germain", "Van Hier", defaultProfilePicture.mediaId, "ucll");
+        Patient palmyr = new Patient(null, "Palmyr", "Leysens", defaultProfilePicture.mediaId, "t");
 
         patientRepository.save(desire);
         patientRepository.save(germain);
