@@ -393,16 +393,21 @@ public class WebController {
 
     @RequestMapping(value = "/patients/delete/{patientId}")
     public void deletePatient(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID patientId) throws IOException {
-        patientRepository.deleteById(patientId);
-        response.sendRedirect("/patients");
+        Optional<Patient> op = patientRepository.findById(patientId);
+        if (op.isPresent()){
+            patientRepository.deleteById(patientId);
+            response.sendRedirect("/patients");
+        } else {
+            //TODO errorpage
+        }
     }
 
-    @RequestMapping(value = "/webmedia/delete{mediaId}")
+    @RequestMapping(value = "/webmedia/delete/{mediaId}")
     public void deleteMedia(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID mediaId) throws IOException {
         Optional<MediaFile> mf = mediaRepository.findById(mediaId);
         if (mf.isPresent()){
             mediaRepository.deleteById(mediaId);
-            response.sendRedirect("webmedia/" + mf.get().patientId.toString());
+            response.sendRedirect("/webmedia/" + mf.get().patientId.toString());
         } else {
             //TODO errorpage
         }
