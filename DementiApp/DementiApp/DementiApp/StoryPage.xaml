@@ -38,7 +38,7 @@
             </Frame>
 
 
-            <ListView x:Name="MyListView" VerticalOptions="FillAndExpand" HasUnevenRows="True">
+            <ListView x:Name="MyListView" VerticalOptions="FillAndExpand" HasUnevenRows="True" BackgroundColor="LightGray" ItemSelected="MyListView_ItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

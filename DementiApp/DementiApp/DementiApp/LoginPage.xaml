@@ -10,7 +10,7 @@
             <Setter Property="TextColor" Value="White"/>
             <Setter Property="FontSize" Value="35"/>
             <Setter Property="HeightRequest" Value="200"/>
-            <Setter Property="WidthRequest" Value="500"/>
+            <Setter Property="WidthRequest" Value="1500"/>
             <Setter Property="HorizontalTextAlignment" Value="Center"/>
             <Setter Property="VerticalTextAlignment" Value="Center"/>
         </Style>

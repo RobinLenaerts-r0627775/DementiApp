@@ -9,8 +9,12 @@
             <Setter Property="Margin" Value="50,15,50,15"/>
             <Setter Property="HeightRequest" Value="140"/>
             <Setter Property="BackgroundColor" Value="#372c73" />
-            <Setter Property="CornerRadius" Value="25" />
-            
+            <Setter Property="CornerRadius" Value="25"/>
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontSize" Value="35" />
+
+
+
         </Style>
         <Style TargetType="NavigationPage">
             <Setter Property="BarBackgroundColor" Value="#372c73"/>
@@ -22,7 +26,7 @@
             <Grid Margin="0,20,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
-                    <RowDefinition Height="2.9*"/>
+                    <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -40,9 +44,8 @@
                     </Frame>
                 </StackLayout>
                 <StackLayout Grid.Row="1" Orientation="Vertical" Grid.ColumnSpan="3">
-                    <Button Clicked="ToMemory" Style="{StaticResource buttonstyle}" Image="memory.png" />
-                    <Button Clicked="ToPhotoMap" Style="{StaticResource buttonstyle}"  Image="album.png"/>
-                    <Button Clicked="ToMusicQuiz" Style="{StaticResource buttonstyle}" Image="guitar.png"/>
+                    <Button Clicked="ToMemory" Style="{StaticResource buttonstyle}" Image="memory.png" Text="Memory" Padding="10"/>
+                    <Button Clicked="ToPhotoMap" Style="{StaticResource buttonstyle}"  Image="album.png" Text="Foto's"/>
                 </StackLayout>
             </Grid>
         </StackLayout>
