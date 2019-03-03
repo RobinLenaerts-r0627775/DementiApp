@@ -215,6 +215,13 @@ namespace DementiApp
 
             sender = stack;
         }
+
+        private void MyListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            ListView listView = (ListView)sender;
+            listView.BackgroundColor = Color.LightGray;
+            
+        }
     }
 
 

@@ -54,6 +54,7 @@ namespace DementiApp
         public MemoryPage (String userId)
 		{
             userid = userId;
+
             var numbers = new List<int>(Enumerable.Range(0, 24));
             numbers.Shuffle();
             patientpics.Shuffle();

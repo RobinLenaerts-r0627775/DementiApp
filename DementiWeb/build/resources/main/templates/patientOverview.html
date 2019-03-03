@@ -9,30 +9,44 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<ul class="nav navbar-nav">
-    <div th:if="${#request.getSession(false) != null}">
-        <div th:if="${session.user.getRole().toString()=='NURSE'}">
-            <li><a href="/patients">Overview</a></li>
-            <li><a href="/patients/new">Add a patient</a></li>
-        </div>
-        <div th:if="${session.user.getRole().toString() == 'PATIENT'}">
-            <li><a href="/profile">My profile</a></li>
-        </div>
-        <li><a href="/logout">Logout</a></li>
-    </div>
-</ul>
-<h2>Overview Page</h2>
 <div class="container">
-<ul>
-    <li><img th:src="@{'/api/media/data/' + ${patient.profilePicture}}" id="picture" class="img-circle img-responsive"></li>
-    
-    <li th:text="${patient.firstName}"></li>
-    <li th:text="${patient.lastName}"></li>
-    <li th:text="${patient.birthDate}"></li>
-    <li>
-        <a th:href="@{'/webmedia/' + ${patient.patientId}}">See photo album</a>
-    </li>
-</ul>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">WebSiteName</a>
+            </div>
+            <div th:if="${#request.getSession(false) != null}">
+                <div th:if="${session.user.getRole().toString() == 'NURSE'}">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/patients">Overview</a></li>
+                        <li><a href="/patients/new">Add a patient</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+                <div th:if="${session.user.getRole().toString() == 'PATIENT'}">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/profile">My profile</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <h2>Overview Page</h2>
+    <div class="container">
+        <p>
+            <img th:src="@{'/api/media/data/' + ${patient.profilePicture}}" id="picture" class="img-circle img-responsive">
+        </p>
+
+        <p th:text="${patient.firstName}"></p>
+        <p th:text="${patient.lastName}"></p>
+        <!--
+        <li th:text="${patient.birthDate}"></li>
+        -->
+        <p>
+            <a th:href="@{'/webmedia/' + ${patient.patientId}}">See photo album</a>
+        </p>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
