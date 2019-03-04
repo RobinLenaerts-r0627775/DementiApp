@@ -15,7 +15,6 @@ using Xamarin.Forms.Xaml;
 
 namespace DementiApp
 {
-    
 	[XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MemoryPage : ContentPage
 	{
@@ -23,18 +22,16 @@ namespace DementiApp
         private readonly HttpClient _client = new HttpClient();
         private String userid;
         private Button clicked;
-        Byte[] byteArray = null;
         private ObservableCollection<String> _photos;
         int score = 0;
         Dictionary<string, Color> layout = new Dictionary<string, Color>();
         Dictionary<string, string> pics = new Dictionary<string, string>();
-        List<Post> patientpics;
+        List<Post> patientpics = new List<Post>();
 
         protected async override void OnAppearing()
         {
             try
             {
-
                 string content = await _client.GetStringAsync("http://193.191.177.178:8080/api/media/" + userid);
                 List<Post> photos = JsonConvert.DeserializeObject<List<Post>>(content);
                 foreach (Post p in photos)
@@ -44,27 +41,21 @@ namespace DementiApp
                     p.Data = ImageSource.FromStream(() => new MemoryStream(byteArray));
                 }
                 patientpics = photos;
+                patientpics.Shuffle();
             }
             catch(Exception e)
             {
-                await DisplayAlert("Error", e.Message, "Ik heb het begrepen");
+                await DisplayAlert("Error", e.Message, "Error while loading images");
             }
-        }
-
-        public MemoryPage (String userId)
-		{
-            userid = userId;
-
             var numbers = new List<int>(Enumerable.Range(0, 24));
             numbers.Shuffle();
-            patientpics.Shuffle();
-            foreach(int i in numbers)
+            foreach (int i in numbers)
             {
+
                 //but.Image = pic;
-                var image = (ButtonGrid.FindByName("f0" + i) as Image);
-                if (image.Source == null && patientpics.Count > i)
+                Image image = ButtonGrid.FindByName("f0" + i) as Image;
+                if (image.Source == null && patientpics.Count() > 11)
                 {
-                    //var image = new Image();
                     // So it doesn't eat up clicks that should go to the button:
                     image.InputTransparent = true;
                     // Give it a margin so it doesn't extend to the edge of the grid
@@ -81,7 +72,7 @@ namespace DementiApp
                     Grid.SetColumn(image, x + 1);
                 }
 
-                if (patientpics.Count() > 12)
+                if (patientpics.Count() > 11)
                 {
                     switch (numbers.IndexOf(i))
                     {
@@ -143,7 +134,6 @@ namespace DementiApp
                             break;
                         case 14:
                             layout.Add("" + i, Color.MidnightBlue);
-                            pics.Add("" + i, "Nolan.jpg");
                             image.Source = patientpics.ElementAt(7).Data;
                             break;
                         case 15:
@@ -180,7 +170,7 @@ namespace DementiApp
                             break;
                         case 23:
                             layout.Add("" + i, Color.Orange);
-                            image.Source = patientpics.ElementAt(12).Data;
+                            image.Source = patientpics.ElementAt(11).Data;
                             break;
                         default:
                             layout.Add("" + i, Color.Black);
@@ -295,7 +285,12 @@ namespace DementiApp
                     }
                 }
             }
+        }
+
+        public MemoryPage (String userId)
+		{
 			InitializeComponent ();
+            userid = userId;
 		}
 
         private void Button_Clicked(object sender, EventArgs e)
@@ -307,9 +302,8 @@ namespace DementiApp
             Color col = Color.FromHex("#372c73");
             layout.TryGetValue(but.StyleId, out col);
             but.BackgroundColor = col;
-            String pic = "";
-            pics.TryGetValue(but.StyleId, out pic);
-            if (patientpics.Count > 12)
+            pics.TryGetValue(but.StyleId, out string pic);
+            if (patientpics.Count > 11)
             {
                 Image image = but.Parent.FindByName("f0" + but.StyleId) as Image;
                 image.IsVisible = true;
@@ -346,7 +340,7 @@ namespace DementiApp
                     
                     Device.StartTimer(TimeSpan.FromSeconds(2), () =>
                     {
-                        if (patientpics.Count > 12)
+                        if (patientpics.Count > 11)
                         {
                             (but.Parent.FindByName("f0" + but.StyleId) as Image).IsVisible = false;
                             (but.Parent.FindByName("f0" + clicked.StyleId) as Image).IsVisible = false;
