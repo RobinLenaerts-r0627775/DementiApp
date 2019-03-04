@@ -18,6 +18,7 @@ import java.util.UUID;
 import org.springframework.web.servlet.ModelAndView;
 import ucll.model.Patient;
 
+import javax.management.relation.Role;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.validation.Valid;
@@ -318,10 +319,10 @@ public class WebController {
             if (patientRepository.existsById(patient.patientId)) {
                 Patient pat = patientRepository.findById(patient.patientId).get();
                 pat.setPassword(patient.getPassword());
-                pat.birthDate = patient.birthDate;
+                //pat.birthDate = patient.birthDate;
                 pat.firstName = patient.firstName;
                 pat.lastName = patient.lastName;
-                pat.dementiaLevel = patient.dementiaLevel;
+                //pat.dementiaLevel = patient.dementiaLevel;
                 pat.profilePicture = patient.profilePicture;
                 patientRepository.save(pat);
             } else {
@@ -329,9 +330,10 @@ public class WebController {
                 response.sendRedirect("/patients/new");
             }
         } else {
-            Patient pat = new Patient(null, patient.firstName, patient.lastName, patient.birthDate, patient.dementiaLevel, null, patient.getPassword());
+            Patient pat = new Patient(null, patient.firstName, patient.lastName, /*patient.birthDate, patient.dementiaLevel, */mediaRepository.getFirstByPatientId(null).mediaId, patient.getPassword());
+            pat.role = ROLE.PATIENT;
             patientRepository.save(pat);
-            loginRepository.save(LoginInfo.LoginInfomaker(patient.firstName + "." + patient.lastName, patient.getPassword(), patient.role, pat.patientId));
+            loginRepository.save(LoginInfo.LoginInfomaker(pat.firstName + "." + pat.lastName, pat.getPassword(), pat.role, pat.patientId));
         }
 
         return overview(request, response);
@@ -389,6 +391,29 @@ public class WebController {
         fos.write(file.getBytes());
         fos.close();
         return convFile;
+    }
+
+    @RequestMapping(value = "/patients/delete/{patientId}")
+    public void deletePatient(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID patientId) throws IOException {
+        Optional<Patient> op = patientRepository.findById(patientId);
+        if (op.isPresent()){
+            loginRepository.delete(loginRepository.getFirstByPersonID(patientId));
+            patientRepository.deleteById(patientId);
+            response.sendRedirect("/patients");
+        } else {
+            //TODO errorpage
+        }
+    }
+
+    @RequestMapping(value = "/webmedia/delete/{mediaId}")
+    public void deleteMedia(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID mediaId) throws IOException {
+        Optional<MediaFile> mf = mediaRepository.findById(mediaId);
+        if (mf.isPresent()){
+            mediaRepository.deleteById(mediaId);
+            response.sendRedirect("/webmedia/" + mf.get().patientId.toString());
+        } else {
+            //TODO errorpage
+        }
     }
 }
 

@@ -12,15 +12,16 @@ namespace DementiApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WinPage : ContentPage
     {
-        public WinPage()
+        private String userId;
+        public WinPage(String userid)
         {
-
+            userId = userid;
             InitializeComponent();
         }
 
         async void Button_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new MemoryPage());
+            await Navigation.PushAsync(new MemoryPage(userId));
         }
         protected override bool OnBackButtonPressed()
         {

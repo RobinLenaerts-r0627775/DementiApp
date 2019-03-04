@@ -12,7 +12,8 @@ namespace DementiApp
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MemoryDiffPage : ContentPage
 	{
-        String userId;
+
+        private String userId;
 
 		public MemoryDiffPage (String userid)
 		{

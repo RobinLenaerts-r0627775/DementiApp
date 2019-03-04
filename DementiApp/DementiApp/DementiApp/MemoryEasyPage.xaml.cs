@@ -14,7 +14,7 @@ namespace DementiApp
     public partial class MemoryEasyPage : ContentPage
     {
 
-        String userId;
+        private String userId;
         private Button clicked;
         int score = 0;
         Dictionary<string, Color> layout = new Dictionary<string, Color>();
@@ -129,7 +129,7 @@ namespace DementiApp
                     score += 1;
                     if (score == 8)
                     {
-                        Navigation.PushAsync(new WinPage());
+                        Navigation.PushAsync(new WinPage(userId));
                     }
 
                 }

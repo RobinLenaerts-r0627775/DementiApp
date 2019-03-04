@@ -2,49 +2,61 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <script src="http://localhost:8080/js/jquery-3.3.1.min.js"></script>
+    <!--<script src="http://localhost:8080/js/jquery-3.3.1.min.js"></script><!--local-->
+    <script src="http://193.191.177.178:8080/js/jquery-3.3.1.min.js"></script><!--server-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <title>Photo album</title>
 </head>
 <body>
-<ul class="nav navbar-nav">
-    <div th:if="${#request.getSession(false) != null}">
-        <div th:if="${session.user.getRole().toString() == 'NURSE'}">
-            <li><a href="/patients">Overview</a></li>
-            <li><a href="/patients/new">Add a patient</a></li>
-        </div>
-        <div th:if="${session.user.getRole().toString() == 'PATIENT'}">
-            <li><a href="/profile">My profile</a></li>
-        </div>
-        <li><a href="/logout">Logout</a></li>
-    </div>
-</ul>
 <div class="container">
-<form th:action="@{'/addPhotos/' + ${patientId}}" method="post" enctype="multipart/form-data">
-    <p><input type="hidden" name="patientId" th:value="${patientId}"></p>
-    <p><input type="file" name="files" accept="image/*" id="file" multiple></p>
-    <p><input type="text" name="category"></p>
-    <p><textarea name="description" id="description" cols="30" rows="10" placeholder="Description"></textarea></p>
-    <p><input type="submit" value="Upload"></p>
-</form>
-<img src="" id="picture">
-<ul>
-    <th:block th:each="photo : ${photoAlbum}">
-		<div class="col-md-4">
-			<div class="thumbnail">
-				<li><img th:src="@{'/api/media/data/' + ${photo.mediaId}}" class="img-rounded img-responsive"></li>
-				<div class="caption"><li th:text="${photo.description}"></li></div>
-				<div class="caption"><li th:text="${photo.category}"></li></div>
-				<li><a th:href="@{'/profile/picture/' + ${photo.mediaId.toString()}}" class="btn btn-secondary">Set as profile picture</a> </li>
-			</div>
-		</div>
-	</th:block>
-</ul>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">WebSiteName</a>
+            </div>
+            <div th:if="${#request.getSession(false) != null}">
+                <div th:if="${session.user.getRole().toString() == 'NURSE'}">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/patients">Overview</a></li>
+                        <li><a href="/patients/new">Add a patient</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+                <div th:if="${session.user.getRole().toString() == 'PATIENT'}">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/profile">My profile</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <form action="/webmedia" method="post" enctype="multipart/form-data">
+            <p><input type="hidden" name="patientId" th:value="${patientId}"></p>
+            <p><input type="file" name="file" id="file"></p>
+            <p><input type="text" name="category"></p>
+            <p><textarea name="description" id="description" cols="30" rows="10" placeholder="Description"></textarea></p>
+            <p><input type="submit" value="Upload"></p>
+        </form>
+        <img src="" id="picture">
+            <th:block th:each="photo : ${photoAlbum}">
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <p><img th:src="@{'/api/media/data/' + ${photo.mediaId}}" class="img-rounded img-responsive"></p>
+                        <div class="caption"><p th:text="${photo.description}"></p></div>
+                        <div class="caption"><p th:text="${photo.category}"></p></div>
+                        <p><a th:href="@{'/profile/picture/' + ${photo.mediaId.toString()}}" class="btn btn-secondary">Set as profile picture</a> </p>
+                        <p><button type="button" class="btn btn-danger" th:onclick="'removeMediaConfirmation(\'' + ${photo.mediaId.toString()} + '\',\'' + ${patientId} + '\')'">Remove</button></p>
+                    </div>
+                </div>
+            </th:block>
+    </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!--<script src="http://localhost:8080/js/JavaScript.js" type="text/javascript"></script><!--local-->
+<script src="http://193.191.177.178:8080/js/JavaScript.js" type="text/javascript"></script><!--server-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
