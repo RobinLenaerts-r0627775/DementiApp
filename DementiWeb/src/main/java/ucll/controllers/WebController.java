@@ -350,14 +350,41 @@ public class WebController {
     @RequestMapping(value = "/webmedia/{patientId}")
     public ModelAndView patientMedia(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID patientId){
         Map params = new HashMap();
+        System.out.println("No");
         if(request.getSession(false) == null || (((LoginInfo) request.getSession().getAttribute("user")).getRole() != ROLE.NURSE && ((LoginInfo)request.getSession().getAttribute("user")).getPersonID() == patientId)){
             return new ModelAndView("AccessException", params );
         }
         else{
+            params.put("categories", findCategoriesFor(patientId));
             params.put("photoAlbum", mediaRepository.getAllByPatientId(patientId));
             params.put("patientId", patientId.toString());
             return new ModelAndView("photoAlbum", params);
         }
+    }
+
+    @RequestMapping(value = "/webmedia/{patientId}/category/{category}")
+    public ModelAndView patientMediaCategory(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID patientId, @PathVariable String category){
+        Map params = new HashMap();
+        System.out.println("Cat");
+        if(request.getSession(false) == null || (((LoginInfo) request.getSession().getAttribute("user")).getRole() != ROLE.NURSE && ((LoginInfo)request.getSession().getAttribute("user")).getPersonID() == patientId)){
+            return new ModelAndView("AccessException", params );
+        }
+        else{
+            params.put("categories", findCategoriesFor(patientId));
+            params.put("photoAlbum", mediaRepository.getAllByPatientIdAndCategory(patientId, category));
+            params.put("patientId", patientId.toString());
+            return new ModelAndView("photoAlbum", params);
+        }
+    }
+
+    private List<String> findCategoriesFor(UUID patientId) {
+        List<String> result = new ArrayList<>();
+        for (MediaFile file : mediaRepository.getAllByPatientId(patientId)){
+            if (!result.contains(file.category)){
+                result.add(file.category);
+            }
+        }
+        return result;
     }
 
     /**
