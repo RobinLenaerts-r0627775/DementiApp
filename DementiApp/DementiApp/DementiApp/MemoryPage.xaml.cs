@@ -309,8 +309,15 @@ namespace DementiApp
             but.BackgroundColor = col;
             String pic = "";
             pics.TryGetValue(but.StyleId, out pic);
-            Image image = but.Parent.FindByName("f0" + but.StyleId) as Image;
-            image.IsVisible = true;
+            if (patientpics.Count > 12)
+            {
+                Image image = but.Parent.FindByName("f0" + but.StyleId) as Image;
+                image.IsVisible = true;
+            }
+            else
+            {
+                but.Image = pic;
+            }
             if (clicked == null) clicked = but;
             else
             {
@@ -339,16 +346,22 @@ namespace DementiApp
                     
                     Device.StartTimer(TimeSpan.FromSeconds(2), () =>
                     {
-                        (but.Parent.FindByName("f0" + but.StyleId) as Image).IsVisible = false;
-                        (but.Parent.FindByName("f0" + clicked.StyleId) as Image).IsVisible = false;
+                        if (patientpics.Count > 12)
+                        {
+                            (but.Parent.FindByName("f0" + but.StyleId) as Image).IsVisible = false;
+                            (but.Parent.FindByName("f0" + clicked.StyleId) as Image).IsVisible = false;
+                        }
+                        else
+                        {
+                            clicked.Image = null;
+                            but.Image = null;
+                        }
                         but.IsEnabled = true;
                         clicked.IsEnabled = true;
                         but.BorderColor = Color.Transparent;
                         clicked.BorderColor = Color.Transparent;
                         clicked.BackgroundColor = Color.FromHex("#372c73");
-                        clicked.Image = null;
                         but.BackgroundColor = Color.FromHex("#372c73");
-                        but.Image = null;
                         clicked = null;
                         for (int i = 0; i < 24; i++)
                         {
