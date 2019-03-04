@@ -140,7 +140,7 @@ public class RESTController {
     }
 
     /**
-     * function that returns the list of MediaFile of a person with patientId
+     * private function that returns the list of MediaFile of a person with patientId
      *
      * @param id
      * @return
@@ -156,6 +156,11 @@ public class RESTController {
         return result;
     }
 
+    /**
+     * returns the List of Patient objects
+     *
+     * @return
+     */
     @GetMapping("/patients")
     public ResponseEntity<List<Patient>> getPatients(){
         return ResponseEntity.ok(StreamSupport.stream(patientRepository.findAll().spliterator(), false)
@@ -163,6 +168,13 @@ public class RESTController {
                 .collect(Collectors.toList()));
     }
 
+    /**
+     * returns the Patient object that matches with the given patientId
+     *
+     * @param patientId
+     * @return
+     * @throws RestClientException
+     */
     @GetMapping("/patients/{patientId}")
     public ResponseEntity<Patient> getPatient(@PathVariable UUID patientId)throws RestClientException{
         Optional<Patient> op = patientRepository.findById(patientId);
@@ -176,6 +188,12 @@ public class RESTController {
         else return ResponseEntity.notFound().build();
     }
 
+    /**
+     * returns a List of strings with all the categories for the given patient with patientId
+     *
+     * @param patientId
+     * @return
+     */
     @GetMapping("/patients/category/{patientId}")
     public ResponseEntity<List<String>> getCategoriesFor(@PathVariable UUID patientId){
         Optional<Patient> op = patientRepository.findById(patientId);
@@ -191,6 +209,11 @@ public class RESTController {
         } else return ResponseEntity.notFound().build();
     }
 
+    /**
+     * returns the List of MediaFile objects
+     *
+     * @return
+     */
     @GetMapping("/media")
     public ResponseEntity<List<MediaFile>> getMediaFiles(){
         return ResponseEntity.ok(StreamSupport.stream(mediaRepository.findAll().spliterator(), false)
@@ -198,11 +221,24 @@ public class RESTController {
                 .collect(Collectors.toList()));
     }
 
+    /**
+     * returns the list of MediaFile of a patient with patientId
+     *
+     * @param patientId
+     * @return
+     */
     @GetMapping("/media/{patientId}") //TODO
     public ResponseEntity<List<MediaFile>> getMediaFileFor(@PathVariable UUID patientId){
         return ResponseEntity.ok(getForId(patientId));
     }
 
+    /**
+     * returns the data of a image as a byte[]
+     *
+     * @param mediaId
+     * @return
+     * @throws IOException
+     */
     @GetMapping("/media/data/{mediaId}")
     public ResponseEntity<byte[]> getFile(@PathVariable UUID mediaId) throws IOException {
         Optional<MediaFile> op = mediaRepository.findById(mediaId);
@@ -221,16 +257,29 @@ public class RESTController {
         }
     }
 
+    /**
+     * returns the details of a mediaFile
+     * @param mediaId
+     * @return
+     */
     @GetMapping("/media/file/{mediaId}")
     public ResponseEntity<MediaFile> getMediaFile(@PathVariable UUID mediaId){
         Optional<MediaFile> op = mediaRepository.findById(mediaId);
         if (op.isPresent())
         {
+            //Security?
             return  ResponseEntity.ok(op.get());
         }
         else return ResponseEntity.notFound().build();
     }
 
+    /**
+     * returns the list of MediaFile of a person with patientId for the given category
+     *
+     * @param patientId
+     * @param category
+     * @return
+     */
     @GetMapping("media/{patientId}/{category}")
     public ResponseEntity<List<MediaFile>> getMediaFileByCat(@PathVariable UUID patientId, @PathVariable String category){
         List<MediaFile> all = getForId(patientId);
@@ -243,6 +292,12 @@ public class RESTController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * Checks if the credentials are valid and returns the patientId if so.
+     *
+     * @param loginObject
+     * @return
+     */
     @PostMapping("/login")
     public ResponseEntity<UUID> login(@RequestBody LoginObject loginObject){
         LoginInfo result = loginRepository.getFirstByUsernameAndPassword(loginObject.user, loginObject.password);
