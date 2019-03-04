@@ -21,6 +21,11 @@ namespace DementiApp
         private ObservableCollection<String> _categories;
         private String userid;
 
+
+        /*
+         * The OnAppearing function gets called when the constructor calls the InitialiseComponent() function.
+         * It requests all categories from the API. 
+        */
         protected async override void OnAppearing()
         {
             string content = await _client.GetStringAsync(Url + userid);
@@ -28,7 +33,6 @@ namespace DementiApp
             _categories = new ObservableCollection<String>(categories);
 
             Categories.ItemsSource = _categories;
-
         }
 
         public PhotoMap(String userId)
@@ -36,15 +40,18 @@ namespace DementiApp
             userid = userId;
             InitializeComponent();
             NavigationPage.SetHasBackButton(this, false);
-
         }
 
+        /*
+         * Look at the XAML code to see the structure of the stacks and frame.
+         * This code navigates to a page with pictures of the right category. 
+        */
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            StackLayout stack= (StackLayout)sender;
+            StackLayout stack  = (StackLayout) sender;
             StackLayout stack2 = (StackLayout) stack.Children[0];
-            Frame frame = (Frame)stack2.Children[0];
-            Label l = (Label)frame.Content;
+            Frame frame = (Frame) stack2.Children[0];
+            Label l = (Label) frame.Content;
             
             Navigation.PushAsync(new StoryPage(userid, l.Text));
         }
