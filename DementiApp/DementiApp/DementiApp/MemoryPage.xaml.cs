@@ -34,14 +34,14 @@ namespace DementiApp
          */
         public MemoryPage (String userId)
 		{
-			InitializeComponent ();
             userid = userId;
+			InitializeComponent ();
 		}
 
         /**
          * Method that works async to get information from the server through the API.
          * Then loads the needed information onto the page. 
-         */ 
+         */
 
         protected async override void OnAppearing()
         {
@@ -57,11 +57,12 @@ namespace DementiApp
                 }
                 patientpics = photos;
                 patientpics.Shuffle();
-                
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 await DisplayAlert("Error", e.Message, "Error while loading images.");
+
             }
             var numbers = new List<int>(Enumerable.Range(0, 24));
             numbers.Shuffle();
