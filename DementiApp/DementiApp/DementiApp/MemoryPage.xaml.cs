@@ -28,6 +28,21 @@ namespace DementiApp
         Dictionary<string, string> pics = new Dictionary<string, string>();
         List<Post> patientpics = new List<Post>();
 
+        /**
+         * Constructor method for the page. 
+         * Sets userid and loads page from xaml. 
+         */
+        public MemoryPage (String userId)
+		{
+			InitializeComponent ();
+            userid = userId;
+		}
+
+        /**
+         * Method that works async to get information from the server through the API.
+         * Then loads the needed information onto the page. 
+         */ 
+
         protected async override void OnAppearing()
         {
             try
@@ -42,23 +57,20 @@ namespace DementiApp
                 }
                 patientpics = photos;
                 patientpics.Shuffle();
+                
             }
             catch(Exception e)
             {
-                await DisplayAlert("Error", e.Message, "Error while loading images");
+                await DisplayAlert("Error", e.Message, "Error while loading images.");
             }
             var numbers = new List<int>(Enumerable.Range(0, 24));
             numbers.Shuffle();
             foreach (int i in numbers)
             {
-
-                //but.Image = pic;
                 Image image = ButtonGrid.FindByName("f0" + i) as Image;
                 if (image.Source == null && patientpics.Count() > 11)
                 {
-                    // So it doesn't eat up clicks that should go to the button:
                     image.InputTransparent = true;
-                    // Give it a margin so it doesn't extend to the edge of the grid
                     image.Margin = new Thickness(10);
                     image.IsVisible = false;
                     ButtonGrid.Children.Add(image);
@@ -71,7 +83,6 @@ namespace DementiApp
                     Grid.SetRow(image, y);
                     Grid.SetColumn(image, x + 1);
                 }
-
                 if (patientpics.Count() > 11)
                 {
                     switch (numbers.IndexOf(i))
@@ -284,15 +295,13 @@ namespace DementiApp
                             break;
                     }
                 }
+
             }
         }
 
-        public MemoryPage (String userId)
-		{
-			InitializeComponent ();
-            userid = userId;
-		}
-
+        /**
+         * method that handles the clicks on the memorygame. shows the images and hides them if there is no match. 
+         */ 
         private void Button_Clicked(object sender, EventArgs e)
         {
             VisualState vs = new VisualState();
@@ -368,6 +377,10 @@ namespace DementiApp
             }               
         }
     }
+
+    /*
+     * Some extra functionality for easy shuffling of lists.
+     */ 
     static class MyExtensions
     {
         private static Random rng = new Random();
@@ -385,6 +398,10 @@ namespace DementiApp
             }
         }
     }
+
+    /*
+     * Post class that contains all information of the MediaFile object that the server sends.
+     */ 
     internal class Post : INotifyPropertyChanged
     {
 
