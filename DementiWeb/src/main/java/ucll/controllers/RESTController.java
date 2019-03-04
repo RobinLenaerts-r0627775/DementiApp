@@ -159,6 +159,7 @@ public class RESTController {
     @GetMapping("/patients")
     public ResponseEntity<List<Patient>> getPatients(){
         return ResponseEntity.ok(StreamSupport.stream(patientRepository.findAll().spliterator(), false)
+                .peek(patient -> patient.setPassword(null))
                 .collect(Collectors.toList()));
     }
 
@@ -167,7 +168,9 @@ public class RESTController {
         Optional<Patient> op = patientRepository.findById(patientId);
         if (op.isPresent())
         {
-            return ResponseEntity.ok(op.get());
+            Patient result = op.get();
+            result.setPassword(null);
+            return ResponseEntity.ok(result);
         }
 
         else return ResponseEntity.notFound().build();
@@ -188,38 +191,10 @@ public class RESTController {
         } else return ResponseEntity.notFound().build();
     }
 
-    @Transactional
-    @PostMapping(value = "/patients")
-    public ResponseEntity<Patient> postPatient(@RequestBody Patient patient) {
-        Patient result = patientRepository.save(patient);
-        return ResponseEntity.ok(result);
-    }
-
-    @PutMapping(value = "/patients/{patientId}")
-    public ResponseEntity<Patient> putPatient(@PathVariable UUID patientId, @RequestBody Patient patient) {
-        if (patientRepository.existsById(patientId)) {
-            if (patientId.equals(patient.getPatientId())) {
-                Patient result = patientRepository.save(patient);
-                return ResponseEntity.ok(result);
-            }
-        }
-
-        return ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping("/patients/{patientId}")
-    public ResponseEntity<Boolean> deletePatient(@PathVariable UUID patientId) throws RestClientException{
-        Optional<Patient> op = patientRepository.findById(patientId);
-        if (op.isPresent()) {
-            patientRepository.delete(op.get());
-            return ResponseEntity.ok(new Boolean(Boolean.TRUE));
-        }
-        else return ResponseEntity.ok(new Boolean(Boolean.FALSE));
-    }
-
     @GetMapping("/media")
     public ResponseEntity<List<MediaFile>> getMediaFiles(){
         return ResponseEntity.ok(StreamSupport.stream(mediaRepository.findAll().spliterator(), false)
+                .peek(mediaFile -> mediaFile.setFile(null))
                 .collect(Collectors.toList()));
     }
 
@@ -266,60 +241,6 @@ public class RESTController {
             }
         }
         return ResponseEntity.ok(result);
-    }
-
-    @Transactional
-    @PostMapping("/media/file")
-    public ResponseEntity<MediaFile> postMediaFile(@RequestBody FileUploadObject object){
-        //Create MediaFile
-        MediaFile result = new MediaFile(null, object.patientId, null, object.description, object.category);
-        //Save MediaFile to get an ID
-        result = mediaRepository.save(result);
-        //Create a path
-        Path path = Paths.get(fileDir, result.mediaId.toString() + object.extension);
-        //Create File with the name of the ID
-        File file = new File(fileDir + result.mediaId.toString() + object.extension);
-        //Write the data to the file
-        try {
-            Files.write(path, object.file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Set File in MediaFile
-        result.setFile(file);
-        //Save it
-        result = mediaRepository.save(result);
-
-        return ResponseEntity.ok(result);
-    }
-
-    @Transactional
-    @PostMapping("/media")
-    public ResponseEntity<MediaFile> postMediaFile(@RequestBody MediaFile mediaFile) {
-        MediaFile result = mediaRepository.save(mediaFile);
-        return ResponseEntity.ok(result);
-    }
-
-    @PutMapping("/media/{mediaId}")
-    public ResponseEntity<MediaFile> putMediaFile(@PathVariable UUID mediaId, @RequestBody MediaFile mediaFile){
-        if (mediaRepository.existsById(mediaId))
-            if (mediaId.equals(mediaFile.getMediaId())) {
-                MediaFile result = mediaRepository.save(mediaFile);
-                return ResponseEntity.ok(result);
-            }
-
-        return ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping("/media/{mediaId}")
-    public ResponseEntity<Boolean> deleteMediaFile(@PathVariable UUID mediaId){
-        Optional<MediaFile> op = mediaRepository.findById(mediaId);
-        if (op.isPresent()) {
-            mediaRepository.delete(op.get());
-            return ResponseEntity.ok(new Boolean(Boolean.TRUE));
-        }
-        else return ResponseEntity.ok(new Boolean(Boolean.FALSE));
     }
 
     @PostMapping("/login")
