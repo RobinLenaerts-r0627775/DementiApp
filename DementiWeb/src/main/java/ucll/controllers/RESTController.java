@@ -95,10 +95,11 @@ public class RESTController {
             loginRepository.save(LoginInfo.LoginInfomaker(n.firstName + "." + n.lastName, n.password,n.role, n.nurseID));
         }
 
+        String lipsum = "zwdzqAWHvzAsxpedzqVo CPULTAVsdzqfDMKivPlx  jWPdzqsjXagGiOubdzqROPqmPRgUKdzqaAIFWD JLEqdzqoaGaDiusondzqidlddKYtGZ dzqbhYKjzIiHAd zfhqijfzkjzfjqzfjhqz zhjfhqzkjfhqjzhf kqjzhfkqjhfkqjhfkqzhf IOHOIUGFOZIHFI";
 
         MediaFile desireFile1 = new MediaFile(null, desId, new File(fileDir + "Temp1.jpg"), "Dit is de beschrijving voor deze foto", "test");
         MediaFile desireFile3 = new MediaFile(null, desId, new File(fileDir + "jeanine.jpg"), "Dit is de beschrijving voor deze foto2", "test");
-        MediaFile desireFile2 = new MediaFile(null, desId, new File(fileDir + "Temp2.jpg"), "Dit is een beschrijving voor deze foto", "test2");
+        MediaFile desireFile2 = new MediaFile(null, desId, new File(fileDir + "Temp2.jpg"), lipsum, "test2");
         MediaFile germainFile1 = new MediaFile(null, gerId, new File(fileDir + "Temp3.jpg"), "Dit is de beschrijving voor de foto", "test");
         MediaFile palmyrWed1 = new MediaFile(null, palId, new File(fileDir + "Wed1.jpg"), "Dit is de beschrijving voor de foto Wed 1", "Wedding");
         MediaFile palmyrWed2 = new MediaFile(null, palId, new File(fileDir + "Wed2.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
