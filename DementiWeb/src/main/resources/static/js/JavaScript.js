@@ -1,7 +1,6 @@
 function removePatientConfirmation(id, firstname, lastname){
     if(confirm("Are you sure you want to REMOVE " + firstname + " " + lastname + " for good")){
-        //var url = "http://localhost:8080/patients/delete/" + id;      //local
-        var url = "http://193.191.177.178:8080/patients/delete/" + id;  //server
+        var url = "/patients/delete/" + id;
         $.ajax({
             url:url,
             type:"GET",
@@ -21,8 +20,7 @@ function removePatientConfirmation(id, firstname, lastname){
 
 function removeMediaConfirmation(mediaId, patientId){
     if(confirm("Are you sure you want to REMOVE this file for good")){
-        //var url = "http://localhost:8080/webmedia/delete/" + mediaId;       //local
-        var url = "http://193.191.177.178:8080/webmedia/delete/" + mediaId; //server
+        var url = "/webmedia/delete/" + mediaId;
         $.ajax({
             url:url,
             type:"GET",
@@ -38,4 +36,34 @@ function removeMediaConfirmation(mediaId, patientId){
             }
         });
     }
+}
+
+function showByCategory(patientId){
+    var cat = document.getElementById("category").value;
+    if (cat == null || cat == ""){
+        var url = "/webmedia/" + patientId;
+        console.log(url);
+    } else {
+        var url = "/webmedia/" + patientId + "/category/" + cat;
+        console.log(url);
+    }
+    $.ajax({
+        url:url,
+        type:"GET",
+        success: function (data) {
+            console.log(url);
+            if (data.redirect){
+                window.location.href = data.redirect;
+            } else {
+                if (cat == null || cat == ""){
+                    window.location.replace("/webmedia/" + patientId);
+                } else {
+                    window.location.replace("/webmedia/" + patientId + "/category/" + cat);
+                }
+            }
+        },
+        error: function(data){
+            alert("An error occurred");
+        }
+    });
 }

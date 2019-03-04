@@ -14,7 +14,7 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">WebSiteName</a>
+                <a class="navbar-brand" href="/">WebSiteName</a>
             </div>
             <div th:if="${#request.getSession(false) != null}">
                 <div th:if="${session.user.getRole().toString() == 'NURSE'}">
@@ -35,24 +35,56 @@
     </nav>
     <div class="container">
         <form action="/webmedia" method="post" enctype="multipart/form-data">
-            <p><input type="hidden" name="patientId" th:value="${patientId}"></p>
-            <p><input type="file" name="file" id="file"></p>
-            <p><input type="text" name="category"></p>
-            <p><textarea name="description" id="description" cols="30" rows="10" placeholder="Description"></textarea></p>
-            <p><input type="submit" value="Upload"></p>
+            <div class="form-group">
+                <p><input type="hidden" name="patientId" th:value="${patientId}"></p>
+            </div>
+            <div class="form-group">
+                <p><input type="file" name="file" id="file" class="form-control-file"></p>
+            </div>
+            <div class="form-group">
+                <p>
+                    <input type="text" list="categories" name="category" class="form-control"/>
+                    <datalist id="categories">
+                        <th:block th:each="cat : ${categories}">
+                            <option th:value="${cat}" th:text="${cat}"></option>
+                        </th:block>
+                    </datalist>
+                </p>
+            </div>
+            <div class="form-group">
+                <p><textarea name="description" id="description" cols="30" rows="10" placeholder="Description" class="form-control"></textarea></p>
+            </div>
+            <div class="form-group">
+                <p><input type="submit" value="Upload" class="btn btn-primary"></p>
+            </div>
         </form>
-        <img src="" id="picture">
-            <th:block th:each="photo : ${photoAlbum}">
-                <div class="col-md-4">
-                    <div class="thumbnail">
-                        <p><img th:src="@{'/api/media/data/' + ${photo.mediaId}}" class="img-rounded img-responsive"></p>
-                        <div class="caption"><p th:text="${photo.description}"></p></div>
-                        <div class="caption"><p th:text="${photo.category}"></p></div>
-                        <p><a th:href="@{'/profile/picture/' + ${photo.mediaId.toString()}}" class="btn btn-secondary">Set as profile picture</a> </p>
-                        <p><button type="button" class="btn btn-danger" th:onclick="'removeMediaConfirmation(\'' + ${photo.mediaId.toString()} + '\',\'' + ${patientId} + '\')'">Remove</button></p>
+        <img src="" id="picture" class="img-rounded" width="255" height="auto">
+        <div class="form-group">
+            <select name="category" class="form-control" id="category">
+                <option value="">All</option>
+                <th:block th:each="cat : ${categories}">
+                    <option th:value="${cat}" th:text="${cat}"></option>
+                </th:block>
+            </select>
+        </div>
+        <div class="form-group">
+            <p><button type="button" value="Show" class="btn btn-primary" th:onclick="'showByCategory(\'' + ${patientId} + '\')'"/></p>
+        </div>
+        <th:block th:each="photo : ${photoAlbum}">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="thumbnail">
+                            <p><img th:src="@{'/api/media/data/' + ${photo.mediaId}}" class="img-rounded img-responsive"></p>
+                            <div class="caption"><p th:text="${photo.description}" class="card-text"></p></div>
+                            <!--<div class="caption"><p th:text="${photo.category}"></p></div>-->
+                            <p><a th:href="@{'/profile/picture/' + ${photo.mediaId.toString()}}" class="btn btn-secondary">Set as profile picture</a> </p>
+                            <p><button type="button" class="btn btn-danger" th:onclick="'removeMediaConfirmation(\'' + ${photo.mediaId.toString()} + '\',\'' + ${patientId} + '\')'">Remove</button></p>
+                        </div>
                     </div>
                 </div>
-            </th:block>
+            </div>
+        </th:block>
     </div>
 </div>
 <!--<script src="http://localhost:8080/js/JavaScript.js" type="text/javascript"></script><!--local-->

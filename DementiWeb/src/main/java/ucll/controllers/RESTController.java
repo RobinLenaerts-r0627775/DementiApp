@@ -103,6 +103,15 @@ public class RESTController {
         MediaFile palmyrWed1 = new MediaFile(null, palId, new File(fileDir + "Wed1.jpg"), "Dit is de beschrijving voor de foto Wed 1", "Wedding");
         MediaFile palmyrWed2 = new MediaFile(null, palId, new File(fileDir + "Wed2.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
         MediaFile palmyrWed3 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
+        MediaFile palmyrWed4 = new MediaFile(null, palId, new File(fileDir + "Wed2.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
+        MediaFile palmyrWed5 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
+        MediaFile palmyrWed6 = new MediaFile(null, palId, new File(fileDir + "Wed2.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
+        MediaFile palmyrWed7 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
+        MediaFile palmyrWed8 = new MediaFile(null, palId, new File(fileDir + "Wed2.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
+        MediaFile palmyrWed9 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
+        MediaFile palmyrWed10 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
+        MediaFile palmyrWed11 = new MediaFile(null, palId, new File(fileDir + "Wed2.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
+        MediaFile palmyrWed12 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
         MediaFile palmyrSchool1 = new MediaFile(null, palId, new File(fileDir + "School1.jpg"), "Dit is de beschrijving voor de foto School 1", "School");
         MediaFile palmyrSchool2 = new MediaFile(null, palId, new File(fileDir + "School2.jpg"), "Dit is de beschrijving voor de foto School 2", "School");
 
@@ -113,8 +122,20 @@ public class RESTController {
         mediaRepository.save(palmyrWed1);
         mediaRepository.save(palmyrWed2);
         mediaRepository.save(palmyrWed3);
+        mediaRepository.save(palmyrWed4);
+        mediaRepository.save(palmyrWed5);
+        mediaRepository.save(palmyrWed6);
+        mediaRepository.save(palmyrWed7);
+        mediaRepository.save(palmyrWed8);
+        mediaRepository.save(palmyrWed9);
+        mediaRepository.save(palmyrWed10);
+        mediaRepository.save(palmyrWed11);
+        mediaRepository.save(palmyrWed12);
         mediaRepository.save(palmyrSchool1);
         mediaRepository.save(palmyrSchool2);
+
+        palmyr.setProfile(palmyrWed1.mediaId);
+        patientRepository.save(palmyr);
     }
 
     /**
@@ -303,6 +324,9 @@ public class RESTController {
     @PostMapping("/login")
     public ResponseEntity<UUID> login(@RequestBody LoginObject loginObject){
         LoginInfo result = loginRepository.getFirstByUsernameAndPassword(loginObject.user, loginObject.password);
+        if (result.getRole() == ROLE.NURSE){
+            return null;
+        }
         return result!=null ? ResponseEntity.ok(result.getPersonID()) : null;
     }
 }
