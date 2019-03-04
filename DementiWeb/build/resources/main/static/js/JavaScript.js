@@ -42,16 +42,13 @@ function showByCategory(patientId){
     var cat = document.getElementById("category").value;
     if (cat == null || cat == ""){
         var url = "/webmedia/" + patientId;
-        console.log(url);
     } else {
         var url = "/webmedia/" + patientId + "/category/" + cat;
-        console.log(url);
     }
     $.ajax({
         url:url,
         type:"GET",
         success: function (data) {
-            console.log(url);
             if (data.redirect){
                 window.location.href = data.redirect;
             } else {

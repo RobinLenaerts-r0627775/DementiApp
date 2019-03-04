@@ -4,17 +4,18 @@
     <title>Form</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" type="text/css" href="/css/css.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<!--<script src="http://localhost:8080/js/jquery-3.3.1.min.js"></script><!--local-->
 	<script src="http://193.191.177.178:8080/js/jquery-3.3.1.min.js"></script><!--server-->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
-<body>
-<div class="container">
+<body style="background-color: #372c73">
+<div class="container" style="background-color: #ffffff">
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">WebSiteName</a>
+				<a class="navbar-brand" href="/">WebSiteName</a>
 			</div>
 			<div th:if="${#request.getSession(false) != null}">
 				<div th:if="${session.user.getRole().toString() == 'NURSE'}">
@@ -35,8 +36,8 @@
 	</nav>
 	<h2>Form page</h2>
 	<div class="container">
-		<div th:unless="${confirm==null}">
-			<p th:text="${confirm}"></p>
+		<div th:unless="${error==null}">
+			<p th:text="${error}" style="color: red"></p>
 		</div>
 		<form id="form" action="/patients" method="post">
 
