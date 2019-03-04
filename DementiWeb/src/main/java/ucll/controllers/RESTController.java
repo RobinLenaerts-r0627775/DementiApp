@@ -103,15 +103,15 @@ public class RESTController {
         MediaFile palmyrWed1 = new MediaFile(null, palId, new File(fileDir + "Wed1.jpg"), "Dit is de beschrijving voor de foto Wed 1", "Wedding");
         MediaFile palmyrWed2 = new MediaFile(null, palId, new File(fileDir + "Wed2.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
         MediaFile palmyrWed3 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
-        MediaFile palmyrWed4 = new MediaFile(null, palId, new File(fileDir + "Wed2.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
-        MediaFile palmyrWed5 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
-        MediaFile palmyrWed6 = new MediaFile(null, palId, new File(fileDir + "Wed2.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
-        MediaFile palmyrWed7 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
-        MediaFile palmyrWed8 = new MediaFile(null, palId, new File(fileDir + "Wed2.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
-        MediaFile palmyrWed9 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
-        MediaFile palmyrWed10 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
-        MediaFile palmyrWed11 = new MediaFile(null, palId, new File(fileDir + "Wed2.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
-        MediaFile palmyrWed12 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
+        MediaFile palmyrWed4 = new MediaFile(null, palId, new File(fileDir + "Wed4.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
+        MediaFile palmyrWed5 = new MediaFile(null, palId, new File(fileDir + "Wed5.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
+        MediaFile palmyrWed6 = new MediaFile(null, palId, new File(fileDir + "Wed6.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
+        MediaFile palmyrWed7 = new MediaFile(null, palId, new File(fileDir + "Wed7.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
+        MediaFile palmyrWed8 = new MediaFile(null, palId, new File(fileDir + "Wed8.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
+        MediaFile palmyrWed9 = new MediaFile(null, palId, new File(fileDir + "Wed9.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
+        MediaFile palmyrWed10 = new MediaFile(null, palId, new File(fileDir + "Wed10.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
+        MediaFile palmyrWed11 = new MediaFile(null, palId, new File(fileDir + "Wed11.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
+        MediaFile palmyrWed12 = new MediaFile(null, palId, new File(fileDir + "Wed12.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
         MediaFile palmyrSchool1 = new MediaFile(null, palId, new File(fileDir + "School1.jpg"), "Dit is de beschrijving voor de foto School 1", "School");
         MediaFile palmyrSchool2 = new MediaFile(null, palId, new File(fileDir + "School2.jpg"), "Dit is de beschrijving voor de foto School 2", "School");
 
