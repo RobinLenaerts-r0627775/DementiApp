@@ -19,6 +19,12 @@ namespace DementiApp
         private readonly HttpClient _client = new HttpClient();
         private String userid;
 
+
+        /*
+        * This Code makes sure your JsonData gets converted easily to an object.
+        * The object has the properties Data, BirthDate, DementiaLevel, firstName, LastName, PatientId, File, ProfilePicture and Role.
+        * 
+        */
         internal class Patient : INotifyPropertyChanged
         {
 
@@ -158,6 +164,11 @@ namespace DementiApp
 
         }
 
+
+        /*
+         * The OnAppearing function gets called when the constructor calls the InitialiseComponent() function.
+         * It requests the id of your profilepicture and then requests your profilepicture. 
+        */
         protected override async void OnAppearing() {
             string t = Url+"/"+userid;
             string content = await _client.GetStringAsync(Url+"/"+userid);
@@ -185,27 +196,28 @@ namespace DementiApp
             InitializeComponent();
             NavigationPage.SetHasBackButton(this, false);
 
-
         }
 
+        /*
+         * Navigates to the MemoryGame. 
+         */
         async void ToMemory(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new MemoryDiffPage(userid));
         }
-        /*async void ToStory(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new StoryPage(userid));
-        }*/
-        async void ToMusicQuiz(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new MusicQuizPage());
-        }
 
+        /*
+         * Navigates to the page with all the categories. 
+         */
         async void ToPhotoMap(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new PhotoMap(userid));
         }
 
+        /*
+         * Navigates to the Login Page
+         * Displays an alert to make sure you want to log out.
+         */
         protected override bool OnBackButtonPressed()
         {
             Device.BeginInvokeOnMainThread(async () => {
@@ -216,10 +228,6 @@ namespace DementiApp
             return true;
 
 
-        }
-
-        async void showAlert() {
-            await DisplayAlert("Pas op!", "Ben je zeker dat je wilt uitloggen?", "Ja", "Nee");
         }
     }
 }

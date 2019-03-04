@@ -21,7 +21,11 @@ namespace DementiApp
         private const string Url = "http://193.191.177.178:8080/api/login";
         private readonly HttpClient _client = new HttpClient();
 
-
+        /*
+         * This Code makes sure your JsonData gets converted easily to an object.
+         * The object has the properties UserId and Password
+         * 
+        */
         internal class LoginInfo : INotifyPropertyChanged
         {
 
@@ -70,48 +74,59 @@ namespace DementiApp
 
         }
 
+        /*
+         * This Code makes sure you can't navigate back to your mainpage when you log out. 
+         * This function get's called when you press your backbutton on the bottom left of an Android Device.
+         */
         protected override bool OnBackButtonPressed()
         {
             return true;
         }
 
+        /*
+         * Sends a JsonObject with a Body that contains the properties Username and Password.
+         * When the right logininfo is used, the API responds with the right patientId.
+         * Shows message when login fails.
+         */
         private async void Login_Clicked(object sender, EventArgs e)
         {
-
             LoginInfo log = new LoginInfo();
-            log.UserId = userId.Text;
-            log.Password = passWd.Text;
-
-            try
+            
+            if (userId.Text == null || passWd.Text == null)
             {
-                string content = JsonConvert.SerializeObject(log);
-                HttpResponseMessage mess = await _client.PostAsync(Url, new StringContent(content, Encoding.UTF8, "application/json"));
-                var result = await mess.Content.ReadAsStringAsync();
-                if (result != null)
+                Error.IsVisible = true;
+                Label l = (Label)Error.Content;
+                l.Text = "Vul je naam en wachtwoord in.";
+            }
+            else
+            {
+                log.UserId = userId.Text;
+                log.Password = passWd.Text;
+                try
                 {
-                    String userid = result.Substring(1, result.Length - 2);
-                    await Navigation.PushAsync(new MainPage(userid));
+                    string content = JsonConvert.SerializeObject(log);
+                    HttpResponseMessage mess = await _client.PostAsync(Url, new StringContent(content, Encoding.UTF8, "application/json"));
+                    var result = await mess.Content.ReadAsStringAsync();
+                    if (!result.Equals(""))
+                    {
+                        String userid = result.Substring(1, result.Length - 2);
+                        await Navigation.PushAsync(new MainPage(userid));
 
+                    }
+                    else
+                    {
+                        Error.IsVisible = true;
+                        Label l = (Label)Error.Content;
+                        l.Text = "Foute Inloggegevens";
+
+                    }
                 }
-                else
+                catch (Exception)
                 {
                     Error.IsVisible = true;
                     Label l = (Label)Error.Content;
-                    l.Text = "Deze inloggegevens kloppen niet, probeer opnieuw";
-                    //Gewoon Voor Testen
-                    
+                    l.Text = "Kan niet verbinden met de server";
                 }
-            }
-            catch (TimeoutException)
-            {
-                Error.IsVisible = true;
-                Label l = (Label)Error.Content;
-                l.Text = "Fout met de Server";
-            }
-            catch (Exception) {
-                Error.IsVisible = true;
-                Label l = (Label)Error.Content;
-                l.Text = "Fout met de Server";
             }
             
         }

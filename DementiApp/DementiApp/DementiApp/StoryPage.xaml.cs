@@ -24,8 +24,12 @@ namespace DementiApp
         private ObservableCollection<Post> _posts;
         private String userid;
         private String category;
-        
 
+       /*
+        * This Code makes sure your JsonData gets converted easily to an object.
+        * The object has the properties Data, MediaId, PatientId, Category, File and Description.
+        * 
+        */
         internal class Post : INotifyPropertyChanged
         {
 
@@ -123,6 +127,10 @@ namespace DementiApp
 
         }
 
+        /*
+         * The OnAppearing function gets called when the constructor calls the InitialiseComponent() function.
+         * It requests all pictures of the right category and sets them as the datasource of the ListView. 
+         */
         protected override async void OnAppearing()
         {
             base.OnAppearing();
@@ -149,10 +157,13 @@ namespace DementiApp
                 await DisplayAlert("Error", e.Message, "Ik heb het begrepen");
             }
 
-            
-            
+                        
         }
 
+        /*
+         * When the page is loading it shows this message to make sure the user understands it. 
+         * 
+         */
         public async void showMessage() {
             await DisplayAlert("Info", "Klik op een foto om een bijhorende tekst te bekijken", "Ik heb het begrepen");
         }
@@ -164,42 +175,12 @@ namespace DementiApp
             InitializeComponent();
             NavigationPage.SetHasBackButton(this, false);
 
-
-
-            NavigationPage.SetHasBackButton(this, false);
-
-            /*Binding bindingObject = new Binding("_posts");
-            bindingObject.Source = _posts;
-            MyListView.SetBinding(ListView.ItemsSourceProperty, bindingObject);*/
-
-            /*
-            //var stack = new StackClickable();
-            var list = new ListView();
-            
-            //LAYOUT
-            var scroll = new ScrollView();
-            var stacklayout = new StackLayout();
-            var title = new Label { Text = "StoryBook", FontSize = 75, HorizontalTextAlignment = TextAlignment.Center };
-            var titleFrame = new Frame { Content = title, IsVisible=true, Margin = 10 };
-            stacklayout.Children.Add(titleFrame);
-
-            
-            for (int i = 0; i < _posts.Count; i++)
-            {
-                var stack = new StackClickable();
-                var img = new Image { Source = "eighty.png" };
-                var label = new Label { Text =  _posts[i].Description};
-                var frame = new Frame { Content = label};
-                stack.Children.Add(img);
-                stack.Children.Add(frame);
-                stacklayout.Children.Add(stack);
-            }
-            Content = new ScrollView { Content = stacklayout };
-           */
-
-
         }
 
+        /*
+         * When the stack is clicked, the description of the picture is shown. 
+         * 
+         */
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             var stack = (StackLayout)sender;
@@ -226,7 +207,7 @@ namespace DementiApp
 
 
 
-    public class StackClickable : StackLayout
+    /*public class StackClickable : StackLayout
     {
         Boolean clicked=false;
 
@@ -252,5 +233,5 @@ namespace DementiApp
             }
             
         }
-    }
+    }*/
 }
