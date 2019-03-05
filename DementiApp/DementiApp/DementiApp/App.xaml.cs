@@ -12,8 +12,9 @@ namespace DementiApp
             InitializeComponent();
 
             MainPage = new NavigationPage(new LoginPage()) {
-                BarBackgroundColor = Color.FromHex("372c73"),
-                BarTextColor = Color.White
+                 BarBackgroundColor = Color.Red,
+                BarTextColor = Color.White,
+                
             };
         }
 
