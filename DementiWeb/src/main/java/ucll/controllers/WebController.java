@@ -165,7 +165,8 @@ public class WebController {
                 }
             }
         }
-        params.put("error", "failed to authenticate");
+        params.put("error", "Failed to authenticate");
+        params.put("person", info);
         return new ModelAndView("login", params);
     }
 

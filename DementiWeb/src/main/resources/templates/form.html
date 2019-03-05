@@ -39,38 +39,40 @@
 		<div th:unless="${error==null}">
 			<p th:text="${error}" style="color: red"></p>
 		</div>
-		<form id="form" action="/patients" method="post">
+		<div style="margin-left: 1em;margin-right: 2em">
+			<form id="form" action="/patients" method="post">
 
-			<p><input type="hidden" name="patientId" id="patientId" th:value="${patient?.patientId}"></p>
-			<!--<p>
-				<input type="hidden" name="profile" id="profile" th:value="${patient?.profilePicture}">
-			</p>-->
-			<div class="form-group">
-				<label for="firstName" class="form-group-addon">First Name:</label>
-				<input type="text" name="firstName" class="form-control" id="firstName" th:value="${patient?.firstName}">
-			</div>
-			<div class="form-group">
-				<label for="lastName" class="form-group-addon">Last Name:</label>
-				<input type="text" name="lastName" class="form-control" id="lastName" th:value="${patient?.lastName}">
-			</div>
-			<!--
-			<div class="form-group">
-				<label for="birthDate">Birth Date:</label>
-				<input type="date" name="birthDate" class="form-control" id="birthDate" th:value="${patient?.birthDate}">
-			</div>
-			<div class="form-group">
-				<label for="dementiaLevel">Stage of dementia:</label>
-				<input type="number" name="dementiaLevel" class="form-control" id="dementiaLevel" th:value="${patient?.dementiaLevel}">
-			</div>
-			-->
-			<div class="form-group">
-				<label for="password">Password</label>
-				<input type="text" name="password" class="form-control" id="password" th:value="${patient?.password}">
-			</div>
-			<div class="form-group">
-				<button type="submit" name="save" id="save" class="btn btn-lg btn-success">Save</button>
-			</div>
-		</form>
+				<p><input type="hidden" name="patientId" id="patientId" th:value="${patient?.patientId}"></p>
+				<!--<p>
+					<input type="hidden" name="profile" id="profile" th:value="${patient?.profilePicture}">
+				</p>-->
+				<div class="form-group">
+					<label for="firstName" class="form-group-addon">First Name:</label>
+					<input type="text" name="firstName" class="form-control" id="firstName" th:value="${patient?.firstName}">
+				</div>
+				<div class="form-group">
+					<label for="lastName" class="form-group-addon">Last Name:</label>
+					<input type="text" name="lastName" class="form-control" id="lastName" th:value="${patient?.lastName}">
+				</div>
+				<!--
+				<div class="form-group">
+					<label for="birthDate">Birth Date:</label>
+					<input type="date" name="birthDate" class="form-control" id="birthDate" th:value="${patient?.birthDate}">
+				</div>
+				<div class="form-group">
+					<label for="dementiaLevel">Stage of dementia:</label>
+					<input type="number" name="dementiaLevel" class="form-control" id="dementiaLevel" th:value="${patient?.dementiaLevel}">
+				</div>
+				-->
+				<div class="form-group">
+					<label for="password" class="form-group-addon">Password</label>
+					<input type="text" name="password" class="form-control" id="password" th:value="${patient?.password}">
+				</div>
+				<div class="form-group">
+					<button type="submit" name="save" id="save" class="btn btn-lg btn-success">Save</button>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
