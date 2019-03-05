@@ -22,7 +22,6 @@ namespace DementiApp
         private readonly HttpClient _client = new HttpClient();
         private String userid;
         private Button clicked;
-        private ObservableCollection<String> _photos;
         int score = 0;
         Dictionary<string, Color> layout = new Dictionary<string, Color>();
         Dictionary<string, string> pics = new Dictionary<string, string>();
@@ -34,8 +33,18 @@ namespace DementiApp
          */
         public MemoryMediumPage(String userId)
         {
-            InitializeComponent();
             userid = userId;
+            InitializeComponent();
+            for (int i = 0; i < 20; i++)
+            {
+                (ButtonGrid.FindByName("f" + i) as Button).IsEnabled = false;
+            }
+            showMessage();
+        }
+
+        public async void showMessage()
+        {
+            await DisplayAlert("Info", "Klik op een vakje om het om de foto erachter te zien. Probeer alle paren te vinden.", "Oké!");
         }
 
         /**
@@ -64,210 +73,214 @@ namespace DementiApp
             }
             var numbers = new List<int>(Enumerable.Range(0, 20));
             numbers.Shuffle();
-            foreach (int i in numbers)
+            Device.StartTimer(TimeSpan.FromSeconds(2), () =>
             {
-
-                //but.Image = pic;
-                Image image = ButtonGrid.FindByName("f0" + i) as Image;
-                if (image.Source == null && patientpics.Count() > 9)
+                foreach (int i in numbers)
                 {
-                    // So it doesn't eat up clicks that should go to the button:
-                    image.InputTransparent = true;
-                    // Give it a margin so it doesn't extend to the edge of the grid
-                    image.Margin = new Thickness(10);
-                    image.IsVisible = false;
-                    ButtonGrid.Children.Add(image);
-
-                    int x = 0;
-                    int y = 0;
-                    int z = i;
-                    x = z / 4;
-                    y = z % 4;
-                    Grid.SetRow(image, y);
-                    Grid.SetColumn(image, x + 1);
-                }
-
-                if (patientpics.Count() > 9)
-                {
-                    switch (numbers.IndexOf(i))
+                    //but.Image = pic;
+                    Image image = ButtonGrid.FindByName("f0" + i) as Image;
+                    if (image.Source == null && patientpics.Count() > 9)
                     {
-                        case 0:
-                            layout.Add("" + i, Color.Magenta);
-                            image.Source = patientpics.ElementAt(0).Data;
-                            break;
-                        case 1:
-                            layout.Add("" + i, Color.Magenta);
-                            image.Source = patientpics.ElementAt(0).Data;
-                            break;
-                        case 2:
-                            layout.Add("" + i, Color.LimeGreen);
-                            image.Source = patientpics.ElementAt(1).Data;
-                            break;
-                        case 3:
-                            layout.Add("" + i, Color.LimeGreen);
-                            image.Source = patientpics.ElementAt(1).Data;
-                            break;
-                        case 4:
-                            layout.Add("" + i, Color.Yellow);
-                            image.Source = patientpics.ElementAt(2).Data;
-                            break;
-                        case 5:
-                            layout.Add("" + i, Color.Yellow);
-                            image.Source = patientpics.ElementAt(2).Data;
-                            break;
-                        case 6:
-                            layout.Add("" + i, Color.Green);
-                            image.Source = patientpics.ElementAt(3).Data;
-                            break;
-                        case 7:
-                            layout.Add("" + i, Color.Green);
-                            image.Source = patientpics.ElementAt(3).Data;
-                            break;
-                        case 8:
-                            layout.Add("" + i, Color.OrangeRed);
-                            image.Source = patientpics.ElementAt(4).Data;
-                            break;
-                        case 9:
-                            layout.Add("" + i, Color.OrangeRed);
-                            image.Source = patientpics.ElementAt(4).Data;
-                            break;
-                        case 10:
-                            layout.Add("" + i, Color.Brown);
-                            image.Source = patientpics.ElementAt(5).Data;
-                            break;
-                        case 11:
-                            layout.Add("" + i, Color.Brown);
-                            image.Source = patientpics.ElementAt(5).Data;
-                            break;
-                        case 12:
-                            layout.Add("" + i, Color.Gray);
-                            image.Source = patientpics.ElementAt(6).Data;
-                            break;
-                        case 13:
-                            layout.Add("" + i, Color.Gray);
-                            image.Source = patientpics.ElementAt(6).Data;
-                            break;
-                        case 14:
-                            layout.Add("" + i, Color.MidnightBlue);
-                            image.Source = patientpics.ElementAt(7).Data;
-                            break;
-                        case 15:
-                            layout.Add("" + i, Color.MidnightBlue);
-                            image.Source = patientpics.ElementAt(7).Data;
-                            break;
-                        case 16:
-                            layout.Add("" + i, Color.Moccasin);
-                            image.Source = patientpics.ElementAt(8).Data;
-                            break;
-                        case 17:
-                            layout.Add("" + i, Color.Moccasin);
-                            image.Source = patientpics.ElementAt(8).Data;
-                            break;
-                        case 18:
-                            layout.Add("" + i, Color.YellowGreen);
-                            image.Source = patientpics.ElementAt(9).Data;
-                            break;
-                        case 19:
-                            layout.Add("" + i, Color.YellowGreen);
-                            image.Source = patientpics.ElementAt(9).Data;
-                            break;
-                        default:
-                            layout.Add("" + i, Color.Black);
-                            image.Source = patientpics.ElementAt(0).Data;
-                            break;
+                        // So it doesn't eat up clicks that should go to the button:
+                        image.InputTransparent = true;
+                        // Give it a margin so it doesn't extend to the edge of the grid
+                        image.Margin = new Thickness(10);
+                        image.IsVisible = false;
+                        ButtonGrid.Children.Add(image);
+
+                        int x = 0;
+                        int y = 0;
+                        int z = i;
+                        x = z / 4;
+                        y = z % 4;
+                        Grid.SetRow(image, y);
+                        Grid.SetColumn(image, x + 1);
                     }
-                }
-                else
-                {
-                    switch (numbers.IndexOf(i))
+
+                    if (patientpics.Count() > 9)
                     {
-                        case 0:
-                            layout.Add("" + i, Color.Magenta);
-                            pics.Add("" + i, "Luci.jpg");
-                            break;
-                        case 1:
-                            layout.Add("" + i, Color.Magenta);
-                            pics.Add("" + i, "Luci.jpg");
-                            break;
-                        case 2:
-                            layout.Add("" + i, Color.LimeGreen);
-                            pics.Add("" + i, "Decker.jpg");
-                            break;
-                        case 3:
-                            layout.Add("" + i, Color.LimeGreen);
-                            pics.Add("" + i, "Decker.jpg");
-                            break;
-                        case 4:
-                            layout.Add("" + i, Color.Yellow);
-                            pics.Add("" + i, "Maze.jpg");
-                            break;
-                        case 5:
-                            layout.Add("" + i, Color.Yellow);
-                            pics.Add("" + i, "Maze.jpg");
-                            break;
-                        case 6:
-                            layout.Add("" + i, Color.Green);
-                            pics.Add("" + i, "Linda.jpg");
-                            break;
-                        case 7:
-                            layout.Add("" + i, Color.Green);
-                            pics.Add("" + i, "Linda.jpg");
-                            break;
-                        case 8:
-                            layout.Add("" + i, Color.OrangeRed);
-                            pics.Add("" + i, "Dan.jpg");
-                            break;
-                        case 9:
-                            layout.Add("" + i, Color.OrangeRed);
-                            pics.Add("" + i, "Dan.jpg");
-                            break;
-                        case 10:
-                            layout.Add("" + i, Color.Brown);
-                            pics.Add("" + i, "Amenadiel.jpg");
-                            break;
-                        case 11:
-                            layout.Add("" + i, Color.Brown);
-                            pics.Add("" + i, "Amenadiel.jpg");
-                            break;
-                        case 12:
-                            layout.Add("" + i, Color.Gray);
-                            pics.Add("" + i, "Ella.jpg");
-                            break;
-                        case 13:
-                            layout.Add("" + i, Color.Gray);
-                            pics.Add("" + i, "Ella.jpg");
-                            break;
-                        case 14:
-                            layout.Add("" + i, Color.MidnightBlue);
-                            pics.Add("" + i, "Nolan.jpg");
-                            break;
-                        case 15:
-                            layout.Add("" + i, Color.MidnightBlue);
-                            pics.Add("" + i, "Nolan.jpg");
-                            break;
-                        case 16:
-                            layout.Add("" + i, Color.Moccasin);
-                            pics.Add("" + i, "Talia.jpg");
-                            break;
-                        case 17:
-                            layout.Add("" + i, Color.Moccasin);
-                            pics.Add("" + i, "Talia.jpg");
-                            break;
-                        case 18:
-                            layout.Add("" + i, Color.YellowGreen);
-                            pics.Add("" + i, "Trixie.jpg");
-                            break;
-                        case 19:
-                            layout.Add("" + i, Color.YellowGreen);
-                            pics.Add("" + i, "Trixie.jpg");
-                            break;
-                        default:
-                            layout.Add("" + i, Color.Black);
-                            pics.Add("" + i, "Luci.jpg");
-                            break;
+                        switch (numbers.IndexOf(i))
+                        {
+                            case 0:
+                                layout.Add("" + i, Color.Magenta);
+                                image.Source = patientpics.ElementAt(0).Data;
+                                break;
+                            case 1:
+                                layout.Add("" + i, Color.Magenta);
+                                image.Source = patientpics.ElementAt(0).Data;
+                                break;
+                            case 2:
+                                layout.Add("" + i, Color.LimeGreen);
+                                image.Source = patientpics.ElementAt(1).Data;
+                                break;
+                            case 3:
+                                layout.Add("" + i, Color.LimeGreen);
+                                image.Source = patientpics.ElementAt(1).Data;
+                                break;
+                            case 4:
+                                layout.Add("" + i, Color.Yellow);
+                                image.Source = patientpics.ElementAt(2).Data;
+                                break;
+                            case 5:
+                                layout.Add("" + i, Color.Yellow);
+                                image.Source = patientpics.ElementAt(2).Data;
+                                break;
+                            case 6:
+                                layout.Add("" + i, Color.Green);
+                                image.Source = patientpics.ElementAt(3).Data;
+                                break;
+                            case 7:
+                                layout.Add("" + i, Color.Green);
+                                image.Source = patientpics.ElementAt(3).Data;
+                                break;
+                            case 8:
+                                layout.Add("" + i, Color.OrangeRed);
+                                image.Source = patientpics.ElementAt(4).Data;
+                                break;
+                            case 9:
+                                layout.Add("" + i, Color.OrangeRed);
+                                image.Source = patientpics.ElementAt(4).Data;
+                                break;
+                            case 10:
+                                layout.Add("" + i, Color.Brown);
+                                image.Source = patientpics.ElementAt(5).Data;
+                                break;
+                            case 11:
+                                layout.Add("" + i, Color.Brown);
+                                image.Source = patientpics.ElementAt(5).Data;
+                                break;
+                            case 12:
+                                layout.Add("" + i, Color.Gray);
+                                image.Source = patientpics.ElementAt(6).Data;
+                                break;
+                            case 13:
+                                layout.Add("" + i, Color.Gray);
+                                image.Source = patientpics.ElementAt(6).Data;
+                                break;
+                            case 14:
+                                layout.Add("" + i, Color.MidnightBlue);
+                                image.Source = patientpics.ElementAt(7).Data;
+                                break;
+                            case 15:
+                                layout.Add("" + i, Color.MidnightBlue);
+                                image.Source = patientpics.ElementAt(7).Data;
+                                break;
+                            case 16:
+                                layout.Add("" + i, Color.Moccasin);
+                                image.Source = patientpics.ElementAt(8).Data;
+                                break;
+                            case 17:
+                                layout.Add("" + i, Color.Moccasin);
+                                image.Source = patientpics.ElementAt(8).Data;
+                                break;
+                            case 18:
+                                layout.Add("" + i, Color.YellowGreen);
+                                image.Source = patientpics.ElementAt(9).Data;
+                                break;
+                            case 19:
+                                layout.Add("" + i, Color.YellowGreen);
+                                image.Source = patientpics.ElementAt(9).Data;
+                                break;
+                            default:
+                                layout.Add("" + i, Color.Black);
+                                image.Source = patientpics.ElementAt(0).Data;
+                                break;
+                        }
                     }
+                    else
+                    {
+                        switch (numbers.IndexOf(i))
+                        {
+                            case 0:
+                                layout.Add("" + i, Color.Magenta);
+                                pics.Add("" + i, "Luci.jpg");
+                                break;
+                            case 1:
+                                layout.Add("" + i, Color.Magenta);
+                                pics.Add("" + i, "Luci.jpg");
+                                break;
+                            case 2:
+                                layout.Add("" + i, Color.LimeGreen);
+                                pics.Add("" + i, "Decker.jpg");
+                                break;
+                            case 3:
+                                layout.Add("" + i, Color.LimeGreen);
+                                pics.Add("" + i, "Decker.jpg");
+                                break;
+                            case 4:
+                                layout.Add("" + i, Color.Yellow);
+                                pics.Add("" + i, "Maze.jpg");
+                                break;
+                            case 5:
+                                layout.Add("" + i, Color.Yellow);
+                                pics.Add("" + i, "Maze.jpg");
+                                break;
+                            case 6:
+                                layout.Add("" + i, Color.Green);
+                                pics.Add("" + i, "Linda.jpg");
+                                break;
+                            case 7:
+                                layout.Add("" + i, Color.Green);
+                                pics.Add("" + i, "Linda.jpg");
+                                break;
+                            case 8:
+                                layout.Add("" + i, Color.OrangeRed);
+                                pics.Add("" + i, "Dan.jpg");
+                                break;
+                            case 9:
+                                layout.Add("" + i, Color.OrangeRed);
+                                pics.Add("" + i, "Dan.jpg");
+                                break;
+                            case 10:
+                                layout.Add("" + i, Color.Brown);
+                                pics.Add("" + i, "Amenadiel.jpg");
+                                break;
+                            case 11:
+                                layout.Add("" + i, Color.Brown);
+                                pics.Add("" + i, "Amenadiel.jpg");
+                                break;
+                            case 12:
+                                layout.Add("" + i, Color.Gray);
+                                pics.Add("" + i, "Ella.jpg");
+                                break;
+                            case 13:
+                                layout.Add("" + i, Color.Gray);
+                                pics.Add("" + i, "Ella.jpg");
+                                break;
+                            case 14:
+                                layout.Add("" + i, Color.MidnightBlue);
+                                pics.Add("" + i, "Nolan.jpg");
+                                break;
+                            case 15:
+                                layout.Add("" + i, Color.MidnightBlue);
+                                pics.Add("" + i, "Nolan.jpg");
+                                break;
+                            case 16:
+                                layout.Add("" + i, Color.Moccasin);
+                                pics.Add("" + i, "Talia.jpg");
+                                break;
+                            case 17:
+                                layout.Add("" + i, Color.Moccasin);
+                                pics.Add("" + i, "Talia.jpg");
+                                break;
+                            case 18:
+                                layout.Add("" + i, Color.YellowGreen);
+                                pics.Add("" + i, "Trixie.jpg");
+                                break;
+                            case 19:
+                                layout.Add("" + i, Color.YellowGreen);
+                                pics.Add("" + i, "Trixie.jpg");
+                                break;
+                            default:
+                                layout.Add("" + i, Color.Black);
+                                pics.Add("" + i, "Luci.jpg");
+                                break;
+                        }
+                    }
+                    (ButtonGrid.FindByName("f" + i) as Button).IsEnabled = true;
                 }
-            }
+                return false;
+            });
         }
 
         /**
