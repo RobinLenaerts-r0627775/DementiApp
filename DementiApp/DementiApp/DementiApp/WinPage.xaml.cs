@@ -25,7 +25,7 @@ namespace DementiApp
         }
         protected override bool OnBackButtonPressed()
         {
-            Navigation.PushAsync(new MainPage(null));
+            Navigation.PushAsync(new MainPage(userId));
             return true;
         }
     }

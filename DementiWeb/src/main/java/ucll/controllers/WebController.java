@@ -327,13 +327,26 @@ public class WebController {
                 patientRepository.save(pat);
             } else {
                 params.put("error", "Something went wrong, please try again.");
-                response.sendRedirect("/patients/new");
+                params.put("patient", new Patient(null, patient.firstName, patient.lastName, /*patient.birthDate, patient.dementiaLevel, */mediaRepository.getFirstByPatientId(null).mediaId, patient.getPassword()));
+                return new ModelAndView("form", params);
             }
         } else {
-            Patient pat = new Patient(null, patient.firstName, patient.lastName, /*patient.birthDate, patient.dementiaLevel, */mediaRepository.getFirstByPatientId(null).mediaId, patient.getPassword());
-            pat.role = ROLE.PATIENT;
-            patientRepository.save(pat);
-            loginRepository.save(LoginInfo.LoginInfomaker(pat.firstName + "." + pat.lastName, pat.getPassword(), pat.role, pat.patientId));
+            if (patient != null && patient.firstName != null && patient.lastName != null && patient.getPassword() != null) {
+                if (!patient.firstName.trim().isEmpty() && !patient.lastName.trim().isEmpty() && !patient.getPassword().trim().isEmpty()) {
+                    Patient pat = new Patient(null, patient.firstName, patient.lastName, /*patient.birthDate, patient.dementiaLevel, */mediaRepository.getFirstByPatientId(null).mediaId, patient.getPassword());
+                    pat.role = ROLE.PATIENT;
+                    patientRepository.save(pat);
+                    loginRepository.save(LoginInfo.LoginInfomaker(pat.firstName + "." + pat.lastName, pat.getPassword(), pat.role, pat.patientId));
+                } else {
+                    params.put("error", "Fill the fields");
+                    params.put("patient", new Patient(null, patient.firstName, patient.lastName, /*patient.birthDate, patient.dementiaLevel, */mediaRepository.getFirstByPatientId(null).mediaId, patient.getPassword()));
+                    return new ModelAndView("form", params);
+                }
+            } else {
+                params.put("error", "Nothing received");
+                params.put("patient", new Patient(null, patient.firstName, patient.lastName, /*patient.birthDate, patient.dementiaLevel, */mediaRepository.getFirstByPatientId(null).mediaId, patient.getPassword()));
+                return new ModelAndView("form", params);
+            }
         }
 
         return overview(request, response);
@@ -354,10 +367,35 @@ public class WebController {
             return new ModelAndView("AccessException", params );
         }
         else{
+            params.put("categories", findCategoriesFor(patientId));
             params.put("photoAlbum", mediaRepository.getAllByPatientId(patientId));
             params.put("patientId", patientId.toString());
             return new ModelAndView("photoAlbum", params);
         }
+    }
+
+    @RequestMapping(value = "/webmedia/{patientId}/category/{category}")
+    public ModelAndView patientMediaCategory(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID patientId, @PathVariable String category){
+        Map params = new HashMap();
+        if(request.getSession(false) == null || (((LoginInfo) request.getSession().getAttribute("user")).getRole() != ROLE.NURSE && ((LoginInfo)request.getSession().getAttribute("user")).getPersonID() == patientId)){
+            return new ModelAndView("AccessException", params );
+        }
+        else{
+            params.put("categories", findCategoriesFor(patientId));
+            params.put("photoAlbum", mediaRepository.getAllByPatientIdAndCategory(patientId, category));
+            params.put("patientId", patientId.toString());
+            return new ModelAndView("photoAlbum", params);
+        }
+    }
+
+    private List<String> findCategoriesFor(UUID patientId) {
+        List<String> result = new ArrayList<>();
+        for (MediaFile file : mediaRepository.getAllByPatientId(patientId)){
+            if (!result.contains(file.category)){
+                result.add(file.category);
+            }
+        }
+        return result;
     }
 
     /**
