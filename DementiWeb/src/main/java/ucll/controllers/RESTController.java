@@ -32,8 +32,8 @@ import java.util.stream.StreamSupport;
 @RestController
 @RequestMapping("/api")
 public class RESTController {
-    //private static String fileDir = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";  //local
-    private static String fileDir = System.getProperty("user.dir") + "/resources/main/static/images/";    //server
+    private static String fileDir = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";  //local
+    //private static String fileDir = System.getProperty("user.dir") + "/resources/main/static/images/";    //server
 
 
     @Autowired //Inject?
@@ -300,10 +300,16 @@ public class RESTController {
      */
     @PostMapping("/login")
     public ResponseEntity<UUID> login(@RequestBody LoginObject loginObject){
-        LoginInfo result = loginRepository.getFirstByUsernameAndPassword(loginObject.user, loginObject.password);
-        if (result.getRole() == ROLE.NURSE){
+        Optional<LoginInfo> op = loginRepository.getFirstByUsernameAndPassword(loginObject.user, loginObject.password);
+        if (op.isPresent()) {
+            LoginInfo result = op.get();
+
+            if (result.getRole() == ROLE.NURSE) {
+                return null;
+            }
+            return result != null ? ResponseEntity.ok(result.getPersonID()) : null;
+        } else {
             return null;
         }
-        return result!=null ? ResponseEntity.ok(result.getPersonID()) : null;
     }
 }
