@@ -19,6 +19,8 @@ public class MediaFile {
     public File file;
     //public byte[] data;
     //public boolean playableType; // Video True, Image False
+
+    @Column(length = 1000)
     public String description;
     public String category;
 

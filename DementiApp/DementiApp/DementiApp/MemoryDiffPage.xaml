@@ -5,9 +5,9 @@
              Title="Choose your difficulty">
     <ContentPage.Content>
         <StackLayout>
-            <Button Text="* Easy *" Clicked="Button_Clicked"></Button>
-            <Button Text="* * Medium * *" Clicked="Button_Clicked_1"></Button>
-            <Button Text="* * * Hard * * *" Clicked="Button_Clicked_2"></Button>
+            <Button Text="* Makkelijk *" Clicked="Button_Clicked" BackgroundColor="Red" TextColor="White"></Button>
+            <Button Text="* * Normaal * *" Clicked="Button_Clicked_1" BackgroundColor="Red" TextColor="White"></Button>
+            <Button Text="* * * Moeilijk * * *" Clicked="Button_Clicked_2" BackgroundColor="Red" TextColor="White"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Plugin.Connectivity;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -100,6 +101,12 @@ namespace DementiApp
             }
             else
             {
+                if (!CrossConnectivity.Current.IsConnected)
+                {
+                    Error.IsVisible = true;
+                    Label l = (Label)Error.Content;
+                    l.Text = "Je bent niet verbonden met het internet";
+                }
                 log.UserId = userId.Text;
                 log.Password = passWd.Text;
                 try

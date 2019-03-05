@@ -2,14 +2,14 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DementiApp.StoryPage"
-             BackgroundColor="LightGray">
+             BackgroundColor="White">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="imageStyle" TargetType="{x:Type Image}">
                 <Setter Property="Margin" Value="0,50,0,50" />
             </Style>
             <Style x:Key="labelStyle" TargetType="{x:Type Label}">
-                <Setter Property="BackgroundColor" Value="#372c73"/>
+                <Setter Property="BackgroundColor" Value="Red"/>
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="FontSize" Value="35"/>
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
@@ -21,11 +21,11 @@
                 <Setter Property="Margin" Value="50,10,50,50" />
                 <Setter Property="IsVisible" Value="True" />
                 <Setter Property="HasShadow" Value="False" />
-                <Setter Property="BackgroundColor" Value="#372c73"/>
+                <Setter Property="BackgroundColor" Value="Red"/>
             </Style>
             <Style x:Key="stackStyle" TargetType="{x:Type StackLayout}">
                 <Setter Property="Margin" Value="0,20,0,20" />
-                <Setter Property="BackgroundColor" Value="LightGray" />
+                <Setter Property="BackgroundColor" Value="White" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -38,7 +38,7 @@
             </Frame>
 
 
-            <ListView x:Name="MyListView" VerticalOptions="FillAndExpand" HasUnevenRows="True" BackgroundColor="LightGray" ItemSelected="MyListView_ItemSelected">
+            <ListView x:Name="MyListView" VerticalOptions="FillAndExpand" HasUnevenRows="True" BackgroundColor="White" ItemSelected="MyListView_ItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -47,15 +47,15 @@
                                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
                                 </StackLayout.GestureRecognizers>
 
-                                <StackLayout VerticalOptions="FillAndExpand" MinimumHeightRequest="500" BackgroundColor="LightGray" >
-                                    <Frame Margin="0" Padding="0" VerticalOptions="FillAndExpand" BackgroundColor="LightGray">
+                                <StackLayout VerticalOptions="FillAndExpand" MinimumHeightRequest="500" BackgroundColor="White" >
+                                    <Frame Margin="0" Padding="0" VerticalOptions="FillAndExpand" BackgroundColor="White">
                                         <Image Source="{Binding Data}" Aspect="AspectFit" HeightRequest="500"/>
                                     </Frame>
                                 </StackLayout>
 
 
                                 <Frame CornerRadius="25" Margin="0" Padding="0" IsVisible="False">
-                                    <Label Text="{Binding Description} " TextColor="White" BackgroundColor="#372c73" FontSize="35" HorizontalTextAlignment="Center" Margin="0"/>
+                                    <Label Text="{Binding Description} " TextColor="White" BackgroundColor="Red" FontSize="35" HorizontalTextAlignment="Center" Margin="0"/>
                                 </Frame>
                             </StackLayout>
                         </ViewCell>
