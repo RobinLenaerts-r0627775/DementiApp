@@ -40,8 +40,9 @@ namespace DementiApp
             for (int i = 0; i < 24; i++)
             {
                 (ButtonGrid.FindByName("f" + i) as Button).IsEnabled = false;
+                (ButtonGrid.FindByName("f" + i) as Button).Margin = 10;
+
             }
-            showMessage();
         }
 
         public async void showMessage()
@@ -56,6 +57,7 @@ namespace DementiApp
 
         protected async override void OnAppearing()
         {
+            showMessage();
             try
             {
                 string content = await _client.GetStringAsync("http://193.191.177.178:8080/api/media/" + userid);
@@ -322,8 +324,16 @@ namespace DementiApp
          */ 
         private void Button_Clicked(object sender, EventArgs e)
         {
-            VisualState vs = new VisualState();
             Button but = (Button)sender;
+            Image fullscreen = new Image();
+            fullscreen.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(() => { ButtonGrid.Children.Remove(fullscreen); }), NumberOfTapsRequired = 1 });
+
+            fullscreen.Source = (but.Parent.FindByName("f0" + but.StyleId) as Image).Source;
+            ButtonGrid.Children.Add(fullscreen);
+            Grid.SetColumn(fullscreen, 1);
+            Grid.SetColumnSpan(fullscreen, 6);
+            Grid.SetRow(fullscreen, 0);
+            Grid.SetRowSpan(fullscreen, 4);
             but.IsEnabled = false;
             but.BorderColor = Color.LightYellow;
             Color col = Color.FromHex("#372c73");

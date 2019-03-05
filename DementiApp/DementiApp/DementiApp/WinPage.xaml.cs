@@ -21,7 +21,7 @@ namespace DementiApp
 
         async void Button_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new MemoryPage(userId));
+            await Navigation.PushAsync(new MemoryDiffPage(userId));
         }
         protected override bool OnBackButtonPressed()
         {
