@@ -22,7 +22,7 @@ namespace DementiApp
 
         /*
         * This Code makes sure your JsonData gets converted easily to an object.
-        * The object has the properties Data, BirthDate, DementiaLevel, firstName, LastName, PatientId, File, ProfilePicture and Role.
+        * The object has the properties Data, FirstName, LastName, PatientId, File, ProfilePicture and Role.
         * 
         */
         internal class Patient : INotifyPropertyChanged
@@ -39,34 +39,6 @@ namespace DementiApp
                     _data = value;
                     OnPropertyChanged();
 
-                }
-
-            }
-
-            private string _birthdDate;
-
-            [JsonProperty("birthdDate")]
-            public string BirthdDate
-            {
-                get { return _birthdDate; }
-                set
-                {
-                    _birthdDate = value;
-                    OnPropertyChanged();
-                }
-
-            }
-
-            private string _dementiaLevel;
-
-            [JsonProperty("dementiaLevel")]
-            public string DementiaLevel
-            {
-                get { return _dementiaLevel; }
-                set
-                {
-                    _dementiaLevel = value;
-                    OnPropertyChanged();
                 }
 
             }
