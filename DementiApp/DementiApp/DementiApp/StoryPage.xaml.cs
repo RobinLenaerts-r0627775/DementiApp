@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Plugin.Connectivity;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -133,8 +134,12 @@ namespace DementiApp
          */
         protected override async void OnAppearing()
         {
+            if (!CrossConnectivity.Current.IsConnected)
+            {
+                await DisplayAlert("Oeps", "Kijk na of je verbonden bent met het internet", "Begrepen");
+            }
             base.OnAppearing();
-            showMessage();
+            
             try
             {
                 string url = Url + userid;
@@ -151,10 +156,11 @@ namespace DementiApp
                 _posts = new ObservableCollection<Post>(posts);
                 
                 MyListView.ItemsSource = _posts;
+                showMessage();
 
             }
-            catch (Exception e) {
-                await DisplayAlert("Error", e.Message, "Ik heb het begrepen");
+            catch (Exception) {
+                await DisplayAlert("Oeps", "Kijk na of je verbonden bent met het internet", "Begrepen");
             }
 
                         
@@ -204,34 +210,4 @@ namespace DementiApp
             
         }
     }
-
-
-
-    /*public class StackClickable : StackLayout
-    {
-        Boolean clicked=false;
-
-        public StackClickable()
-        {
-            TapGestureRecognizer singleTap = new TapGestureRecognizer()
-            {
-                NumberOfTapsRequired = 1
-            };
-            this.GestureRecognizers.Add(singleTap);
-            singleTap.Tapped += stack_Clicked;
-        }
-
-        private void stack_Clicked(object sender, EventArgs e)
-        {
-
-            if (Children.Last().IsVisible)
-            {
-                Children.Last().IsVisible = false;
-            }
-            else {
-                Children.Last().IsVisible = true;
-            }
-            
-        }
-    }*/
 }
