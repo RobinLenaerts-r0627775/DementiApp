@@ -2,14 +2,14 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DementiApp.LoginPage"
-             BackgroundColor="LightGray">
+             BackgroundColor="White"
+             >
 
     <ContentPage.Resources>
         <Style x:Key="labelStyle" TargetType="{x:Type Label}">
-            <Setter Property="BackgroundColor" Value="#372c73"/>
+            <Setter Property="BackgroundColor" Value="Red"/>
             <Setter Property="TextColor" Value="White"/>
-            <Setter Property="FontSize" Value="35"/>
-            <Setter Property="HeightRequest" Value="200"/>
+            <Setter Property="FontSize" Value="50"/>
             <Setter Property="WidthRequest" Value="1500"/>
             <Setter Property="HorizontalTextAlignment" Value="Center"/>
             <Setter Property="VerticalTextAlignment" Value="Center"/>
@@ -17,26 +17,23 @@
         <Style x:Key="frameStyle" TargetType="{x:Type Frame}">
             <Setter Property="CornerRadius" Value="25" />
             <Setter Property="Padding" Value="0" />
-            <Setter Property="Margin" Value="10,5,10,5" />
+            <Setter Property="MinimumHeightRequest" Value="100" />
             <Setter Property="HasShadow" Value="False" />
         </Style>
         <Style x:Key="stackStyle" TargetType="{x:Type StackLayout}">
-            <Setter Property="Margin" Value="50,20,50,50" />
+            <Setter Property="Margin" Value="10,10,10,10" />
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout Style="{StaticResource stackStyle}" BackgroundColor="LightGray">
-            <Frame IsVisible="True" Margin="10" Style="{StaticResource frameStyle}">
-                <Label Text="Login" FontSize="50" HorizontalTextAlignment="Center" Style="{StaticResource labelStyle}" />
-            </Frame>
+        <StackLayout Style="{StaticResource stackStyle}" BackgroundColor="White">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -44,20 +41,25 @@
                 </Grid.ColumnDefinitions>
                 <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Source="gear.png"/>
                 <Frame Grid.Row="0" Grid.Column="1" Style="{StaticResource frameStyle}">
-                    <Label Text="Gebruikersnaam" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource labelStyle}" />
+                    <Label Text="Gebruikersnaam" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource labelStyle}" HeightRequest="1500"/>
                 </Frame>
-                <Entry x:Name="userId" Placeholder="Voornaam.Achternaam" Margin="20,0,20,0" FontSize="30" Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center"/>
+                <Entry x:Name="userId" Placeholder="Voornaam.Achternaam" FontSize="40" Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" VerticalOptions="End"/>
 
                 <Frame Grid.Row="2" Grid.Column="1" Style="{StaticResource frameStyle}" >
-                    <Label Text="Wachtwoord" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource labelStyle}" />
+                    <Label Text="Wachtwoord" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource labelStyle}" HeightRequest="1500"/>
                 </Frame>
-                <Entry  x:Name="passWd"  Grid.Row="3" Grid.Column="1" IsPassword="True" Margin="20,0,20,0" FontSize="30"/>
+                <Entry  x:Name="passWd"  Grid.Row="3" Grid.Column="1" IsPassword="True" FontSize="40" HorizontalTextAlignment="Center" VerticalOptions="End"/>
 
-                <Frame x:Name="Error" Grid.Row="4" Grid.Column="1" Style="{StaticResource frameStyle}" IsVisible="False" >
-                    <Label Style="{StaticResource labelStyle}" TextColor="White" FontSize="25" BackgroundColor="Red"/>
+                <Frame x:Name="Error" Grid.Row="4" Grid.Column="1" Style="{StaticResource frameStyle}" IsVisible="False" BackgroundColor="White" >
+                    <Label Style="{StaticResource labelStyle}" TextColor="Red" BackgroundColor="White" FontSize="30"/>
                 </Frame>
-                
-                <Button Clicked="Login_Clicked" Grid.Row="5" Grid.Column="1" Text="Login" BackgroundColor="LightGray" FontSize="25" TextColor="#372c73" BorderColor="#372c73" BorderWidth="10"/>
+
+                <Frame Grid.Row="5" Grid.Column="1" Style="{StaticResource frameStyle}" BorderColor="Red" Padding="8">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Login_Clicked" NumberOfTapsRequired="1" />
+                    </Frame.GestureRecognizers>
+                    <Label Text="Login" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource labelStyle}" HeightRequest="1500" BackgroundColor="White" TextColor="Red" FontSize="40"/>
+                </Frame>
             </Grid>
         </StackLayout>
     </ContentPage.Content>

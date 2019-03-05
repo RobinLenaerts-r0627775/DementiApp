@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:DementiApp"
              x:Class="DementiApp.MainPage"
-             BackgroundColor="LightGray">
+             BackgroundColor="White">
     <ContentPage.Resources>
         <Style x:Key="buttonstyle" TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="50,15,50,15"/>
             <Setter Property="HeightRequest" Value="140"/>
-            <Setter Property="BackgroundColor" Value="#372c73" />
+            <Setter Property="BackgroundColor" Value="Red" />
             <Setter Property="CornerRadius" Value="25"/>
             <Setter Property="TextColor" Value="White" />
             <Setter Property="FontSize" Value="35" />
@@ -17,7 +17,7 @@
 
         </Style>
         <Style TargetType="NavigationPage">
-            <Setter Property="BarBackgroundColor" Value="#372c73"/>
+            <Setter Property="BarBackgroundColor" Value="Red"/>
             <Setter Property="BarTextColor" Value="White"/>
         </Style>
     </ContentPage.Resources>
@@ -39,7 +39,7 @@
                             <Image x:Name="profilePhoto" Aspect="AspectFill" />
                         </Frame>
                     </Frame>
-                    <Frame CornerRadius="25" Padding="1" BackgroundColor="White" BorderColor="#372c73" Margin="0,10,0,0">
+                    <Frame CornerRadius="25" Padding="1" BackgroundColor="White" BorderColor="White" Margin="0,10,0,0">
                         <Label HorizontalTextAlignment="Center" FontSize="25" TextColor="Black" Margin="8" x:Name="naam" />
                     </Frame>
                 </StackLayout>
