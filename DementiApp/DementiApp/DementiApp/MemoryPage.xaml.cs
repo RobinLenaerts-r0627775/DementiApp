@@ -325,6 +325,7 @@ namespace DementiApp
         private void Button_Clicked(object sender, EventArgs e)
         {
             Button but = (Button)sender;
+            but.IsVisible = false;
             Image fullscreen = new Image();
             fullscreen.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(() => { ButtonGrid.Children.Remove(fullscreen); }), NumberOfTapsRequired = 1 });
 
@@ -403,6 +404,8 @@ namespace DementiApp
                         }
                         but.IsEnabled = true;
                         clicked.IsEnabled = true;
+                        but.IsVisible = true;
+                        clicked.IsVisible = true;
                         but.BorderColor = Color.Transparent;
                         clicked.BorderColor = Color.Transparent;
                         clicked.BackgroundColor = Color.Red;

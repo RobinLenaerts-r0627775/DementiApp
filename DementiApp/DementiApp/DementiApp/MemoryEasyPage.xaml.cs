@@ -326,8 +326,6 @@ namespace DementiApp
                     {
                         (but.Parent.FindByName("f" + i) as Button).IsEnabled = false;
                     }
-                    but.IsVisible = true;
-                    clicked.IsVisible = true;
 
                     Device.StartTimer(TimeSpan.FromSeconds(2), () =>
                     {
@@ -343,6 +341,8 @@ namespace DementiApp
                         }
                         but.IsEnabled = true;
                         clicked.IsEnabled = true;
+                        but.IsVisible = true;
+                        clicked.IsVisible = true;
                         but.BorderColor = Color.Transparent;
                         clicked.BorderColor = Color.Transparent;
                         clicked.BackgroundColor = Color.Red;
