@@ -41,6 +41,12 @@ namespace DementiApp
             {
                 (ButtonGrid.FindByName("f" + i) as Button).IsEnabled = false;
             }
+            showMessage();
+        }
+
+        public async void showMessage()
+        {
+            await DisplayAlert("Info", "Klik op een vakje om het om de foto erachter te zien. Probeer alle paren te vinden.", "Oké!");
         }
 
         /**

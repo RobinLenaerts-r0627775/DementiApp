@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Plugin.Connectivity;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,9 +29,19 @@ namespace DementiApp
         */
         protected async override void OnAppearing()
         {
-            string content = await _client.GetStringAsync(Url + userid);
-            List<String> categories = JsonConvert.DeserializeObject<List<String>>(content);
-            _categories = new ObservableCollection<String>(categories);
+            if (!CrossConnectivity.Current.IsConnected)
+            {
+                await DisplayAlert("Oeps", "Kijk na of je verbonden bent met het internet", "Begrepen");
+            }
+            try
+            {
+                string content = await _client.GetStringAsync(Url + userid);
+                List<String> categories = JsonConvert.DeserializeObject<List<String>>(content);
+                _categories = new ObservableCollection<String>(categories);
+            }
+            catch (Exception) {
+                await DisplayAlert("Oeps", "Kijk na of je verbonden bent met het internet", "Begrepen");
+            }
 
             Categories.ItemsSource = _categories;
         }

@@ -33,8 +33,18 @@ namespace DementiApp
          */
         public MemoryEasyPage(String userId)
         {
-            InitializeComponent();
             userid = userId;
+            InitializeComponent();
+            for (int i = 0; i < 16; i++)
+            {
+                (ButtonGrid.FindByName("f" + i) as Button).IsEnabled = false;
+            }
+            showMessage();
+        }
+
+        public async void showMessage()
+        {
+            await DisplayAlert("Info", "Klik op een vakje om het om de foto erachter te zien. Probeer alle paren te vinden.", "Oké!");
         }
 
         /**
@@ -63,16 +73,15 @@ namespace DementiApp
             }
             var numbers = new List<int>(Enumerable.Range(0, 16));
             numbers.Shuffle();
-            foreach (int i in numbers)
+            Device.StartTimer(TimeSpan.FromSeconds(2), () =>
             {
-
-                //but.Image = pic;
+                foreach (int i in numbers)
+            {
+                
                 Image image = ButtonGrid.FindByName("f0" + i) as Image;
                 if (image.Source == null && patientpics.Count() > 7)
                 {
-                    // So it doesn't eat up clicks that should go to the button:
                     image.InputTransparent = true;
-                    // Give it a margin so it doesn't extend to the edge of the grid
                     image.Margin = new Thickness(10);
                     image.IsVisible = false;
                     ButtonGrid.Children.Add(image);
@@ -234,7 +243,10 @@ namespace DementiApp
                             break;
                     }
                 }
-            }
+                (ButtonGrid.FindByName("f" + i) as Button).IsEnabled = true;
+                }
+                return false;
+            });
         }
 
         /**

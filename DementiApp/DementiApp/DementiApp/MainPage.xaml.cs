@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Plugin.Connectivity;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -142,22 +143,26 @@ namespace DementiApp
          * It requests the id of your profilepicture and then requests your profilepicture. 
         */
         protected override async void OnAppearing() {
-            string t = Url+"/"+userid;
-            string content = await _client.GetStringAsync(Url+"/"+userid);
-            Patient patient = JsonConvert.DeserializeObject<Patient>(content);
-
-            Byte[] byteArray=null;
             try
             {
+                string t = Url+"/"+userid;
+                string content = await _client.GetStringAsync(Url+"/"+userid);
+                Patient patient = JsonConvert.DeserializeObject<Patient>(content);
+
+                Byte[] byteArray=null;
+            
                 byteArray = await _client.GetByteArrayAsync("http://193.191.177.178:8080/api/media/data/" + patient.ProfilePicture);
-            }
-            catch (Exception e) {
-                await DisplayAlert("Error", e.Message, "Cancel");
-            }
 
                 patient.Data = ImageSource.FromStream(() => new MemoryStream(byteArray));
                 profilePhoto.Source = patient.Data;
                 naam.Text = patient.FirstName + " " + patient.LastName;
+            }
+            catch (Exception)
+            {
+                await DisplayAlert("Oeps", "Kijk na of je verbonden bent met het internet", "Begrepen");
+            }
+
+            
                        
             
         }
