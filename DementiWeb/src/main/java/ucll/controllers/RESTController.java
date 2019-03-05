@@ -300,10 +300,16 @@ public class RESTController {
      */
     @PostMapping("/login")
     public ResponseEntity<UUID> login(@RequestBody LoginObject loginObject){
-        LoginInfo result = loginRepository.getFirstByUsernameAndPassword(loginObject.user, loginObject.password);
-        if (result.getRole() == ROLE.NURSE){
+        Optional<LoginInfo> op = loginRepository.getFirstByUsernameAndPassword(loginObject.user, loginObject.password);
+        if (op.isPresent()) {
+            LoginInfo result = op.get();
+
+            if (result.getRole() == ROLE.NURSE) {
+                return null;
+            }
+            return result != null ? ResponseEntity.ok(result.getPersonID()) : null;
+        } else {
             return null;
         }
-        return result!=null ? ResponseEntity.ok(result.getPersonID()) : null;
     }
 }

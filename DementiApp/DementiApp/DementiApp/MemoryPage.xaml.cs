@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Essentials;
 
 namespace DementiApp
 {
@@ -343,6 +344,20 @@ namespace DementiApp
             {
                 if (col.Equals(clicked.BackgroundColor))
                 {
+                    try
+                    {
+                        Vibration.Vibrate();
+                    }
+                    catch (FeatureNotSupportedException ex)
+                    {
+                        Console.WriteLine(ex.StackTrace);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.StackTrace);
+                        //ex.StackTrace;
+                        //throw;
+                    }
                     but.IsEnabled = false;
                     clicked.IsEnabled = false;
                     but.BorderColor = Color.Transparent;
