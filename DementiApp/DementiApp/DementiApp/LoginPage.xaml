@@ -7,8 +7,8 @@
 
     <ContentPage.Resources>
         <Style x:Key="labelStyle" TargetType="{x:Type Label}">
-            <Setter Property="BackgroundColor" Value="Red"/>
-            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="BackgroundColor" Value="White"/>
+            <Setter Property="TextColor" Value="Red"/>
             <Setter Property="FontSize" Value="50"/>
             <Setter Property="WidthRequest" Value="1500"/>
             <Setter Property="HorizontalTextAlignment" Value="Center"/>
@@ -19,6 +19,8 @@
             <Setter Property="Padding" Value="0" />
             <Setter Property="MinimumHeightRequest" Value="100" />
             <Setter Property="HasShadow" Value="False" />
+            <Setter Property="BorderColor" Value="Red" />
+            <Setter Property="Padding" Value="10" />
         </Style>
         <Style x:Key="stackStyle" TargetType="{x:Type StackLayout}">
             <Setter Property="Margin" Value="10,10,10,10" />
@@ -45,20 +47,20 @@
                 </Frame>
                 <Entry x:Name="userId" Placeholder="Voornaam.Achternaam" FontSize="40" Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" VerticalOptions="End"/>
 
-                <Frame Grid.Row="2" Grid.Column="1" Style="{StaticResource frameStyle}" >
+                <Frame Grid.Row="2" Grid.Column="1" Style="{StaticResource frameStyle}" Margin="0,5,0,0">
                     <Label Text="Wachtwoord" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource labelStyle}" HeightRequest="1500"/>
                 </Frame>
                 <Entry  x:Name="passWd"  Grid.Row="3" Grid.Column="1" IsPassword="True" FontSize="40" HorizontalTextAlignment="Center" VerticalOptions="End"/>
 
-                <Frame x:Name="Error" Grid.Row="4" Grid.Column="1" Style="{StaticResource frameStyle}" IsVisible="False" BackgroundColor="White" >
+                <Frame x:Name="Error" Grid.Row="4" Grid.Column="1" Style="{StaticResource frameStyle}" IsVisible="False" BackgroundColor="White" Padding="0">
                     <Label Style="{StaticResource labelStyle}" TextColor="Red" BackgroundColor="White" FontSize="30"/>
                 </Frame>
 
-                <Frame Grid.Row="5" Grid.Column="1" Style="{StaticResource frameStyle}" BorderColor="Red" Padding="8">
+                <Frame Grid.Row="5" Grid.Column="1" Style="{StaticResource frameStyle}" Padding="0">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Login_Clicked" NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
-                    <Label Text="Login" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource labelStyle}" HeightRequest="1500" BackgroundColor="White" TextColor="Red" FontSize="40"/>
+                    <Label Text="Login" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource labelStyle}" HeightRequest="1500" BackgroundColor="Red" TextColor="White" FontSize="40"/>
                 </Frame>
             </Grid>
         </StackLayout>
