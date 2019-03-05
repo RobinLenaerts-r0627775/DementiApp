@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -262,6 +262,7 @@ namespace DementiApp
         private void Button_Clicked(object sender, EventArgs e)
         {
             Button but = (Button)sender;
+            but.IsVisible = false;
             Image fullscreen = new Image();
             fullscreen.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(() => { ButtonGrid.Children.Remove(fullscreen); }), NumberOfTapsRequired = 1 });
 
@@ -273,7 +274,7 @@ namespace DementiApp
             Grid.SetRowSpan(fullscreen, 4);
             but.IsEnabled = false;
             but.BorderColor = Color.LightYellow;
-            Color col = Color.FromHex("#372c73");
+            Color col = Color.Red;
             layout.TryGetValue(but.StyleId, out col);
             but.BackgroundColor = col;
             pics.TryGetValue(but.StyleId, out string pic);
@@ -291,6 +292,20 @@ namespace DementiApp
             {
                 if (col.Equals(clicked.BackgroundColor))
                 {
+                    try
+                    {
+                        Vibration.Vibrate();
+                    }
+                    catch (FeatureNotSupportedException ex)
+                    {
+                        Console.WriteLine(ex.StackTrace);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.StackTrace);
+                        //ex.StackTrace;
+                        //throw;
+                    }
                     but.IsEnabled = false;
                     clicked.IsEnabled = false;
                     but.BorderColor = Color.Transparent;
@@ -311,6 +326,8 @@ namespace DementiApp
                     {
                         (but.Parent.FindByName("f" + i) as Button).IsEnabled = false;
                     }
+                    but.IsVisible = true;
+                    clicked.IsVisible = true;
 
                     Device.StartTimer(TimeSpan.FromSeconds(2), () =>
                     {
@@ -328,12 +345,12 @@ namespace DementiApp
                         clicked.IsEnabled = true;
                         but.BorderColor = Color.Transparent;
                         clicked.BorderColor = Color.Transparent;
-                        clicked.BackgroundColor = Color.FromHex("#372c73");
-                        but.BackgroundColor = Color.FromHex("#372c73");
+                        clicked.BackgroundColor = Color.Red;
+                        but.BackgroundColor = Color.Red;
                         clicked = null;
                         for (int i = 0; i < 16; i++)
                         {
-                            if ((but.Parent.FindByName("f" + i) as Button).BackgroundColor == Color.FromHex("#372c73")) (but.Parent.FindByName("f" + i) as Button).IsEnabled = true;
+                            if ((but.Parent.FindByName("f" + i) as Button).BackgroundColor == Color.Red) (but.Parent.FindByName("f" + i) as Button).IsEnabled = true;
                         }
                         return false;
                     });
