@@ -22,7 +22,6 @@ namespace DementiApp
         private readonly HttpClient _client = new HttpClient();
         private String userid;
         private Button clicked;
-        private ObservableCollection<String> _photos;
         int score = 0;
         Dictionary<string, Color> layout = new Dictionary<string, Color>();
         Dictionary<string, string> pics = new Dictionary<string, string>();
