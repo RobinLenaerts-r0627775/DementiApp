@@ -95,7 +95,7 @@ public class RESTController {
             loginRepository.save(LoginInfo.LoginInfomaker(n.firstName + "." + n.lastName, n.password,n.role, n.nurseID));
         }
 
-        String lipsum = "zwdzqAWHvzAsxpedzqVo CPULTAVsdzqfDMKivPlx  jWPdzqsjXagGiOubdzqROPqmPRgUKdzqaAIFWD JLEqdzqoaGaDiusondzqidlddKYtGZ dzqbhYKjzIiHAd zfhqijfzkjzfjqzfjhqz zhjfhqzkjfhqjzhf kqjzhfkqjhfkqjhfkqzhf IOHOIUGFOZIHFI";
+        String lipsum = "Reminiscentie is een begrip dat verschillende ladingen dekt, al naar gelang de context waarin het wordt gebruikt. Het kan in algemene zin worden gebruikt ( zie Van Dale), het kan in therapeutische zin worden gebruikt (zie Bohlmeijer), het kan binnen de (ouderen)zorg worden gebruikt eveneens als therapie, maar ook als niet-therapeutische interventie (zie Hamburger).";
 
         MediaFile desireFile1 = new MediaFile(null, desId, new File(fileDir + "Temp1.jpg"), "Dit is de beschrijving voor deze foto", "test");
         MediaFile desireFile3 = new MediaFile(null, desId, new File(fileDir + "jeanine.jpg"), "Dit is de beschrijving voor deze foto2", "test");
