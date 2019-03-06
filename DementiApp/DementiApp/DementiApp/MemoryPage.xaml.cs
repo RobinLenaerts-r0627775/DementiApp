@@ -325,6 +325,7 @@ namespace DementiApp
         private void Button_Clicked(object sender, EventArgs e)
         {
             Button but = (Button)sender;
+            but.IsVisible = false;
             Image fullscreen = new Image();
             fullscreen.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(() => { ButtonGrid.Children.Remove(fullscreen); }), NumberOfTapsRequired = 1 });
 
@@ -336,7 +337,7 @@ namespace DementiApp
             Grid.SetRowSpan(fullscreen, 4);
             but.IsEnabled = false;
             but.BorderColor = Color.LightYellow;
-            Color col = Color.FromHex("#372c73");
+            Color col = Color.Red;
             layout.TryGetValue(but.StyleId, out col);
             but.BackgroundColor = col;
             pics.TryGetValue(but.StyleId, out string pic);
@@ -403,14 +404,16 @@ namespace DementiApp
                         }
                         but.IsEnabled = true;
                         clicked.IsEnabled = true;
+                        but.IsVisible = true;
+                        clicked.IsVisible = true;
                         but.BorderColor = Color.Transparent;
                         clicked.BorderColor = Color.Transparent;
-                        clicked.BackgroundColor = Color.FromHex("#372c73");
-                        but.BackgroundColor = Color.FromHex("#372c73");
+                        clicked.BackgroundColor = Color.Red;
+                        but.BackgroundColor = Color.Red;
                         clicked = null;
                         for (int i = 0; i < 24; i++)
                         {
-                            if ((but.Parent.FindByName("f" + i) as Button).BackgroundColor == Color.FromHex("#372c73"))
+                            if ((but.Parent.FindByName("f" + i) as Button).BackgroundColor == Color.Red)
                             {
                                 (but.Parent.FindByName("f" + i) as Button).IsEnabled = true;
                             }
