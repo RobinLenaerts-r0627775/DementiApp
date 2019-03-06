@@ -124,6 +124,7 @@ namespace DementiApp
                 string stringyHash = sBuilder.ToString();
 
                 log.Password = stringyHash;
+               
                 try
                 {
                     string content = JsonConvert.SerializeObject(log);
