@@ -37,6 +37,10 @@
         <div style="background-color: #F8F8F8; margin-right: 1em">
             <div style="margin-left: 1em;margin-right: 1em">
                 <h4>Add a photo</h4>
+                <div th:if="${photoAlbum.size() < 12}" class="text-muted">
+                    <p>NOTE: there need to be a minimum amount of photo's for the app to be able to play with personal photo's</p>
+                    <p th:text="'Currently ' + ${photoAlbum.size() + '/12'}"></p>
+                </div>
                 <form action="/webmedia" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <p><input type="hidden" name="patientId" th:value="${patientId}"></p>
