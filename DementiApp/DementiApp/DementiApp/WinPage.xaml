@@ -3,13 +3,42 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DementiApp.WinPage"
              NavigationPage.HasBackButton="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="labelStyle" TargetType="{x:Type Label}">
+                <Setter Property="BackgroundColor" Value="Red"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="35"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="HeightRequest" Value="200" />
+            </Style>
+            <Style x:Key="frameStyle" TargetType="{x:Type Frame}">
+                <Setter Property="CornerRadius" Value="25" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Margin" Value="50,10,50,50" />
+                <Setter Property="IsVisible" Value="True" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="HeightRequest" Value="200" />
+            </Style>
+            <Style x:Key="stackStyle" TargetType="{x:Type StackLayout}">
+                <Setter Property="Margin" Value="0,20,0,20" />
+                <Setter Property="BackgroundColor" Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="YOU WON!"
-                   FontSize="50"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" />
-            <Button Text="Play Again" Clicked="Button_Clicked"/>
+            <Frame Margin="10" Style="{StaticResource frameStyle}" BackgroundColor="White" BorderColor="Red" Padding="10">
+                <Label Text="Je bent gewonnen" FontSize="75" HorizontalTextAlignment="Center"  Style="{StaticResource labelStyle}" BackgroundColor="White" TextColor="Red" />
+            </Frame>
+            <Frame Style="{StaticResource frameStyle}" Margin="5" Padding="0" BackgroundColor="White" >
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Button_Clicked" NumberOfTapsRequired="1" />
+                </Frame.GestureRecognizers>
+                <Label Style="{StaticResource labelStyle}" Text="Ga terug" />
+            </Frame>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
