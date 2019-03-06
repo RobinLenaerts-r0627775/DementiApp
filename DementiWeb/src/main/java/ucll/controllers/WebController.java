@@ -14,6 +14,9 @@ import ucll.model.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 import org.springframework.web.servlet.ModelAndView;
 import ucll.model.Patient;
@@ -34,11 +37,11 @@ public class WebController {
     private static String greeting = "patientOverview";
     private static String album = "photoAlbum";
 
-    @Value("${patients.apiaddress}")
-    String patientApiAddress;
+    //private static String fileDir = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";  //local
+    private static String fileDir = System.getProperty("user.dir") + "/resources/main/static/images/";    //server
 
-    @Value("${media.apiaddress}")
-    String mediaApiAddress;
+    /*@Value("${media.apiaddress}")
+    String mediaApiAddress;*/
 
     @Autowired
     private PatientRepository patientRepository;
@@ -412,24 +415,44 @@ public class WebController {
      */
     @RequestMapping(value = "/webmedia", method = RequestMethod.POST)
     public void postMedia(HttpServletRequest request, HttpServletResponse response, @RequestParam("patientId") String patientId, @RequestParam("file") MultipartFile file, @RequestParam("category") String category, @RequestParam("description") String description) throws IOException {
-        MediaFile mediaFile = new MediaFile(UUID.fromString(patientId), convert(file), description, category);
+        MediaFile mediaFile = convertToMediaFile(UUID.fromString(patientId), file, description, category);
         mediaRepository.save(mediaFile);
         response.sendRedirect("webmedia/" + mediaFile.patientId.toString());
     }
 
-    /**
-     * method to convert Multipart file to java IO file
+    /** TODO
+     * method to convert Multipart file to MediaFile file
+     *
+     * @param patientId
      * @param file
+     * @param description
+     * @param category
      * @return
      * @throws IOException
      */
-    public File convert(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
-        convFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
-        fos.close();
-        return convFile;
+    public MediaFile convertToMediaFile(UUID patientId, MultipartFile file, String description, String category) throws IOException {
+        //Get the extension
+        String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+        //Create MediaFile
+        MediaFile result = new MediaFile(null, patientId, null, description, category);
+        //Save MediaFile to get an ID
+        result = mediaRepository.save(result);
+        //Create a path
+        Path path = Paths.get(fileDir, result.mediaId.toString() + extension);
+        //Create File with the name of the ID
+        File newFile = new File(fileDir + result.mediaId.toString() + extension);
+        //Write the data to the file
+        try {
+            Files.write(path, file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //Set File in MediaFile
+        result.setFile(newFile);
+        //Save it
+        result = mediaRepository.save(result);
+
+        return result;
     }
 
     @RequestMapping(value = "/patients/delete/{patientId}")
