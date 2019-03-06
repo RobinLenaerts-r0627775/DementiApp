@@ -1,9 +1,6 @@
 package ucll.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -13,7 +10,8 @@ public class LoginInfo {
     public UUID id;
 
     private String username;
-    private String password;
+    @Column(length = 600)
+    private String hashedPassword;
     private UUID personID;
 
 
@@ -58,11 +56,11 @@ public class LoginInfo {
     }
 
     public String getPassword() {
-        return password;
+        return hashedPassword;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.hashedPassword = password;
     }
 
     public boolean equals(LoginInfo info){

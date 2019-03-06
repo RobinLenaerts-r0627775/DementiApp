@@ -88,11 +88,11 @@ public class RESTController {
         nurseRepository.save(Tine);
 
         for (Patient p : patientRepository.findAll()) {
-            LoginInfo tmp = LoginInfo.LoginInfomaker(p.firstName + "." + p.lastName, p.getPassword(),p.role, p.patientId);
+            LoginInfo tmp = LoginInfo.LoginInfomaker(p.firstName + "." + p.lastName, p.hash,p.role, p.patientId);
             loginRepository.save(tmp);
         }
         for (Nurse n : nurseRepository.findAll()) {
-            loginRepository.save(LoginInfo.LoginInfomaker(n.firstName + "." + n.lastName, n.password,n.role, n.nurseID));
+            loginRepository.save(LoginInfo.LoginInfomaker(n.firstName + "." + n.lastName, n.hash,n.role, n.nurseID));
         }
 
         String lipsum = "Reminiscentie is een begrip dat verschillende ladingen dekt, al naar gelang de context waarin het wordt gebruikt. Het kan in algemene zin worden gebruikt ( zie Van Dale), het kan in therapeutische zin worden gebruikt (zie Bohlmeijer), het kan binnen de (ouderen)zorg worden gebruikt eveneens als therapie, maar ook als niet-therapeutische interventie (zie Hamburger).";
@@ -136,6 +136,7 @@ public class RESTController {
         mediaRepository.save(palmyrSchool2);
 
         palmyr.setProfile(palmyrWed1.mediaId);
+        palmyr.setPatientId(palId);
         patientRepository.save(palmyr);
     }
 
@@ -300,10 +301,9 @@ public class RESTController {
      */
     @PostMapping("/login")
     public ResponseEntity<UUID> login(@RequestBody LoginObject loginObject){
-        Optional<LoginInfo> op = loginRepository.getFirstByUsernameAndPassword(loginObject.user, loginObject.password);
+        Optional<LoginInfo> op = loginRepository.getFirstByUsernameAndHashedPassword(loginObject.user, loginObject.password.toLowerCase());
         if (op.isPresent()) {
             LoginInfo result = op.get();
-
             if (result.getRole() == ROLE.NURSE) {
                 return null;
             }

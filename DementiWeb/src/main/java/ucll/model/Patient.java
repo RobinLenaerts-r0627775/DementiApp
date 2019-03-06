@@ -1,9 +1,9 @@
 package ucll.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.UUID;
 
@@ -17,7 +17,10 @@ public class Patient implements Person{
     //public int dementiaLevel;
 
     public UUID profilePicture;
+    @Column(length = 600)
     private String password;
+    @Column(length = 600)
+    public String hash;
 
     public ROLE role;
 
@@ -32,6 +35,26 @@ public class Patient implements Person{
         setProfile(profilePicture);
         setPassword(password);
         this.role = ROLE.PATIENT;
+    }
+
+    private String hashPassword(String password){
+        if (password != null) {
+            String generatedPassword = null;
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA-512");
+                byte[] bytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < bytes.length; i++) {
+                    sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+                }
+                generatedPassword = sb.toString();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+            return generatedPassword;
+        } else {
+            return password;
+        }
     }
 
     @Override
@@ -90,5 +113,14 @@ public class Patient implements Person{
 
     public void setPassword(String password) {
         this.password = password;
+        setHash(hashPassword(password));
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }

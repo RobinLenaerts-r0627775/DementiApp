@@ -14,9 +14,12 @@ import ucll.model.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 import org.springframework.web.servlet.ModelAndView;
 import ucll.model.Patient;
@@ -142,6 +145,7 @@ public class WebController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response, @Valid @ModelAttribute("LoginInfo") LoginInfo info) throws IOException, ServletException {
+        info.setPassword(hashPassword(info.getPassword()));
         Map params = new HashMap<String, Object>();
         for (LoginInfo li : loginRepository.findAll()) {
             if (li.equals(info)) {
@@ -171,6 +175,23 @@ public class WebController {
         params.put("error", "Failed to authenticate");
         params.put("person", info);
         return new ModelAndView("login", params);
+    }
+
+    private String hashPassword(String password){
+        String generatedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            byte[] bytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            for(int i=0; i< bytes.length ;i++){
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = sb.toString();
+        }
+        catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        }
+        return generatedPassword;
     }
 
     /**
@@ -340,7 +361,7 @@ public class WebController {
                     Patient pat = new Patient(null, patient.firstName, patient.lastName, /*patient.birthDate, patient.dementiaLevel, */mediaRepository.getFirstByPatientId(null).mediaId, patient.getPassword());
                     pat.role = ROLE.PATIENT;
                     patientRepository.save(pat);
-                    loginRepository.save(LoginInfo.LoginInfomaker(pat.firstName + "." + pat.lastName, pat.getPassword(), pat.role, pat.patientId));
+                    loginRepository.save(LoginInfo.LoginInfomaker(pat.firstName + "." + pat.lastName, pat.hash, pat.role, pat.patientId));
                 } else {
                     params.put("error", "Fill the fields");
                     params.put("patient", new Patient(null, patient.firstName, patient.lastName, /*patient.birthDate, patient.dementiaLevel, */mediaRepository.getFirstByPatientId(null).mediaId, patient.getPassword()));

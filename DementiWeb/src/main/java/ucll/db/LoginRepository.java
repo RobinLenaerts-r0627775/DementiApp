@@ -8,6 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface LoginRepository extends CrudRepository<LoginInfo, UUID> {
-    public Optional<LoginInfo> getFirstByUsernameAndPassword(String username, String password);
+    public Optional<LoginInfo> getFirstByUsernameAndHashedPassword(String username, String password);
     public LoginInfo getFirstByPersonID(UUID id);
 }
