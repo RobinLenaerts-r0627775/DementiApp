@@ -33,11 +33,10 @@
     <StackLayout>
         <StackLayout VerticalOptions="FillAndExpand">
 
-            <Frame Margin="10" Style="{StaticResource frameStyle}">
-                <Label Text="StoryBook" FontSize="75" HorizontalTextAlignment="Center"  Style="{StaticResource labelStyle}"/>
+            <Frame Margin="10" Style="{StaticResource frameStyle}" BackgroundColor="White" BorderColor="Red" Padding="10">
+                <Label Text="Fotoboek" FontSize="75" HorizontalTextAlignment="Center"  Style="{StaticResource labelStyle}" BackgroundColor="White" TextColor="Red" />
             </Frame>
-
-
+            
             <ListView x:Name="MyListView" VerticalOptions="FillAndExpand" HasUnevenRows="True" BackgroundColor="White" ItemSelected="MyListView_ItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -54,7 +53,7 @@
                                 </StackLayout>
 
 
-                                <Frame CornerRadius="25" Margin="0" Padding="0" IsVisible="False">
+                                <Frame CornerRadius="25" Margin="0" Padding="0" IsVisible="False" >
                                     <Label Text="{Binding Description} " TextColor="White" BackgroundColor="Red" FontSize="35" HorizontalTextAlignment="Center" Margin="0"/>
                                 </Frame>
                             </StackLayout>

@@ -19,7 +19,8 @@ namespace DementiApp
 		{
             userId = userid;
 			InitializeComponent ();
-		}
+            NavigationPage.SetHasBackButton(this, false);
+        }
 
         /*
          *Wanneer je op de terugknop klikt, ga je automatisch naar het mainscherm 
