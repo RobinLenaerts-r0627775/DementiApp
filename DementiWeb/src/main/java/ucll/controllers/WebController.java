@@ -495,7 +495,6 @@ public class WebController {
     public void deleteMedia(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID mediaId) throws IOException {
         Optional<MediaFile> mf = mediaRepository.findById(mediaId);
         if (mf.isPresent()){
-            System.out.println("Remove: " + mf.get().mediaId);
             if(isProfilePicture(mediaId, mf.get().patientId)){
                 Optional<Patient> op = patientRepository.findById(mf.get().patientId);
                 if (op.isPresent()){
@@ -514,7 +513,6 @@ public class WebController {
     private boolean isProfilePicture(UUID mediaId, UUID patientId) {
         Optional<Patient> op = patientRepository.findById(patientId);
         if (op.isPresent()){
-            System.out.println(mediaId + " picture? " + op.get().profilePicture.equals(mediaId));
             return op.get().profilePicture.equals(mediaId);
         }
         return false;
