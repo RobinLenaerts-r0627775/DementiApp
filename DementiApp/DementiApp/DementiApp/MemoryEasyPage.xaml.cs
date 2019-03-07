@@ -262,7 +262,9 @@ namespace DementiApp
         private void Button_Clicked(object sender, EventArgs e)
         {
             Button but = (Button)sender;
-            but.IsVisible = false;
+            if (patientpics.Count() > 7)
+            {
+                but.IsVisible = false;
             Image fullscreen = new Image();
             fullscreen.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(() => { ButtonGrid.Children.Remove(fullscreen); }), NumberOfTapsRequired = 1 });
 
@@ -272,6 +274,7 @@ namespace DementiApp
             Grid.SetColumnSpan(fullscreen, 4);
             Grid.SetRow(fullscreen, 0);
             Grid.SetRowSpan(fullscreen, 4);
+            }
             but.IsEnabled = false;
             but.BorderColor = Color.LightYellow;
             Color col = Color.Red;
