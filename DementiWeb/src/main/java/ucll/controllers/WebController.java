@@ -511,8 +511,8 @@ public class WebController {
         }
     }
 
-    private boolean isProfilePicture(UUID patietnId, UUID mediaId) {
-        Optional<Patient> op = patientRepository.findById(patietnId);
+    private boolean isProfilePicture(UUID mediaId, UUID patientId) {
+        Optional<Patient> op = patientRepository.findById(patientId);
         if (op.isPresent()){
             System.out.println(mediaId + " picture? " + op.get().profilePicture.equals(mediaId));
             return op.get().profilePicture.equals(mediaId);
