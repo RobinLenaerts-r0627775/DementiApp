@@ -43,6 +43,9 @@ namespace DementiApp
             }
         }
 
+        /**
+         * little helper method for displayalerts.
+         */
         public async void showMessage()
         {
             await DisplayAlert("Info", "Klik op een vakje om het om de foto erachter te zien. Probeer alle paren te vinden.", "Oké!");
@@ -287,6 +290,9 @@ namespace DementiApp
 
         /**
          * method that handles the clicks on the memorygame. shows the images and hides them if there is no match. 
+         * also checks if there are enough personal fotos in the patient's photo repository to play the game. if not: use default photos.
+         * makes the device vibrate whenever a valid pair is found.
+         * 
          */
         private void Button_Clicked(object sender, EventArgs e)
         {
