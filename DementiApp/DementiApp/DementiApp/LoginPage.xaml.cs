@@ -111,7 +111,7 @@ namespace DementiApp
                 log.UserId = userId.Text;
                 var clear = passWd.Text;
 
-                /*SHA512 shaM = new SHA512Managed();
+                SHA512 shaM = new SHA512Managed();
                 byte[] data = shaM.ComputeHash(Encoding.UTF8.GetBytes(clear));
 
                 StringBuilder sBuilder = new StringBuilder();
@@ -123,8 +123,8 @@ namespace DementiApp
 
                 string stringyHash = sBuilder.ToString();
 
-                log.Password = stringyHash;*/
-                log.Password = clear;
+                log.Password = stringyHash;
+                //log.Password = clear;
                
                 try
                 {
