@@ -98,7 +98,7 @@ public class RESTController {
         String lipsum = "Reminiscentie is een begrip dat verschillende ladingen dekt, al naar gelang de context waarin het wordt gebruikt. Het kan in algemene zin worden gebruikt ( zie Van Dale), het kan in therapeutische zin worden gebruikt (zie Bohlmeijer), het kan binnen de (ouderen)zorg worden gebruikt eveneens als therapie, maar ook als niet-therapeutische interventie (zie Hamburger).";
 
         MediaFile desireFile1 = new MediaFile(null, desId, new File(fileDir + "Temp1.jpg"), "Ons Jeanine is gelukkig bij het horen dat ze overgrootmoeder wordt", "Jeanine");
-        MediaFile desireFile3 = new MediaFile(null, desId, new File(fileDir + "jeanine.jpg"), "Jeanine", "");
+        MediaFile desireFile3 = new MediaFile(null, desId, new File(fileDir + "jeanine.jpg"), "Jeanine", "Jeanine");
         MediaFile desireFile2 = new MediaFile(null, desId, new File(fileDir + "Temp2.jpg"), lipsum, "Desire");
         MediaFile germainFile1 = new MediaFile(null, gerId, new File(fileDir + "Temp3.jpg"), "Wanneer de lector een grap vertelt en je hebt de credits nodig.", "Categorie");
         MediaFile germainFile2 = new MediaFile(null, gerId, new File(fileDir + "Fam1.jpg"), "Een familiefoto", "Categorie");

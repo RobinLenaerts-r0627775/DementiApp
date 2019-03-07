@@ -436,6 +436,9 @@ public class WebController {
      */
     @RequestMapping(value = "/webmedia", method = RequestMethod.POST)
     public void postMedia(HttpServletRequest request, HttpServletResponse response, @RequestParam("patientId") String patientId, @RequestParam("file") MultipartFile file, @RequestParam("category") String category, @RequestParam("description") String description) throws IOException {
+        if (category == null || category.trim().isEmpty()){
+            category = "Andere";
+        }
         MediaFile mediaFile = convertToMediaFile(UUID.fromString(patientId), file, description, category);
         mediaRepository.save(mediaFile);
         response.sendRedirect("webmedia/" + mediaFile.patientId.toString());
