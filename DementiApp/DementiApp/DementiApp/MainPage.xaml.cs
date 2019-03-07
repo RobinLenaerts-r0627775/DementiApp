@@ -171,6 +171,7 @@ namespace DementiApp
         {
             this.userid = userId;
             InitializeComponent();
+            this.Title = DateTime.Today.ToString("dd/MM/yyyy");
             NavigationPage.SetHasBackButton(this, false);
 
         }
