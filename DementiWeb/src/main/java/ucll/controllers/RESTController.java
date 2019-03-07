@@ -71,8 +71,8 @@ public class RESTController {
         MediaFile defaultProfilePicture = new MediaFile(null, null, new File(fileDir + "Profile.png"), "Default Profile picture", "default");
         mediaRepository.save(defaultProfilePicture);
 
-        Patient desire = new Patient(null, "Désire", "Klaes", defaultProfilePicture.mediaId, "sinter");
-        Patient germain = new Patient(null, "Germain", "Van Hier", defaultProfilePicture.mediaId, "ucll");
+        Patient desire = new Patient(null, "Désire", "Klaes", defaultProfilePicture.mediaId, "t");
+        Patient germain = new Patient(null, "Germain", "Van Hier", defaultProfilePicture.mediaId, "t");
         Patient palmyr = new Patient(null, "Palmyr", "Leysens", defaultProfilePicture.mediaId, "t");
 
         patientRepository.save(desire);
@@ -97,24 +97,24 @@ public class RESTController {
 
         String lipsum = "Reminiscentie is een begrip dat verschillende ladingen dekt, al naar gelang de context waarin het wordt gebruikt. Het kan in algemene zin worden gebruikt ( zie Van Dale), het kan in therapeutische zin worden gebruikt (zie Bohlmeijer), het kan binnen de (ouderen)zorg worden gebruikt eveneens als therapie, maar ook als niet-therapeutische interventie (zie Hamburger).";
 
-        MediaFile desireFile1 = new MediaFile(null, desId, new File(fileDir + "Temp1.jpg"), "Dit is de beschrijving voor deze foto", "test");
-        MediaFile desireFile3 = new MediaFile(null, desId, new File(fileDir + "jeanine.jpg"), "Dit is de beschrijving voor deze foto2", "test");
-        MediaFile desireFile2 = new MediaFile(null, desId, new File(fileDir + "Temp2.jpg"), lipsum, "test2");
-        MediaFile germainFile1 = new MediaFile(null, gerId, new File(fileDir + "Temp3.jpg"), "Dit is de beschrijving voor de foto", "test");
-        MediaFile palmyrWed1 = new MediaFile(null, palId, new File(fileDir + "Wed1.jpg"), "Dit is de beschrijving voor de foto Wed 1", "Wedding");
-        MediaFile palmyrWed2 = new MediaFile(null, palId, new File(fileDir + "Wed2.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
-        MediaFile palmyrWed3 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
-        MediaFile palmyrWed4 = new MediaFile(null, palId, new File(fileDir + "Wed4.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
-        MediaFile palmyrWed5 = new MediaFile(null, palId, new File(fileDir + "Wed5.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
-        MediaFile palmyrWed6 = new MediaFile(null, palId, new File(fileDir + "Wed6.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
-        MediaFile palmyrWed7 = new MediaFile(null, palId, new File(fileDir + "Wed7.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
-        MediaFile palmyrWed8 = new MediaFile(null, palId, new File(fileDir + "Wed8.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
-        MediaFile palmyrWed9 = new MediaFile(null, palId, new File(fileDir + "Wed9.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
-        MediaFile palmyrWed10 = new MediaFile(null, palId, new File(fileDir + "Wed10.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
-        MediaFile palmyrWed11 = new MediaFile(null, palId, new File(fileDir + "Wed11.jpg"), "Dit is de beschrijving voor de foto Wed 2", "Wedding");
-        MediaFile palmyrWed12 = new MediaFile(null, palId, new File(fileDir + "Wed12.jpg"), "Dit is de beschrijving voor de foto Wed 3", "Wedding");
-        MediaFile palmyrSchool1 = new MediaFile(null, palId, new File(fileDir + "School1.jpg"), "Dit is de beschrijving voor de foto School 1", "School");
-        MediaFile palmyrSchool2 = new MediaFile(null, palId, new File(fileDir + "School2.jpg"), "Dit is de beschrijving voor de foto School 2", "School");
+        MediaFile desireFile1 = new MediaFile(null, desId, new File(fileDir + "Temp1.jpg"), "Ons Jeanine is gelukkig bij het horen dat ze overgrootmoeder wordt", "Jeanine");
+        MediaFile desireFile3 = new MediaFile(null, desId, new File(fileDir + "jeanine.jpg"), "Jeanine", "Jeanine");
+        MediaFile desireFile2 = new MediaFile(null, desId, new File(fileDir + "Temp2.jpg"), lipsum, "Desire");
+        MediaFile germainFile1 = new MediaFile(null, gerId, new File(fileDir + "Temp3.jpg"), "Wanneer de lector een grap vertelt en je hebt de credits nodig.", "Harold");
+        MediaFile palmyrWed1 = new MediaFile(null, palId, new File(fileDir + "Wed1.jpg"), "Dit is een foto genomen op jou 50e huwelijksverjaardag met Hugo. Op 6 oktober 2014 vierde we met heel de familie dat jij 50 jaar met Hugo hebt kunnen uithouden en samen een mooie familie hebben kunnen voortbrengen.", "Trouw");
+        MediaFile palmyrWed2 = new MediaFile(null, palId, new File(fileDir + "Wed2.jpg"), "Deze foto had je genomen toen je op reis was door Laos met Hugo en de kinderen. Er was toen net een feest aan de gang waar de oudere zich opmaakte alsof ze gingen trouwen.", "Trouw");
+        MediaFile palmyrWed3 = new MediaFile(null, palId, new File(fileDir + "Wed3.jpg"), "Deze foto had je genomen toen je op reis was door Laos met Hugo en de kinderen. Er was toen net een feest aan de gang waar de oudere zich opmaakte alsof ze gingen trouwen.", "Trouw");
+        MediaFile palmyrWed4 = new MediaFile(null, palId, new File(fileDir + "Wed4.jpg"), "Dit is een trouwfoto van je dochter Julie met haar man Boris. Ze zijn getrouwd in 1978 op een mooie lentedag. De kip was Boris zijn idee.", "Trouw");
+        MediaFile palmyrWed5 = new MediaFile(null, palId, new File(fileDir + "Wed5.jpg"), "Wat moet dat moet. Gelukkig kon je er nog om lachen.", "Trouw");
+        MediaFile palmyrWed6 = new MediaFile(null, palId, new File(fileDir + "Wed6.jpg"), "Je kreeg je eerste echte 6-snaar, je kocht het in de 5 and dime. Je speelde tot je vingers bloedden, Het was de zomer van '69.", "Trouw");
+        MediaFile palmyrWed7 = new MediaFile(null, palId, new File(fileDir + "Wed7.jpg"), "We zijn geen vreemden voor liefde, je kent de regels en ik ook. Een volledige toewijding is waar ik aan denk, je zou dit niet van een andere kerel krijgen", "Trouw");
+        MediaFile palmyrWed8 = new MediaFile(null, palId, new File(fileDir + "Wed8.jpg"), "We kennen elkaar al zo lang. Je hart doet pijn, maar je bent te verlegen om het te zeggen. Binnen weten we allebei wat er aan de hand is, we kennen het spel en we gaan het spelen", "Trouw");
+        MediaFile palmyrWed9 = new MediaFile(null, palId, new File(fileDir + "Wed9.jpg"), "Waar het begon, kan ik niet weten. Maar dan weet ik dat het sterk aan het groeien is. Het was in de lente, toen werd de lente de zomer. Wie had geloofd dat je zou meegaan?", "Trouw");
+        MediaFile palmyrWed10 = new MediaFile(null, palId, new File(fileDir + "Wed10.jpg"), "Bijna de hemel, West Virginia, Blue Ridge Mountains, Shenandoah River. Het leven is daar oud, ouder dan de bomen jonger dan de bergen, blazend als een bries.", "Trouw");
+        MediaFile palmyrWed11 = new MediaFile(null, palId, new File(fileDir + "Wed11.jpg"), "Het is negen uur op een zaterdag, de gewone menigte schuifelt erin. Er zit een oude man naast me liefde te maken met zijn tonic en gin.", "Trouw");
+        MediaFile palmyrWed12 = new MediaFile(null, palId, new File(fileDir + "Wed12.jpg"), "Steve loopt voorzichtig over straat, met de rand naar beneden getrokken laag. Er is geen geluid maar het geluid van zijn voeten, machinegeweren klaar om te gaan.", "Trouw");
+        MediaFile palmyrSchool1 = new MediaFile(null, palId, new File(fileDir + "School1.jpg"), "De klasfoto van je 6e leerjaar bij juf Godelieve op het Heilig-Hart.", "School");
+        MediaFile palmyrSchool2 = new MediaFile(null, palId, new File(fileDir + "School2.jpg"), "Kijk eens hoe Geraard op deze foto staat. zijn tanden waren eruit gevallen toen hij tegen een boom was gereden met de fiets.", "School");
 
         mediaRepository.save(desireFile1);
         mediaRepository.save(desireFile2);
