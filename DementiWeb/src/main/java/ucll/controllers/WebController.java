@@ -495,11 +495,27 @@ public class WebController {
     public void deleteMedia(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID mediaId) throws IOException {
         Optional<MediaFile> mf = mediaRepository.findById(mediaId);
         if (mf.isPresent()){
+            if(isProfilePicture(mediaId, mf.get().patientId)){
+                Optional<Patient> op = patientRepository.findById(mf.get().patientId);
+                if (op.isPresent()){
+                    Patient patient = op.get();
+                    patient.setProfile(mediaRepository.getFirstByPatientId(null).mediaId);
+                    patientRepository.save(patient);
+                }
+            }
             mediaRepository.deleteById(mediaId);
             response.sendRedirect("/webmedia/" + mf.get().patientId.toString());
         } else {
             //TODO errorpage
         }
+    }
+
+    private boolean isProfilePicture(UUID patietnId, UUID mediaId) {
+        Optional<Patient> op = patientRepository.findById(patietnId);
+        if (op.isPresent()){
+            return op.get().profilePicture.equals(mediaId);
+        }
+        return false;
     }
 }
 

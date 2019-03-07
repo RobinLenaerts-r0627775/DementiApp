@@ -10,5 +10,5 @@ import java.util.UUID;
 public interface MediaRepository extends CrudRepository<MediaFile, UUID> {
     public ArrayList<MediaFile> getAllByPatientId(UUID patientId);
     public ArrayList<MediaFile> getAllByPatientIdAndCategory(UUID patientId, String category);
-    public MediaFile getFirstByPatientId(UUID patientId); // returns the default profile picture
+    public MediaFile getFirstByPatientId(UUID patientId); // returns the default profile picture if id == null
 }
